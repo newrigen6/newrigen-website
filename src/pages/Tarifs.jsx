@@ -316,6 +316,31 @@ export default function Tarifs() {
             ))}
           </div>
 
+          {/* Option add-on */}
+          <div className="mt-12 rounded-2xl border p-6" style={{ borderColor: `${TEAL}30`, background: `${TEAL}06` }}>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-base font-black text-white">🎙️ Option Devis Vocal</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: `${TEAL}20`, color: TEAL }}>Add-on</span>
+                </div>
+                <p className="text-slate-400 text-sm">Créez vos devis par dictée vocale — l'IA structure automatiquement votre devis depuis votre catalogue. Disponible en option sur tous les packs.</p>
+                <ul className="mt-2 space-y-1">
+                  {['Dictée vocale en français', 'Génération automatique depuis le catalogue', 'Activable / désactivable depuis les Paramètres'].map(f => (
+                    <li key={f} className="flex items-center gap-2 text-xs text-slate-300">
+                      <Check className="w-3 h-3 flex-shrink-0" style={{ color: TEAL }} />{f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <p className="text-2xl font-black" style={{ color: TEAL }}>15.-</p>
+                <p className="text-slate-400 text-xs">CHF/mois</p>
+                <p className="text-slate-500 text-xs mt-1">ou 180.-/an</p>
+              </div>
+            </div>
+          </div>
+
           {/* Note bas */}
           <p className="text-center text-slate-500 text-sm mt-8">
             Questions ? Écrivez-nous à{' '}
