@@ -291,8 +291,9 @@ function Contact() {
         )}
         <p className="text-slate-500 text-xs mb-10">En soumettant ce formulaire, vous acceptez notre politique de confidentialité. Pas de spam.</p>
         <div className="flex flex-wrap justify-center gap-8 text-sm text-slate-400">
-          <a href="mailto:contact@newrigen.ch" className="flex items-center gap-2 hover:text-white transition-colors"><Mail className="w-4 h-4" style={{ color: TEAL }} />contact@newrigen.ch</a>
-          <span className="flex items-center gap-2"><Phone className="w-4 h-4" style={{ color: TEAL }} />+41 XX XXX XX XX</span>
+          <a href="mailto:newrigen6@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors"><Mail className="w-4 h-4" style={{ color: TEAL }} />newrigen6@gmail.com</a>
+          <a href="tel:+41798733791" className="flex items-center gap-2 hover:text-white transition-colors"><Phone className="w-4 h-4" style={{ color: TEAL }} />079 873 37 91</a>
+          <a href="tel:+41793246593" className="flex items-center gap-2 hover:text-white transition-colors"><Phone className="w-4 h-4" style={{ color: TEAL }} />079 324 65 93</a>
           <span className="flex items-center gap-2"><MapPin className="w-4 h-4" style={{ color: TEAL }} />Suisse romande et alémanique</span>
         </div>
       </div>
