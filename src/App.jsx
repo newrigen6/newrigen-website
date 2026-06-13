@@ -59,20 +59,20 @@ function Hero() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}15` }} />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}10` }} />
       <div className="relative max-w-5xl mx-auto px-6 text-center py-32">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mb-8 border" style={{ background: `${TEAL}10`, borderColor: `${TEAL}30`, color: TEAL }}>
+        <div data-anim="up" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mb-8 border" style={{ background: `${TEAL}10`, borderColor: `${TEAL}30`, color: TEAL }}>
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: TEAL }} />
           Automatisation IA pour les PME suisses
         </div>
-        <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-6 leading-tight">
+        <h1 data-anim="up" data-delay="100" className="text-3xl md:text-5xl font-black tracking-tight mb-6 leading-tight">
           Transformez votre{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>entreprise</span>
           {' '}avec<br />l'intelligence{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, #7ee8e8, ${TEAL})` }}>artificielle</span>
         </h1>
-        <p className="text-sm text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p data-anim="up" data-delay="200" className="text-sm text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           Newrigen automatise vos processus métier grâce à l'IA — conceptions instantanées, workflows intelligents, intégrations sur mesure. Gagnez du temps, réduisez les coûts et concentrez-vous sur ce qui compte vraiment.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <div data-anim="up" data-delay="300" className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <a href="#contact" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             Demander un devis gratuit
           </a>
@@ -104,21 +104,21 @@ function Services() {
   return (
     <section id="services" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div data-anim="up" className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Nos services</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Tout ce dont votre PME a besoin</h2>
           <p className="text-slate-400 max-w-2xl mx-auto">Des solutions IA clés en main, conçues spécifiquement pour les entreprises suisses.</p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
-          {services.map(({ icon: Icon, title, desc, items }) => (
-            <div key={title} className="rounded-2xl p-6 border transition-all duration-200 hover:border-[#4DD9D9]/40 group" style={{ background: `${TEAL}08`, borderColor: `${TEAL}20` }}>
+          {services.map(({ icon: Icon, title, desc, items: sItems }, i) => (
+            <div key={title} data-anim={i % 2 === 0 ? 'left' : 'right'} data-delay={String(i * 100)} className="rounded-2xl p-6 border transition-all duration-200 hover:border-[#4DD9D9]/40 group" style={{ background: `${TEAL}08`, borderColor: `${TEAL}20` }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${TEAL}20` }}>
                 <Icon className="w-5 h-5" style={{ color: TEAL }} />
               </div>
               <h3 className="text-xl font-bold mb-2 text-white">{title}</h3>
               <p className="text-slate-400 text-sm mb-4 leading-relaxed">{desc}</p>
               <ul className="space-y-2">
-                {items.map(item => (
+                {sItems.map(item => (
                   <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
                     <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color: TEAL }} />
                     {item}
@@ -148,12 +148,12 @@ function Comparatif() {
   return (
     <section id="comparatif" className="py-24 px-6">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <div data-anim="up" className="text-center mb-12">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Comparatif</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Avant vs après Newrigen</h2>
           <p className="text-slate-400">Voyez concrètement l'impact de l'automatisation IA sur votre quotidien.</p>
         </div>
-        <div className="rounded-2xl overflow-hidden border" style={{ borderColor: `${TEAL}20` }}>
+        <div data-anim="scale" data-delay="100" className="rounded-2xl overflow-hidden border" style={{ borderColor: `${TEAL}20` }}>
           <div className="grid grid-cols-3 text-sm font-semibold" style={{ background: `${TEAL}15` }}>
             <div className="p-4 text-slate-300">Fonctionnalité</div>
             <div className="p-4 text-center text-red-400">✗ Sans Newrigen</div>
@@ -187,14 +187,14 @@ function Processus() {
   return (
     <section id="processus" className="py-24 px-6">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
+        <div data-anim="up" className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Notre processus</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Comment ça marche ?</h2>
           <p className="text-slate-400">Un processus simple et transparent, de l'idée au déploiement en quelques semaines.</p>
         </div>
         <div className="space-y-6">
-          {steps.map(({ n, title, desc, items }) => (
-            <div key={n} className="flex gap-6 rounded-2xl p-6 border" style={{ background: `${TEAL}06`, borderColor: `${TEAL}18` }}>
+          {steps.map(({ n, title, desc, items }, i) => (
+            <div key={n} data-anim={i % 2 === 0 ? 'left' : 'right'} data-delay={String(i * 150)} className="flex gap-6 rounded-2xl p-6 border" style={{ background: `${TEAL}06`, borderColor: `${TEAL}18` }}>
               <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center font-black text-sm" style={{ background: `${TEAL}20`, color: TEAL }}>
                 {n}
               </div>
@@ -228,14 +228,14 @@ function Temoignages() {
   return (
     <section id="temoignages" className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div data-anim="up" className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Témoignages</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Ce que disent nos clients</h2>
           <p className="text-slate-400">Des PME suisses qui ont déjà franchi le cap de l'automatisation IA.</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {testimonials.map(({ text, name, role, city }) => (
-            <div key={name} className="rounded-2xl p-6 border flex flex-col" style={{ background: `${TEAL}06`, borderColor: `${TEAL}18` }}>
+          {testimonials.map(({ text, name, role, city }, i) => (
+            <div key={name} data-anim="up" data-delay={String(i * 150)} className="rounded-2xl p-6 border flex flex-col" style={{ background: `${TEAL}06`, borderColor: `${TEAL}18` }}>
               <div className="flex gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" style={{ color: TEAL }} />)}
               </div>
@@ -263,7 +263,7 @@ function Contact() {
   const [sent, setSent] = useState(false)
   return (
     <section id="contact" className="py-24 px-6">
-      <div className="max-w-2xl mx-auto text-center">
+      <div data-anim="up" className="max-w-2xl mx-auto text-center">
         <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Audit gratuit — Réponse sous 24h</span>
         <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">
           Prêt à automatiser votre <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>entreprise ?</span>
@@ -340,6 +340,15 @@ function Footer() {
 }
 
 function Home() {
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('anim-visible'); obs.unobserve(e.target) } }),
+      { threshold: 0.12 }
+    )
+    document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el))
+    return () => obs.disconnect()
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white">
       <Navbar />
