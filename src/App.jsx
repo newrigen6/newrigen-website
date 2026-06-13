@@ -55,7 +55,7 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}15` }} />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}10` }} />
       <div className="relative max-w-5xl mx-auto px-6 text-center py-32">
@@ -72,21 +72,13 @@ function Hero() {
         <p data-anim="up" data-delay="200" className="text-sm text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           Newrigen automatise vos processus métier grâce à l'IA — conceptions instantanées, workflows intelligents, intégrations sur mesure. Gagnez du temps, réduisez les coûts et concentrez-vous sur ce qui compte vraiment.
         </p>
-        <div data-anim="up" data-delay="300" className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <div data-anim="up" data-delay="300" className="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="#contact" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             Demander un devis gratuit
           </a>
           <a href="#services" className="px-8 py-4 rounded-xl font-semibold text-white text-sm border border-white/20 hover:border-white/40 transition-all duration-200 flex items-center justify-center gap-2">
             Voir nos services <ArrowRight className="w-4 h-4" />
           </a>
-        </div>
-        <div className="flex flex-wrap justify-center gap-8 text-center">
-          {[['60%', 'Économies de temps'], ['100%', 'Fabriqué en Suisse'], ['+20', 'PME accompagnées']].map(([v, l]) => (
-            <div key={l}>
-              <div className="text-xl font-black" style={{ color: TEAL }}>{v}</div>
-              <div className="text-xs text-slate-400 mt-1">{l}</div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
