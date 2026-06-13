@@ -1,7 +1,7 @@
 ﻿import { useRef, useState } from 'react'
 
 export default function Footer() {
-  const [logo, setLogo] = useState(() => localStorage.getItem('newrigen-logo') || null)
+  const [logo, setLogo] = useState(() => { try { return localStorage.getItem('newrigen-logo') || null } catch { return null } })
   const fileRef = useRef(null)
 
   function handleLogoUpload(e) {
@@ -11,7 +11,7 @@ export default function Footer() {
     reader.onload = (ev) => {
       const dataUrl = ev.target.result
       setLogo(dataUrl)
-      localStorage.setItem('newrigen-logo', dataUrl)
+      try { localStorage.setItem('newrigen-logo', dataUrl) } catch {}
     }
     reader.readAsDataURL(file)
   }

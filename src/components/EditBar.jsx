@@ -7,7 +7,7 @@
 export default function EditBar({ editMode, setEditMode }) {
   function resetAll() {
     if (confirm('Remettre tous les textes par défaut ?')) {
-      localStorage.removeItem('newrigen-content')
+      try { localStorage.removeItem('newrigen-content') } catch {}
       window.location.reload()
     }
   }

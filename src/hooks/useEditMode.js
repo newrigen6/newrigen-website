@@ -14,7 +14,7 @@ export function getSavedContent() {
 export function saveContent(id, value) {
   const all = getSavedContent()
   all[id] = value
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(all))
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(all)) } catch {}
 }
 
 export function useEditMode() {
