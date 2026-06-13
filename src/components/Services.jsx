@@ -101,10 +101,10 @@ export default function Services() {
           <span className="text-[#F97316] text-sm font-semibold uppercase tracking-widest mb-3 block">
             Nos services
           </span>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
             Tout ce dont votre PME a besoin
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-slate-400 text-base max-w-2xl mx-auto">
             Des solutions IA clés en main, conçues spécifiquement pour les entreprises suisses
             qui veulent gagner en efficacité sans complexité inutile.
           </p>

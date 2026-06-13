@@ -36,7 +36,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline */}
-          <motion.h1 variants={item} className="text-5xl md:text-7xl font-black tracking-tight leading-tight mb-6">
+          <motion.h1 variants={item} className="text-3xl md:text-5xl font-black tracking-tight leading-tight mb-6">
             <EditableText id="hero-title" tag="span" editMode={editMode}>
               Transformez votre{' '}
               <span className="gradient-text">entreprise</span>
@@ -48,7 +48,7 @@ export default function Hero() {
           </motion.h1>
 
           {/* Subtext */}
-          <motion.p variants={item} className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <motion.p variants={item} className="text-sm md:text-base text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
             <EditableText id="hero-subtext" editMode={editMode}>
               Newrigen automatise vos processus métier grâce à l'IA — devis instantanés,
               workflows intelligents, intégrations sur mesure. Gagnez du temps, réduisez
@@ -80,7 +80,7 @@ export default function Hero() {
               { id: 'stat3', value: '100%', label: 'Made in Switzerland' },
             ].map((stat) => (
               <div key={stat.id} className="text-center">
-                <div className="text-2xl md:text-3xl font-black gradient-text">
+                <div className="text-xl md:text-2xl font-black gradient-text">
                   <EditableText id={`hero-${stat.id}-value`} editMode={editMode}>{stat.value}</EditableText>
                 </div>
                 <div className="text-xs text-slate-500 mt-1 font-medium">

@@ -52,10 +52,10 @@ export default function Testimonials() {
           <span className="text-[#F97316] text-sm font-semibold uppercase tracking-widest mb-3 block">
             Témoignages
           </span>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
             Ce que disent nos clients
           </h2>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto">
+          <p className="text-slate-400 text-base max-w-xl mx-auto">
             Des PME suisses qui ont déjà franchi le cap de l'automatisation IA.
           </p>
         </motion.div>

@@ -47,10 +47,10 @@ export default function HowItWorks() {
           <span className="text-[#F97316] text-sm font-semibold uppercase tracking-widest mb-3 block">
             Notre processus
           </span>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
             Comment ça marche ?
           </h2>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto">
+          <p className="text-slate-400 text-base max-w-xl mx-auto">
             Un processus simple et transparent, de l'idée au déploiement en quelques semaines.
           </p>
         </motion.div>
@@ -79,7 +79,7 @@ export default function HowItWorks() {
                       </div>
                       <div>
                         <div className="text-xs font-bold text-[#F97316] tracking-widest mb-1">ÉTAPE {step.number}</div>
-                        <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
+                        <h3 className="text-lg font-bold text-white mb-3">{step.title}</h3>
                         <p className="text-slate-400 text-sm leading-relaxed mb-4">{step.description}</p>
                         <ul className="space-y-1.5">
                           {step.details.map((d) => (

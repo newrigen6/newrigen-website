@@ -45,13 +45,13 @@ export default function CTASection() {
             Audit gratuit — Réponse sous 24h
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
             Prêt à automatiser votre
             <br />
             <span className="gradient-text">entreprise ?</span>
           </h2>
 
-          <p className="text-slate-400 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+          <p className="text-slate-400 text-base max-w-xl mx-auto mb-10 leading-relaxed">
             Remplissez le formulaire ci-dessous — nous vous répondons sous 24h pour
             un audit gratuit de vos processus, sans engagement.
           </p>
