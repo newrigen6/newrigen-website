@@ -324,7 +324,7 @@ export default function Tarifs() {
                   <span className="text-base font-black text-white">🎙️ Option Devis Vocal</span>
                   <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: `${TEAL}20`, color: TEAL }}>Add-on</span>
                 </div>
-                <p className="text-slate-400 text-sm">Créez vos devis par dictée vocale — l'IA structure automatiquement votre devis depuis votre catalogue. Disponible en option sur tous les packs.</p>
+                <p className="text-slate-400 text-sm">Créez vos devis par dictée vocale — l'IA structure automatiquement votre devis depuis votre catalogue. Disponible en option sur tous les packs. Activable directement depuis les Paramètres de l'application, sans nous contacter.</p>
                 <ul className="mt-2 space-y-1">
                   {['Dictée vocale en français', 'Génération automatique depuis le catalogue', 'Activable / désactivable depuis les Paramètres'].map(f => (
                     <li key={f} className="flex items-center gap-2 text-xs text-slate-300">
