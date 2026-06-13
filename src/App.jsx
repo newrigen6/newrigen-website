@@ -1,6 +1,61 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight } from 'lucide-react'
+
+const TEAL_PACKS = '#4DD9D9'
+
+function PacksComparatif() {
+  return (
+    <section className="py-24 px-6">
+      <div className="max-w-4xl mx-auto">
+        <div data-anim="up" className="text-center mb-12">
+          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL_PACKS }}>Nos packs</span>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4 text-white">Standard vs Premium</h2>
+          <p className="text-slate-400">Choisissez le pack adapté à votre entreprise.</p>
+        </div>
+        <div data-anim="scale" data-delay="100" className="rounded-2xl border overflow-hidden" style={{ borderColor: `${TEAL_PACKS}20` }}>
+          <div className="grid grid-cols-3 text-sm font-semibold" style={{ background: `${TEAL_PACKS}12` }}>
+            <div className="p-4 text-slate-300">Fonctionnalité</div>
+            <div className="p-4 text-center text-white">Standard<br/><span className="font-normal text-slate-400 text-xs">79.-/mois</span></div>
+            <div className="p-4 text-center font-bold" style={{ color: TEAL_PACKS }}>Premium<br/><span className="font-normal text-xs" style={{ color: TEAL_PACKS }}>99.-/mois</span></div>
+          </div>
+          {[
+            ['Dashboard', true, true],
+            ['Création de devis (manuel & vocal)', true, true],
+            ['Import de devis (Excel / PDF)', true, true],
+            ['Catalogue de produits', true, true],
+            ['Soumissions en ligne', true, true],
+            ['Saisie des heures', true, true],
+            ['Facturation QR suisse', true, true],
+            ['Gestion des employés (jusqu\'à 5)', true, true],
+            ['Signature électronique', true, true],
+            ['Agenda & planning', false, true],
+            ['Bons de régie avec signature client', false, true],
+            ['Accès fiduciaire / comptable', false, true],
+            ['Pré-comptabilité', false, true],
+            ['Rapport d\'heures', false, true],
+            ['Employés illimités', false, true],
+          ].map(([feat, std, prem], i) => (
+            <div key={feat} className="grid grid-cols-3 text-sm border-t" style={{ borderColor: `${TEAL_PACKS}10`, background: i % 2 === 0 ? 'transparent' : `${TEAL_PACKS}04` }}>
+              <div className="p-4 text-slate-300">{feat}</div>
+              <div className="p-4 flex items-center justify-center">
+                {std ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
+              </div>
+              <div className="p-4 flex items-center justify-center">
+                {prem ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-6">
+          <Link to="/tarifs" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-[#0A0A0F] transition-all" style={{ background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` }}>
+            Voir les tarifs complets →
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
 import Tarifs from './pages/Tarifs'
 import Merci from './pages/Merci'
 
@@ -311,6 +366,7 @@ function Home() {
         <Comparatif />
         <Processus />
         <Temoignages />
+        <PacksComparatif />
         <Contact />
       </main>
       <Footer />
