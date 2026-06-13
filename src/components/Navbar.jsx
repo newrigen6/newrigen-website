@@ -1,17 +1,19 @@
 ﻿import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const navLinks = [
-  { label: 'Services', href: '#services' },
-  { label: 'Comparatif', href: '#comparatif' },
-  { label: 'Comment ça marche', href: '#processus' },
-  { label: 'Témoignages', href: '#temoignages' },
+  { label: 'Services', href: '#services', anchor: true },
+  { label: 'Comparatif', href: '#comparatif', anchor: true },
+  { label: 'Comment ça marche', href: '#processus', anchor: true },
+  { label: 'Témoignages', href: '#temoignages', anchor: true },
+  { label: 'Tarifs', href: '/tarifs', anchor: false },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [logo, setLogo] = useState(() => localStorage.getItem('newrigen-logo') || null)
+  const [logo, setLogo] = useState(() => { try { return localStorage.getItem('newrigen-logo') || null } catch { return null } })
   const fileRef = useRef(null)
 
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          {navLinks.map((link) => link.anchor ? (
             <a
               key={link.href}
               href={link.href}
@@ -90,6 +92,14 @@ export default function Navbar() {
             >
               {link.label}
             </a>
+          ) : (
+            <Link
+              key={link.href}
+              to={link.href}
+              className="text-sm text-slate-400 hover:text-white transition-colors duration-200 font-medium"
+            >
+              {link.label}
+            </Link>
           ))}
         </div>
 
@@ -126,7 +136,7 @@ export default function Navbar() {
             className="md:hidden glass border-t border-[#F97316]/10"
           >
             <div className="px-6 py-4 flex flex-col gap-4">
-              {navLinks.map((link) => (
+              {navLinks.map((link) => link.anchor ? (
                 <a
                   key={link.href}
                   href={link.href}
@@ -135,6 +145,15 @@ export default function Navbar() {
                 >
                   {link.label}
                 </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="text-slate-300 hover:text-white font-medium py-2 transition-colors"
+                >
+                  {link.label}
+                </Link>
               ))}
               <a
                 href="#contact"
