@@ -131,19 +131,26 @@ export default function CTASection() {
           </form>
 
           {/* Contacts directs */}
-          <div className="mt-10 flex flex-wrap justify-center gap-6 pt-8 border-t border-[#F97316]/10">
-            <a href="mailto:newrigen6@gmail.com" className="flex items-center gap-2 text-sm text-slate-400 hover:text-[#F97316] transition-colors">
-              📧 newrigen6@gmail.com
-            </a>
-            <a href="tel:+41793246593" className="flex items-center gap-2 text-sm text-slate-400 hover:text-[#F97316] transition-colors">
-              📞 079 324 65 93
-            </a>
-            <a href="tel:+41798733791" className="flex items-center gap-2 text-sm text-slate-400 hover:text-[#F97316] transition-colors">
-              📞 079 873 37 91
-            </a>
-            <span className="flex items-center gap-2 text-sm text-slate-400">
-              📍 Suisse romande &amp; alémanique
-            </span>
+          <div className="mt-10 pt-8 border-t border-[#F97316]/20">
+            <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-5">Ou contactez-nous directement</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a href="mailto:newrigen6@gmail.com" className="flex items-center gap-3 px-5 py-3 rounded-xl glass border border-[#F97316]/30 text-white font-medium hover:border-[#F97316]/70 hover:text-[#F97316] transition-all duration-200">
+                <span className="text-xl">📧</span>
+                <span>newrigen6@gmail.com</span>
+              </a>
+              <a href="tel:+41798733791" className="flex items-center gap-3 px-5 py-3 rounded-xl glass border border-[#F97316]/30 text-white font-medium hover:border-[#F97316]/70 hover:text-[#F97316] transition-all duration-200">
+                <span className="text-xl">📞</span>
+                <span>079 873 37 91</span>
+              </a>
+              <a href="tel:+41793246593" className="flex items-center gap-3 px-5 py-3 rounded-xl glass border border-[#F97316]/30 text-white font-medium hover:border-[#F97316]/70 hover:text-[#F97316] transition-all duration-200">
+                <span className="text-xl">📞</span>
+                <span>079 324 65 93</span>
+              </a>
+              <span className="flex items-center gap-3 px-5 py-3 rounded-xl glass border border-[#F97316]/10 text-slate-400 font-medium">
+                <span className="text-xl">📍</span>
+                <span>Suisse romande &amp; alémanique</span>
+              </span>
+            </div>
           </div>
         </motion.div>
       </div>
