@@ -86,10 +86,9 @@ function Hero() {
 }
 
 const services = [
-  { icon: Zap, title: 'Automatisation de devis', desc: 'Générez des devis professionnels en quelques secondes grâce à nos agents IA. Plus besoin de saisie manuelle.', items: ['Génération instantanée', 'Modèles personnalisés', 'Export PDF automatique'] },
-  { icon: Brain, title: 'Intégration IA', desc: "Connectez l'intelligence artificielle à vos outils existants — CRM, ERP, comptabilité. Une intégration fluide et rapide.", items: ['Connexion CRM/ERP', 'API sur mesure', 'Formation incluse'] },
-  { icon: Workflow, title: 'Flux de travail n8n', desc: 'Automatisez vos tâches répétitives avec des workflows puissants. Relances clients, synchronisation de données.', items: ['Workflows no-code', 'Relances automatiques', 'Synchronisation temps réel'] },
-  { icon: LineChart, title: 'Conseil numérique', desc: "Un accompagnement stratégique pour identifier les opportunités d'automatisation dans votre entreprise.", items: ['Audit gratuit', 'Feuille de route', 'Suivi mensuel'] },
+  { icon: Zap, title: 'Création de devis', desc: 'Créez vos devis manuellement ou par dictée vocale, et importez vos devis existants. Une fois validé, le devis est envoyé automatiquement par e-mail à votre client.', items: ['Saisie manuelle & vocale', 'Import de devis existants', 'Envoi automatique par e-mail'] },
+  { icon: Brain, title: 'Intelligence artificielle', desc: "L'IA analyse votre dictée vocale pour construire un devis, trie votre catalogue de produits intelligemment, et lit vos documents importés comme des factures ou devis existants.", items: ['Devis par dictée vocale', 'Triage intelligent du catalogue', 'Lecture de documents (PDF, Excel)'] },
+  { icon: LineChart, title: 'Audit & personnalisation', desc: "En plus de notre application, nous sommes prêts à personnaliser l'expérience selon les besoins propres à votre entreprise. Contactez-nous pour voir dans quelle mesure c'est possible.", items: ['Analyse de vos besoins', 'Personnalisation sur mesure', 'Flexibilité selon votre métier'] },
 ]
 
 function Services() {
