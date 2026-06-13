@@ -169,9 +169,9 @@ function Comparatif() {
 }
 
 const steps = [
-  { n: '01', title: 'Audit et analyse', desc: "Nous commençons par un audit gratuit de vos processus métier pour identifier les tâches chronophages et les opportunités d'automatisation.", items: ["Analyse des processus existants", "Identification des gains potentiels", "Rapport d'audit détaillé"] },
-  { n: '02', title: 'Conception et développement', desc: "Nos experts conçoivent et développent vos automatisations sur mesure — workflows n8n, agents IA, intégrations API.", items: ['Développement sur mesure', 'Tests et validations', 'Documentation complète'] },
-  { n: '03', title: 'Déploiement et suivi', desc: "Mise en production progressive, formation de vos équipes et suivi continu. Vous gardez le contrôle, nous gérons la technique.", items: ['Déploiement progressif', 'Formation des équipes', 'Support mensuel inclus'] },
+  { n: '01', title: 'Inscription & configuration', desc: "Créez votre compte, configurez votre catalogue de produits et ajoutez vos employés. Simple et rapide — on vous accompagne si besoin.", items: ['Création de compte', 'Configuration du catalogue', 'Ajout des employés'] },
+  { n: '02', title: 'Utilisation au quotidien', desc: "Créez vos devis, saisissez les heures, gérez la facturation et vos employés — tout depuis une seule interface, partout et à tout moment.", items: ['Devis en quelques minutes', 'Saisie des heures simplifiée', 'Facturation intégrée'] },
+  { n: '03', title: 'Vous gagnez du temps', desc: "Les devis partent automatiquement par e-mail, les heures sont suivies en temps réel et la facturation est directement intégrée à votre flux de travail.", items: ['Envoi automatique par e-mail', 'Suivi en temps réel', 'Moins d\'administratif'] },
 ]
 
 function Processus() {
@@ -209,45 +209,7 @@ function Processus() {
   )
 }
 
-const testimonials = [
-  { text: 'Newrigen a automatisé notre processus de conception en totalité. Ce qui prenait 2 jours se fait maintenant en 5 minutes. ROI incroyable dès le premier mois.', name: 'Sophie Müller', role: 'Directrice, Müller Sanitaire SA', city: 'Genève' },
-  { text: "Les workflows n8n qu'ils ont mis en place ont éliminé 90% de nos tâches administratives répétitives. Notre équipe peut enfin se concentrer sur la vraie valeur ajoutée.", name: 'Pierre Favre', role: 'Fondateur, Favre Construction', city: 'Lausanne' },
-  { text: "Service irréprochable, équipe réactive et solutions qui fonctionnent vraiment. Notre intégration CRM est parfaite. Je recommande à tous les chefs d'entreprise suisses.", name: 'Anna Keller', role: 'CEO, Keller Traiteur', city: 'Zurich' },
-]
-
-function Temoignages() {
-  return (
-    <section id="temoignages" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div data-anim="up" className="text-center mb-16">
-          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Témoignages</span>
-          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Ce que disent nos clients</h2>
-          <p className="text-slate-400">Des PME suisses qui ont déjà franchi le cap de l'automatisation IA.</p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {testimonials.map(({ text, name, role, city }, i) => (
-            <div key={name} data-anim="up" data-delay={String(i * 150)} className="rounded-2xl p-6 border flex flex-col" style={{ background: `${TEAL}06`, borderColor: `${TEAL}18` }}>
-              <div className="flex gap-0.5 mb-4">
-                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" style={{ color: TEAL }} />)}
-              </div>
-              <p className="text-slate-300 text-sm leading-relaxed flex-1 mb-4">"{text}"</p>
-              <div>
-                <p className="font-semibold text-white text-sm">{name}</p>
-                <p className="text-slate-500 text-xs">{role}</p>
-                <p className="text-xs mt-1 flex items-center gap-1" style={{ color: TEAL }}><MapPin className="w-3 h-3" />{city}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
-          {['🇨🇭 Basé en Suisse', '🔒 Conforme au RGPD', '⚡ Assistance réactive', '💼 +20 PME accompagnées'].map(b => (
-            <span key={b} className="px-4 py-2 rounded-full border" style={{ borderColor: `${TEAL}20`, background: `${TEAL}08` }}>{b}</span>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
+function Temoignages() { return null }
 
 function Contact() {
   const [email, setEmail] = useState('')
@@ -307,7 +269,7 @@ function Footer() {
           <div>
             <h4 className="font-semibold text-white text-sm mb-3">Services</h4>
             <ul className="space-y-2 text-sm text-slate-400">
-              {['Automatisation de devis', 'Intégration IA', 'Flux de travail n8n', 'Conseil numérique'].map(s => (
+              {['Création de devis', 'Intelligence artificielle', 'Audit & personnalisation'].map(s => (
                 <li key={s}><a href="#services" className="hover:text-white transition-colors">{s}</a></li>
               ))}
             </ul>
@@ -315,7 +277,7 @@ function Footer() {
           <div>
             <h4 className="font-semibold text-white text-sm mb-3">Entreprise</h4>
             <ul className="space-y-2 text-sm text-slate-400">
-              {[['#processus', 'Notre processus'], ['#temoignages', 'Témoignages'], ['#contact', 'Contact']].map(([h, l]) => (
+              {[['#processus', 'Comment ça marche'], ['#contact', 'Contact'], ['/tarifs', 'Tarifs']].map(([h, l]) => (
                 <li key={l}><a href={h} className="hover:text-white transition-colors">{l}</a></li>
               ))}
             </ul>
