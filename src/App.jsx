@@ -21,7 +21,7 @@ function PacksComparatif() {
           </div>
           {[
             ['Dashboard', true, true],
-            ['Création de devis (manuel & vocal)', true, true],
+            ['Création de devis (manuel)', true, true],
             ['Import de devis (Excel / PDF)', true, true],
             ['Catalogue de produits', true, true],
             ['Soumissions en ligne', true, true],
@@ -35,14 +35,15 @@ function PacksComparatif() {
             ['Pré-comptabilité', false, true],
             ['Rapport d\'heures', false, true],
             ['Employés illimités', false, true],
+            ['🎙️ Devis Vocal (add-on)', '+ 15.-/mois', '+ 15.-/mois'],
           ].map(([feat, std, prem], i) => (
             <div key={feat} className="grid grid-cols-3 text-sm border-t" style={{ borderColor: `${TEAL_PACKS}10`, background: i % 2 === 0 ? 'transparent' : `${TEAL_PACKS}04` }}>
               <div className="p-4 text-slate-300">{feat}</div>
               <div className="p-4 flex items-center justify-center">
-                {std ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
+                {typeof std === 'string' ? <span className="text-xs font-medium text-slate-400">{std}</span> : std ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
               </div>
               <div className="p-4 flex items-center justify-center">
-                {prem ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
+                {typeof prem === 'string' ? <span className="text-xs font-medium text-slate-400">{prem}</span> : prem ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
               </div>
             </div>
           ))}
