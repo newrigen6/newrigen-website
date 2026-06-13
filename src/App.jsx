@@ -217,11 +217,11 @@ function Contact() {
   return (
     <section id="contact" className="py-24 px-6">
       <div data-anim="up" className="max-w-2xl mx-auto text-center">
-        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Audit gratuit — Réponse sous 24h</span>
+        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>On est à votre écoute — Réponse sous 24h</span>
         <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">
-          Prêt à automatiser votre <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>entreprise ?</span>
+          Une expérience <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>sur mesure</span> pour votre entreprise
         </h2>
-        <p className="text-slate-400 mb-8">Rejoignez les PME suisses qui font confiance à Newrigen. Offre d'audit gratuit sans engagement.</p>
+        <p className="text-slate-400 mb-8">Vous êtes adhérent Newrigen et souhaitez personnaliser votre expérience ? Contactez-nous — nous étudions ensemble ce qui est possible pour votre entreprise. Audit inclus pour nos clients.</p>
         {sent ? (
           <div className="py-6 flex flex-col items-center gap-3">
             <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: `${TEAL}20` }}>
