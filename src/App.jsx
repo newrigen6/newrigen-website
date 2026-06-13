@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight } from 'lucide-react'
+import Tarifs from './pages/Tarifs'
+import Merci from './pages/Merci'
 
 const TEAL = '#4DD9D9'
 
@@ -16,6 +19,7 @@ function Navbar() {
     { href: '#comparatif', label: 'Comparatif' },
     { href: '#processus', label: 'Comment ça marche' },
     { href: '#temoignages', label: 'Témoignages' },
+    { href: '/tarifs', label: 'Tarifs', route: true },
   ]
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0A0A0F]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}`}>
@@ -26,7 +30,10 @@ function Navbar() {
           <span className="text-xs hidden md:inline" style={{ color: `${TEAL}99` }}>Automatisation IA pour les PME suisses</span>
         </a>
         <div className="hidden md:flex items-center gap-8">
-          {links.map(l => <a key={l.href} href={l.href} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">{l.label}</a>)}
+          {links.map(l => l.route
+            ? <Link key={l.href} to={l.href} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">{l.label}</Link>
+            : <a key={l.href} href={l.href} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">{l.label}</a>
+          )}
         </div>
         <a href="#contact" className="hidden md:block px-5 py-2.5 rounded-xl text-sm font-semibold text-[#0A0A0F] transition-all duration-200 shadow-lg" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 20px ${TEAL}40` }}>
           Demander un devis
@@ -35,7 +42,10 @@ function Navbar() {
       </div>
       {open && (
         <div className="md:hidden bg-[#0A0A0F]/95 backdrop-blur border-b border-white/10 px-6 py-4 space-y-3">
-          {links.map(l => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="block text-slate-300 hover:text-white py-1">{l.label}</a>)}
+          {links.map(l => l.route
+            ? <Link key={l.href} to={l.href} onClick={() => setOpen(false)} className="block text-slate-300 hover:text-white py-1">{l.label}</Link>
+            : <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="block text-slate-300 hover:text-white py-1">{l.label}</a>
+          )}
           <a href="#contact" onClick={() => setOpen(false)} className="block text-center py-2.5 rounded-xl font-semibold text-[#0A0A0F]" style={{ background: TEAL }}>Demander un devis</a>
         </div>
       )}
@@ -328,7 +338,7 @@ function Footer() {
   )
 }
 
-export default function App() {
+function Home() {
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white">
       <Navbar />
@@ -342,5 +352,17 @@ export default function App() {
       </main>
       <Footer />
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/tarifs" element={<Tarifs />} />
+        <Route path="/merci" element={<Merci />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
