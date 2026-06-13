@@ -47,8 +47,13 @@ const plans = [
 
 function CheckoutModal({ plan, interval, onClose }) {
   const [form, setForm] = useState({ nom: '', contact: '', email: '', telephone: '', npa: '', ville: '' })
+  const [employes, setEmployes] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  const extra = Math.max(0, employes - 5)
+  const extraCoutMensuel = extra * 5
+  const extraCoutAnnuel = extra * 60
 
   function handleChange(e) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -65,6 +70,7 @@ function CheckoutModal({ plan, interval, onClose }) {
         body: JSON.stringify({
           pack: plan.id,
           interval: interval === 'annuel' ? 'annuel' : 'mensuel',
+          employes,
           entreprise: form,
         }),
       })
@@ -144,6 +150,41 @@ function CheckoutModal({ plan, interval, onClose }) {
               placeholder="+41 79 000 00 00"
               className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
           </div>
+
+          <div>
+            <label className="block text-xs text-slate-400 mb-1">Nombre d'employés *</label>
+            <input
+              type="number" min="1" max="50" required
+              value={employes}
+              onChange={e => setEmployes(Math.max(1, parseInt(e.target.value) || 1))}
+              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-[#4DD9D9]/50"
+            />
+            <p className="text-xs text-slate-500 mt-1">5 employés inclus dans le pack</p>
+          </div>
+
+          {extra > 0 && (
+            <div className="rounded-xl border p-3 text-sm space-y-1" style={{ borderColor: `${TEAL}40`, background: `${TEAL}08` }}>
+              <p className="font-semibold" style={{ color: TEAL }}>
+                {extra} employé{extra > 1 ? 's' : ''} supplémentaire{extra > 1 ? 's' : ''}
+              </p>
+              <div className="flex justify-between text-slate-300">
+                <span>Pack {plan.name}</span>
+                <span>{interval === 'annuel' ? `${plan.priceAnnuel}.-/an` : `${plan.priceMensuel}.-/mois`}</span>
+              </div>
+              <div className="flex justify-between text-slate-300">
+                <span>{extra} × 5.-{interval === 'annuel' ? ' × 12 mois' : '/mois'}</span>
+                <span>{interval === 'annuel' ? `${extraCoutAnnuel}.-/an` : `${extraCoutMensuel}.-/mois`}</span>
+              </div>
+              <div className="flex justify-between font-bold text-white border-t border-white/10 pt-1 mt-1">
+                <span>Total</span>
+                <span>
+                  {interval === 'annuel'
+                    ? `${plan.priceAnnuel + extraCoutAnnuel}.-/an`
+                    : `${plan.priceMensuel + extraCoutMensuel}.-/mois`}
+                </span>
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="flex items-start gap-2 p-3 rounded-xl bg-red-950/50 border border-red-800/50 text-red-400 text-sm">
