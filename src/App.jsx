@@ -125,14 +125,14 @@ function Services() {
 }
 
 const rows = [
-  ['Temps de traitement des devis', '2-3 jours', 'Moins de 5 minutes'],
-  ['Erreurs de saisie manuelle', 'Fréquentes', 'Quasi nulles'],
-  ['Disponibilité du service', 'Heures de bureau', '24h/24, 7j/7'],
-  ['Coût des processus administratifs', 'Élevé', 'Réduit de 60%'],
-  ['Relances clients automatiques', 'Manuelle', 'Automatique'],
-  ['Intégration CRM/ERP', 'Manuelle', 'Automatique'],
-  ['Rapports et tableaux de bord', 'Manuels', 'Temps réel'],
-  ['Scalabilité', 'Limitée par les RH', 'Illimitée'],
+  ['Création de devis', 'Word / Excel — long et répétitif', 'Saisie manuelle, vocale ou import'],
+  ['Envoi au client', 'Email manuel à chaque fois', 'Envoi automatique depuis l\'app'],
+  ['Catalogue de produits', 'Liste statique, peu pratique', 'Catalogue structuré avec marges et prix'],
+  ['Suivi des heures', 'Feuille papier ou Excel', 'Saisie numérique par les employés'],
+  ['Facturation', 'Logiciel séparé ou papier', 'Facturation QR suisse intégrée'],
+  ['Gestion des employés', 'Tableaux éparpillés', 'Interface centralisée'],
+  ['Signature des documents', 'Impression, signature, scan', 'Signature électronique intégrée'],
+  ['Bons de régie', 'Papier avec signature client', 'Numérique avec signature client (Premium)'],
 ]
 
 function Comparatif() {
