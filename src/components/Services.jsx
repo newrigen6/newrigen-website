@@ -5,40 +5,30 @@ import { useRef } from 'react'
 const services = [
   {
     icon: '📋',
-    title: 'Automatisation de devis',
+    title: 'Création de devis',
     description:
-      'Générez des devis professionnels en quelques secondes grâce à nos agents IA. Plus besoin de saisie manuelle — vos données sont analysées et structurées automatiquement.',
-    features: ['Génération instantanée', 'Validation automatique', 'Envoi par e-mail'],
+      'Créez vos devis manuellement ou par dictée vocale, et importez vos devis existants. Une fois validé, le devis est envoyé automatiquement par e-mail à votre client.',
+    features: ['Saisie manuelle & vocale', 'Import de devis existants', 'Envoi automatique par e-mail'],
     color: 'from-[#F97316]/20 to-[#1F0A00]/5',
     border: 'border-[#F97316]/20',
     iconBg: 'bg-[#F97316]/10',
   },
   {
     icon: '🤖',
-    title: 'Intégration IA',
+    title: 'Intelligence artificielle',
     description:
-      'Connectez l\'intelligence artificielle à vos outils existants — CRM, ERP, comptabilité. Une intégration sans friction, adaptée à votre infrastructure.',
-    features: ['API sur mesure', 'Compatible tous outils', 'Support 24/7'],
+      "L'IA analyse votre dictée vocale pour construire un devis, trie votre catalogue de produits intelligemment, et lit vos documents importés comme des factures ou devis existants.",
+    features: ['Devis par dictée vocale', 'Triage intelligent du catalogue', 'Lecture de documents (PDF, Excel)'],
     color: 'from-[#F97316]/15 to-[#1F0A00]/5',
     border: 'border-[#F97316]/20',
     iconBg: 'bg-[#F97316]/10',
   },
   {
-    icon: '⚡',
-    title: 'Workflows n8n',
-    description:
-      'Automatisez vos tâches répétitives avec des workflows puissants. Relances clients, synchronisation de données, rapports automatisés — tout fonctionne seul.',
-    features: ['Workflows visuels', 'Déclencheurs intelligents', 'Monitoring en temps réel'],
-    color: 'from-[#FB923C]/15 to-[#1F0A00]/5',
-    border: 'border-[#FB923C]/20',
-    iconBg: 'bg-[#FB923C]/10',
-  },
-  {
     icon: '🎯',
-    title: 'Conseil digital',
+    title: 'Audit & personnalisation',
     description:
-      'Un accompagnement stratégique pour identifier les opportunités d\'automatisation dans votre entreprise et définir une roadmap IA réaliste et rentable.',
-    features: ['Audit gratuit', 'Roadmap personnalisée', 'ROI garanti'],
+      "En plus de notre application, nous sommes prêts à personnaliser l'expérience selon les besoins propres à votre entreprise. Contactez-nous pour voir dans quelle mesure c'est possible.",
+    features: ['Analyse de vos besoins', 'Personnalisation sur mesure', 'Flexibilité selon votre métier'],
     color: 'from-[#EA6C0A]/15 to-[#1F0A00]/5',
     border: 'border-[#EA6C0A]/20',
     iconBg: 'bg-[#EA6C0A]/10',
