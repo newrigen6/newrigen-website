@@ -316,6 +316,45 @@ export default function Tarifs() {
             ))}
           </div>
 
+          {/* Tableau comparatif */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-black text-white text-center mb-8">Comparatif détaillé</h2>
+            <div className="rounded-2xl border overflow-hidden" style={{ borderColor: `${TEAL}20` }}>
+              <div className="grid grid-cols-3 text-sm font-semibold" style={{ background: `${TEAL}12` }}>
+                <div className="p-4 text-slate-300">Fonctionnalité</div>
+                <div className="p-4 text-center text-white">Standard</div>
+                <div className="p-4 text-center font-bold" style={{ color: TEAL }}>Premium</div>
+              </div>
+              {[
+                ['Dashboard', true, true],
+                ['Création de devis (manuel & vocal)', true, true],
+                ['Import de devis (Excel / PDF)', true, true],
+                ['Catalogue de produits', true, true],
+                ['Soumissions en ligne', true, true],
+                ['Saisie des heures', true, true],
+                ['Facturation QR suisse', true, true],
+                ['Gestion des employés (jusqu\'à 5)', true, true],
+                ['Signature électronique', true, true],
+                ['Agenda & planning', false, true],
+                ['Bons de régie avec signature client', false, true],
+                ['Accès fiduciaire / comptable', false, true],
+                ['Pré-comptabilité', false, true],
+                ['Rapport d\'heures', false, true],
+                ['Employés illimités', false, true],
+              ].map(([feat, std, prem], i) => (
+                <div key={feat} className="grid grid-cols-3 text-sm border-t" style={{ borderColor: `${TEAL}10`, background: i % 2 === 0 ? 'transparent' : `${TEAL}04` }}>
+                  <div className="p-4 text-slate-300">{feat}</div>
+                  <div className="p-4 flex items-center justify-center">
+                    {std ? <Check className="w-4 h-4" style={{ color: TEAL }} /> : <X className="w-4 h-4 text-slate-600" />}
+                  </div>
+                  <div className="p-4 flex items-center justify-center">
+                    {prem ? <Check className="w-4 h-4" style={{ color: TEAL }} /> : <X className="w-4 h-4 text-slate-600" />}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Note bas */}
           <p className="text-center text-slate-500 text-sm mt-8">
             Questions ? Écrivez-nous à{' '}
