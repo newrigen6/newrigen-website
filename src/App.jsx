@@ -285,7 +285,7 @@ function Footer() {
         </div>
         <div className="border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
           <span>© 2026 Newrigen. Tous droits réservés. · Siège social en Suisse</span>
-          <span>🇨🇭 Fabriqué en Suisse · TVA CHE-XXX.XXX.XXX</span>
+          <span>🇨🇭 Fabriqué en Suisse</span>
         </div>
       </div>
     </footer>
