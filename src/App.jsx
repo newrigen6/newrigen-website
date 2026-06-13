@@ -63,13 +63,13 @@ function Hero() {
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: TEAL }} />
           Automatisation IA pour les PME suisses
         </div>
-        <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-tight">
+        <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-6 leading-tight">
           Transformez votre{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>entreprise</span>
           {' '}avec<br />l'intelligence{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, #7ee8e8, ${TEAL})` }}>artificielle</span>
         </h1>
-        <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-sm text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           Newrigen automatise vos processus métier grâce à l'IA — conceptions instantanées, workflows intelligents, intégrations sur mesure. Gagnez du temps, réduisez les coûts et concentrez-vous sur ce qui compte vraiment.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -83,7 +83,7 @@ function Hero() {
         <div className="flex flex-wrap justify-center gap-8 text-center">
           {[['60%', 'Économies de temps'], ['100%', 'Fabriqué en Suisse'], ['+20', 'PME accompagnées']].map(([v, l]) => (
             <div key={l}>
-              <div className="text-3xl font-black" style={{ color: TEAL }}>{v}</div>
+              <div className="text-xl font-black" style={{ color: TEAL }}>{v}</div>
               <div className="text-xs text-slate-400 mt-1">{l}</div>
             </div>
           ))}
@@ -106,7 +106,7 @@ function Services() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Nos services</span>
-          <h2 className="text-4xl md:text-5xl font-black mt-3 mb-4">Tout ce dont votre PME a besoin</h2>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Tout ce dont votre PME a besoin</h2>
           <p className="text-slate-400 max-w-2xl mx-auto">Des solutions IA clés en main, conçues spécifiquement pour les entreprises suisses.</p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
@@ -150,7 +150,7 @@ function Comparatif() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Comparatif</span>
-          <h2 className="text-4xl md:text-5xl font-black mt-3 mb-4">Avant vs après Newrigen</h2>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Avant vs après Newrigen</h2>
           <p className="text-slate-400">Voyez concrètement l'impact de l'automatisation IA sur votre quotidien.</p>
         </div>
         <div className="rounded-2xl overflow-hidden border" style={{ borderColor: `${TEAL}20` }}>
@@ -189,7 +189,7 @@ function Processus() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Notre processus</span>
-          <h2 className="text-4xl md:text-5xl font-black mt-3 mb-4">Comment ça marche ?</h2>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Comment ça marche ?</h2>
           <p className="text-slate-400">Un processus simple et transparent, de l'idée au déploiement en quelques semaines.</p>
         </div>
         <div className="space-y-6">
@@ -230,7 +230,7 @@ function Temoignages() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Témoignages</span>
-          <h2 className="text-4xl md:text-5xl font-black mt-3 mb-4">Ce que disent nos clients</h2>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Ce que disent nos clients</h2>
           <p className="text-slate-400">Des PME suisses qui ont déjà franchi le cap de l'automatisation IA.</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -265,7 +265,7 @@ function Contact() {
     <section id="contact" className="py-24 px-6">
       <div className="max-w-2xl mx-auto text-center">
         <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Audit gratuit — Réponse sous 24h</span>
-        <h2 className="text-4xl md:text-5xl font-black mt-3 mb-4">
+        <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">
           Prêt à automatiser votre <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>entreprise ?</span>
         </h2>
         <p className="text-slate-400 mb-8">Rejoignez les PME suisses qui font confiance à Newrigen. Offre d'audit gratuit sans engagement.</p>
