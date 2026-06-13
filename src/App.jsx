@@ -217,7 +217,7 @@ function Contact() {
   return (
     <section id="contact" className="py-24 px-6">
       <div data-anim="up" className="max-w-2xl mx-auto text-center">
-        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>On est à votre écoute — Réponse sous 24h</span>
+        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>On est à votre écoute — Réponse au plus vite</span>
         <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">
           Une expérience <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>sur mesure</span> pour votre entreprise
         </h2>
