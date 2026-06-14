@@ -156,8 +156,8 @@ function Services() {
       <div className="max-w-6xl mx-auto relative z-10">
         <div data-anim="up" className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Nos services</span>
-          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Tout ce dont votre PME a besoin</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">Des solutions IA clés en main, conçues spécifiquement pour les entreprises suisses.</p>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Tout ce dont votre entreprise a besoin</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">Des solutions IA clés en main, conçues pour optimiser votre temps.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-5">
