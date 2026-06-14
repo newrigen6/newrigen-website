@@ -72,6 +72,7 @@ function CheckoutModal({ plan, interval, onClose }) {
           interval: interval === 'annuel' ? 'annuel' : 'mensuel',
           employes,
           entreprise: form,
+          trial: true,
         }),
       })
       const data = await res.json()
@@ -96,8 +97,9 @@ function CheckoutModal({ plan, interval, onClose }) {
           <div>
             <h2 className="font-bold text-white text-lg">Commencer avec {plan.name}</h2>
             <p className="text-sm mt-0.5" style={{ color: TEAL }}>
+              1 mois gratuit — puis{' '}
               {interval === 'annuel'
-                ? `${plan.priceAnnuel}.-/an — 2 mois offerts`
+                ? `${plan.priceAnnuel}.-/an`
                 : `${plan.priceMensuel}.-/mois`}
             </p>
           </div>
@@ -237,6 +239,9 @@ export default function Tarifs() {
             <p className="text-slate-400 text-lg max-w-xl mx-auto">
               Choisissez le pack adapté à votre PME. Sans frais cachés.
             </p>
+            <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: `${TEAL}15`, color: TEAL, border: `1px solid ${TEAL}40` }}>
+              <span>🎁</span> 1 mois d'essai gratuit — sans carte bancaire requise
+            </div>
           </div>
 
           {/* Toggle mensuel / annuel */}
@@ -283,15 +288,22 @@ export default function Tarifs() {
                 <h2 className="text-2xl font-black text-white mb-1">{plan.name}</h2>
                 <p className="text-slate-400 text-sm mb-6">{plan.desc}</p>
 
-                <div className="mb-2">
-                  <span className="text-5xl font-black" style={{ color: TEAL }}>
+                <div className="mb-1">
+                  <span className="text-2xl font-bold line-through text-slate-600 mr-2">
                     {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.-
                   </span>
-                  <span className="text-slate-400 text-sm ml-2">
-                    CHF/{interval === 'annuel' ? 'an' : 'mois'}
-                  </span>
+                  <span className="text-sm font-bold px-2 py-0.5 rounded-full text-[#0A0A0F]" style={{ background: TEAL }}>1 mois gratuit</span>
                 </div>
-                <p className="text-xs text-slate-500 mb-6">{plan.extra}</p>
+                <div className="mb-2 mt-1">
+                  <span className="text-5xl font-black" style={{ color: TEAL }}>
+                    0.-
+                  </span>
+                  <span className="text-slate-400 text-sm ml-2">le 1er mois</span>
+                </div>
+                <p className="text-xs text-slate-500 mb-1">
+                  Puis {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.- CHF/{interval === 'annuel' ? 'an' : 'mois'} — {plan.extra}
+                </p>
+                <p className="text-xs mb-6" style={{ color: TEAL }}>Sans engagement sur 1 mois</p>
 
                 <ul className="space-y-3 mb-8 flex-1">
                   {plan.features.map((f) => (
@@ -310,7 +322,7 @@ export default function Tarifs() {
                     : { border: `1px solid ${TEAL}40`, color: TEAL, background: `${TEAL}08` }
                   }
                 >
-                  Choisir ce pack →
+                  Commencer l'essai gratuit →
                 </button>
               </div>
             ))}
