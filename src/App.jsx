@@ -136,9 +136,6 @@ function Hero() {
           <a href="#contact" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             Demande d'audit
           </a>
-          <a href="#services" className="px-8 py-4 rounded-xl font-semibold text-white text-sm border border-white/20 hover:border-white/40 transition-all duration-200 flex items-center justify-center gap-2">
-            Voir nos services <ArrowRight className="w-4 h-4" />
-          </a>
         </div>
       </div>
     </section>
