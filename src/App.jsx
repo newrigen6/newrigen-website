@@ -84,7 +84,6 @@ function Navbar() {
         <a href="#" className="flex items-center gap-2 group">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm" style={{ background: '#0A0A0F', border: `1.5px solid ${TEAL}`, color: TEAL }}>N</div>
           <span className="font-bold text-lg tracking-tight text-white">Newrigen</span>
-          <span className="text-xs hidden md:inline" style={{ color: `${TEAL}99` }}>Automatisation IA pour les PME suisses</span>
         </a>
         <div className="hidden md:flex items-center gap-8">
           {links.map(l => l.route
