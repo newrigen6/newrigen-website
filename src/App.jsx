@@ -150,29 +150,50 @@ const services = [
 
 function Services() {
   return (
-    <section id="services" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
+    <section id="services" className="py-24 px-6 relative overflow-hidden">
+      {/* Glow background */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: `radial-gradient(circle, ${TEAL}08 0%, transparent 70%)` }} />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <div data-anim="up" className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Nos services</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Tout ce dont votre PME a besoin</h2>
           <p className="text-slate-400 max-w-2xl mx-auto">Des solutions IA clés en main, conçues spécifiquement pour les entreprises suisses.</p>
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
+
+        <div className="grid md:grid-cols-3 gap-5">
           {services.map(({ icon: Icon, title, desc, items: sItems }, i) => (
-            <div key={title} data-anim="up" data-delay={String(i * 150)} className="rounded-2xl p-6 border transition-all duration-200 hover:border-[#4DD9D9]/40 group" style={{ background: `${TEAL}08`, borderColor: `${TEAL}20` }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${TEAL}20` }}>
+            <div
+              key={title}
+              data-anim="up"
+              data-delay={String(i * 150)}
+              className="group relative rounded-2xl p-7 flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1"
+              style={{ background: 'linear-gradient(145deg, #0F1520, #0A0E17)', border: `1px solid ${TEAL}18` }}
+            >
+              {/* Top glow bar */}
+              <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${TEAL}60, transparent)` }} />
+              {/* Hover glow */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" style={{ boxShadow: `inset 0 0 40px ${TEAL}08`, border: `1px solid ${TEAL}40` }} />
+
+              {/* Number */}
+              <span className="text-6xl font-black mb-4 select-none leading-none" style={{ color: `${TEAL}12` }}>0{i + 1}</span>
+
+              {/* Icon */}
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110" style={{ background: `linear-gradient(135deg, ${TEAL}25, ${TEAL}10)`, border: `1px solid ${TEAL}30` }}>
                 <Icon className="w-5 h-5" style={{ color: TEAL }} />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-white">{title}</h3>
-              <p className="text-slate-400 text-sm mb-4 leading-relaxed">{desc}</p>
-              <ul className="space-y-2">
+
+              <h3 className="text-lg font-bold mb-3 text-white">{title}</h3>
+              <p className="text-slate-500 text-sm mb-5 leading-relaxed flex-1">{desc}</p>
+
+              <div className="space-y-2 pt-4 border-t" style={{ borderColor: `${TEAL}12` }}>
                 {sItems.map(item => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-slate-300">
-                    <Check className="w-3.5 h-3.5 flex-shrink-0" style={{ color: TEAL }} />
-                    {item}
-                  </li>
+                  <div key={item} className="flex items-center gap-2.5 text-sm">
+                    <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: TEAL }} />
+                    <span className="text-slate-300">{item}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>
