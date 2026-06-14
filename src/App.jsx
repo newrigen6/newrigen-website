@@ -352,7 +352,10 @@ function Footer() {
 function Home() {
   useEffect(() => {
     const obs = new IntersectionObserver(
-      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('anim-visible'); obs.unobserve(e.target) } }),
+      (entries) => entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('anim-visible')
+        else e.target.classList.remove('anim-visible')
+      }),
       { threshold: 0.07, rootMargin: '0px 0px -40px 0px' }
     )
     document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el))
