@@ -59,6 +59,7 @@ function PacksComparatif() {
 }
 import Tarifs from './pages/Tarifs'
 import Merci from './pages/Merci'
+import ConsentGate from './components/ConsentGate'
 
 const TEAL = '#4DD9D9'
 
@@ -380,12 +381,14 @@ function Home() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/tarifs" element={<Tarifs />} />
-        <Route path="/merci" element={<Merci />} />
-      </Routes>
-    </BrowserRouter>
+    <ConsentGate>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tarifs" element={<Tarifs />} />
+          <Route path="/merci" element={<Merci />} />
+        </Routes>
+      </BrowserRouter>
+    </ConsentGate>
   )
 }
