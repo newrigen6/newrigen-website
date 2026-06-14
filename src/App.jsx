@@ -13,7 +13,7 @@ function PacksComparatif() {
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4 text-white">Standard vs Premium</h2>
           <p className="text-slate-400">Choisissez le pack adapté à votre entreprise.</p>
         </div>
-        <div data-anim="scale" data-delay="100" className="rounded-2xl border overflow-hidden" style={{ borderColor: `${TEAL_PACKS}20` }}>
+        <div data-anim="tilt" data-delay="100" className="rounded-2xl border overflow-hidden" style={{ borderColor: `${TEAL_PACKS}20` }}>
           <div className="grid grid-cols-3 text-sm font-semibold" style={{ background: `${TEAL_PACKS}12` }}>
             <div className="p-4 text-slate-300">Fonctionnalité</div>
             <div className="p-4 text-center text-white">Standard<br/><span className="font-normal text-slate-400 text-xs">79.-/mois</span></div>
@@ -159,7 +159,7 @@ function Services() {
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           {services.map(({ icon: Icon, title, desc, items: sItems }, i) => (
-            <div key={title} data-anim={i % 2 === 0 ? 'left' : 'right'} data-delay={String(i * 100)} className="rounded-2xl p-6 border transition-all duration-200 hover:border-[#4DD9D9]/40 group" style={{ background: `${TEAL}08`, borderColor: `${TEAL}20` }}>
+            <div key={title} data-anim="up" data-delay={String(i * 150)} className="rounded-2xl p-6 border transition-all duration-200 hover:border-[#4DD9D9]/40 group" style={{ background: `${TEAL}08`, borderColor: `${TEAL}20` }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${TEAL}20` }}>
                 <Icon className="w-5 h-5" style={{ color: TEAL }} />
               </div>
@@ -201,7 +201,7 @@ function Comparatif() {
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Avant vs après Newrigen</h2>
           <p className="text-slate-400">Voyez concrètement l'impact de l'automatisation IA sur votre quotidien.</p>
         </div>
-        <div data-anim="scale" data-delay="100" className="rounded-2xl overflow-hidden border" style={{ borderColor: `${TEAL}20` }}>
+        <div data-anim="tilt" data-delay="100" className="rounded-2xl overflow-hidden border" style={{ borderColor: `${TEAL}20` }}>
           <div className="grid grid-cols-3 text-sm font-semibold" style={{ background: `${TEAL}15` }}>
             <div className="p-4 text-slate-300">Fonctionnalité</div>
             <div className="p-4 text-center text-red-400">✗ Sans Newrigen</div>
@@ -242,7 +242,7 @@ function Processus() {
         </div>
         <div className="space-y-6">
           {steps.map(({ n, title, desc, items }, i) => (
-            <div key={n} data-anim={i % 2 === 0 ? 'left' : 'right'} data-delay={String(i * 150)} className="flex gap-6 rounded-2xl p-6 border" style={{ background: `${TEAL}06`, borderColor: `${TEAL}18` }}>
+            <div key={n} data-anim="up" data-delay={String(i * 200)} className="flex gap-6 rounded-2xl p-6 border" style={{ background: `${TEAL}06`, borderColor: `${TEAL}18` }}>
               <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center font-black text-sm" style={{ background: `${TEAL}20`, color: TEAL }}>
                 {n}
               </div>
@@ -273,7 +273,7 @@ function Contact() {
   const [sent, setSent] = useState(false)
   return (
     <section id="contact" className="py-24 px-6">
-      <div data-anim="up" className="max-w-2xl mx-auto text-center">
+      <div data-anim="scale" className="max-w-2xl mx-auto text-center">
         <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>On est à votre écoute — Réponse au plus vite</span>
         <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">
           Une expérience <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>sur mesure</span> pour votre entreprise
@@ -353,7 +353,7 @@ function Home() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('anim-visible'); obs.unobserve(e.target) } }),
-      { threshold: 0.12 }
+      { threshold: 0.07, rootMargin: '0px 0px -40px 0px' }
     )
     document.querySelectorAll('[data-anim]').forEach(el => obs.observe(el))
     return () => obs.disconnect()
