@@ -235,11 +235,6 @@ function Comparatif() {
             </div>
           ))}
         </div>
-        <div className="text-center mt-8">
-          <Link to="/tarifs" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` }}>
-            Commencer ma transformation <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
       </div>
     </section>
   )
