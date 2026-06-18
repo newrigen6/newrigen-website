@@ -27,13 +27,6 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
         <motion.div variants={container} initial="hidden" animate="show">
 
-          {/* Badge */}
-          <motion.div variants={item} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-[#F97316]/30 text-sm text-[#F97316] font-medium mb-8">
-            <span className="w-2 h-2 rounded-full bg-[#F97316] animate-pulse" />
-            <EditableText id="hero-badge" editMode={editMode}>
-              Automatisation IA pour les PME suisses
-            </EditableText>
-          </motion.div>
 
           {/* Headline */}
           <motion.h1 variants={item} className="text-3xl md:text-5xl font-black tracking-tight leading-tight mb-6">

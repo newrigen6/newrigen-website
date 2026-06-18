@@ -118,10 +118,6 @@ function Hero() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}15` }} />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}10` }} />
       <div className="relative max-w-5xl mx-auto px-6 text-center py-16">
-        <div data-anim="up" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mb-8 border" style={{ background: `${TEAL}10`, borderColor: `${TEAL}30`, color: TEAL }}>
-          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: TEAL }} />
-          Automatisation IA pour les PME suisses
-        </div>
         <h1 data-anim="up" data-delay="100" className="text-3xl md:text-5xl font-black tracking-tight mb-6 leading-tight">
           Transformez votre{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>entreprise</span>
