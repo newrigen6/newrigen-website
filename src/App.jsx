@@ -215,7 +215,7 @@ function Comparatif() {
         <div data-anim="up" className="text-center mb-14">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Comparatif</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Travaillez autrement.</h2>
-          <p className="text-slate-400">Moins d'administratif, plus de clarté — tout centralisé au même endroit.</p>
+          <p className="text-slate-400">Découvrez ce que vos concurrents font déjà différemment.</p>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           {/* Colonne SANS */}
