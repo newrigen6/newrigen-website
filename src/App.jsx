@@ -255,7 +255,7 @@ function Comparatif() {
 }
 
 const steps = [
-  { n: '01', title: 'Inscription', desc: "Choisissez l'offre adaptée à vos besoins et créez votre compte en quelques minutes. On vous guide pour démarrer sur les bonnes bases.", items: ['Choix de l\'offre', 'Création du compte', 'Accompagnement personnalisé'] },
+  { n: '01', title: 'Inscription', desc: "Choisissez l'offre adaptée à vos besoins et créez votre compte en quelques minutes. Nous vous guidons pour démarrer sur les bonnes bases.", items: ['Choix de l\'offre', 'Création du compte', 'Accompagnement personnalisé'] },
   { n: '02', title: 'Configuration', desc: "Paramétrez votre espace de travail : ajoutez vos employés, configurez vos signatures électroniques, votre catalogue et vos préférences.", items: ['Ajout des employés', 'Signatures électroniques', 'Catalogue & préférences'] },
   { n: '03', title: 'Gain de temps', desc: "Votre activité tourne en automatique — devis, facturation, suivi des heures et relances. Vous vous concentrez sur l'essentiel.", items: ['Automatisation des tâches', 'Suivi en temps réel', 'Moins d\'administratif'] },
 ]
