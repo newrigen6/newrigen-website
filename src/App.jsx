@@ -4,6 +4,30 @@ import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapP
 
 const TEAL_PACKS = '#4DD9D9'
 
+const standardFeatures = [
+  'Dashboard',
+  'Création de devis (manuel)',
+  'Import de devis (Excel / PDF)',
+  'Catalogue de produits',
+  'Soumissions en ligne',
+  'Saisie des heures',
+  'Facturation QR suisse',
+  'Gestion des employés (jusqu\'à 5)',
+  'Signature électronique',
+  '🎙️ Devis Vocal (add-on +15.-/mois)',
+]
+
+const premiumFeatures = [
+  'Tout le pack Standard',
+  'Agenda & planning',
+  'Bons de régie avec signature client',
+  'Accès fiduciaire / comptable',
+  'Pré-comptabilité',
+  'Rapport d\'heures',
+  'Employés illimités',
+  '🎙️ Devis Vocal (add-on +15.-/mois)',
+]
+
 function PacksComparatif() {
   return (
     <section className="py-24 px-6">
@@ -13,45 +37,50 @@ function PacksComparatif() {
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4 text-white">Standard vs Premium</h2>
           <p className="text-slate-400">Choisissez le pack adapté à votre entreprise.</p>
         </div>
-        <div data-anim="tilt" data-delay="100" className="rounded-2xl border overflow-hidden" style={{ borderColor: `${TEAL_PACKS}20` }}>
-          <div className="grid grid-cols-3 text-sm font-semibold" style={{ background: `${TEAL_PACKS}12` }}>
-            <div className="p-4 text-slate-300">Fonctionnalité</div>
-            <div className="p-4 text-center text-white">Standard<br/><span className="font-normal text-slate-400 text-xs">79.-/mois</span></div>
-            <div className="p-4 text-center font-bold" style={{ color: TEAL_PACKS }}>Premium<br/><span className="font-normal text-xs" style={{ color: TEAL_PACKS }}>99.-/mois</span></div>
-          </div>
-          {[
-            ['Dashboard', true, true],
-            ['Création de devis (manuel)', true, true],
-            ['Import de devis (Excel / PDF)', true, true],
-            ['Catalogue de produits', true, true],
-            ['Soumissions en ligne', true, true],
-            ['Saisie des heures', true, true],
-            ['Facturation QR suisse', true, true],
-            ['Gestion des employés (jusqu\'à 5)', true, true],
-            ['Signature électronique', true, true],
-            ['Agenda & planning', false, true],
-            ['Bons de régie avec signature client', false, true],
-            ['Accès fiduciaire / comptable', false, true],
-            ['Pré-comptabilité', false, true],
-            ['Rapport d\'heures', false, true],
-            ['Employés illimités', false, true],
-            ['🎙️ Devis Vocal (add-on)', '+ 15.-/mois', '+ 15.-/mois'],
-          ].map(([feat, std, prem], i) => (
-            <div key={feat} className="grid grid-cols-3 text-sm border-t" style={{ borderColor: `${TEAL_PACKS}10`, background: i % 2 === 0 ? 'transparent' : `${TEAL_PACKS}04` }}>
-              <div className="p-4 text-slate-300">{feat}</div>
-              <div className="p-4 flex items-center justify-center">
-                {typeof std === 'string' ? <span className="text-xs font-medium text-slate-400">{std}</span> : std ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
-              </div>
-              <div className="p-4 flex items-center justify-center">
-                {typeof prem === 'string' ? <span className="text-xs font-medium text-slate-400">{prem}</span> : prem ? <Check className="w-4 h-4" style={{ color: TEAL_PACKS }} /> : <X className="w-4 h-4 text-slate-600" />}
-              </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Standard */}
+          <div data-anim="up" data-delay="100" className="rounded-2xl border overflow-hidden flex flex-col" style={{ borderColor: `${TEAL_PACKS}20`, background: `${TEAL_PACKS}05` }}>
+            <div className="px-6 py-5 border-b" style={{ borderColor: `${TEAL_PACKS}15`, background: `${TEAL_PACKS}10` }}>
+              <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Pack</div>
+              <div className="text-2xl font-black text-white">Standard</div>
+              <div className="text-3xl font-black mt-2" style={{ color: TEAL_PACKS }}>79.- <span className="text-sm font-normal text-slate-400">/mois</span></div>
             </div>
-          ))}
-        </div>
-        <div className="text-center mt-6">
-          <Link to="/tarifs" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-[#0A0A0F] transition-all" style={{ background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` }}>
-            Voir les tarifs complets →
-          </Link>
+            <ul className="px-6 py-4 space-y-2 flex-1">
+              {standardFeatures.map(f => (
+                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                  <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: TEAL_PACKS }} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <div className="px-6 pb-5">
+              <Link to="/tarifs" className="block text-center px-5 py-2.5 rounded-xl font-bold text-sm transition-all" style={{ background: `${TEAL_PACKS}18`, color: TEAL_PACKS, border: `1px solid ${TEAL_PACKS}40` }}>
+                Choisir Standard →
+              </Link>
+            </div>
+          </div>
+          {/* Premium */}
+          <div data-anim="up" data-delay="200" className="rounded-2xl border overflow-hidden flex flex-col relative" style={{ borderColor: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-[#0A0A0F]" style={{ background: TEAL_PACKS }}>Recommandé</div>
+            <div className="px-6 py-5 border-b" style={{ borderColor: `${TEAL_PACKS}25`, background: `${TEAL_PACKS}15` }}>
+              <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Pack</div>
+              <div className="text-2xl font-black text-white">Premium</div>
+              <div className="text-3xl font-black mt-2" style={{ color: TEAL_PACKS }}>99.- <span className="text-sm font-normal text-slate-400">/mois</span></div>
+            </div>
+            <ul className="px-6 py-4 space-y-2 flex-1">
+              {premiumFeatures.map(f => (
+                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
+                  <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: TEAL_PACKS }} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <div className="px-6 pb-5">
+              <Link to="/tarifs" className="block text-center px-5 py-2.5 rounded-xl font-bold text-sm text-[#0A0A0F] transition-all" style={{ background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` }}>
+                Choisir Premium →
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>
