@@ -138,9 +138,9 @@ function Hero() {
 }
 
 const services = [
-  { icon: Zap, title: 'Création de devis', desc: 'Créez vos devis manuellement ou par dictée vocale, et importez vos devis existants. Une fois validé, le devis est envoyé automatiquement par e-mail à votre client.', items: ['Saisie manuelle & vocale', 'Import de devis existants', 'Envoi automatique par e-mail'] },
-  { icon: Brain, title: 'Intelligence artificielle', desc: "L'IA analyse votre dictée vocale pour construire un devis, trie votre catalogue de produits intelligemment, et lit vos documents importés comme des factures ou devis existants.", items: ['Devis par dictée vocale', 'Triage intelligent du catalogue', 'Lecture de documents (PDF, Excel)'] },
-  { icon: LineChart, title: 'Audit & personnalisation', desc: "En plus de notre application, nous sommes prêts à personnaliser l'expérience selon les besoins propres à votre entreprise. Contactez-nous pour voir dans quelle mesure c'est possible.", items: ['Analyse de vos besoins', 'Personnalisation sur mesure', 'Flexibilité selon votre métier'] },
+  { icon: LineChart, title: 'Vision claire en temps réel', desc: "Suivez l'activité de votre entreprise à tout moment grâce à des tableaux de bord intuitifs. Chiffres clés, tendances et indicateurs de performance disponibles en un coup d'œil.", items: ['Tableaux de bord en temps réel', 'Indicateurs clés de performance', 'Suivi de l\'activité au quotidien'] },
+  { icon: Brain, title: 'Centraliser l\'information', desc: "Regroupez tous vos documents, clients, devis et factures en un seul endroit. Fini les fichiers éparpillés — tout est accessible, organisé et synchronisé depuis une unique plateforme.", items: ['Données clients & documents unifiés', 'Accès centralisé en tout lieu', 'Synchronisation automatique'] },
+  { icon: Zap, title: 'Gain de temps', desc: "Automatisez vos tâches administratives répétitives : création de devis, envoi de factures, relances clients. Concentrez-vous sur votre cœur de métier, l'application s'occupe du reste.", items: ['Automatisation des tâches répétitives', 'Envoi automatique par e-mail', 'Relances clients intégrées'] },
 ]
 
 function Services() {
