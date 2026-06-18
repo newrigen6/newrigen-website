@@ -211,25 +211,43 @@ const rows = [
 function Comparatif() {
   return (
     <section id="comparatif" className="py-24 px-6">
-      <div className="max-w-4xl mx-auto">
-        <div data-anim="up" className="text-center mb-12">
+      <div className="max-w-5xl mx-auto">
+        <div data-anim="up" className="text-center mb-14">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Comparatif</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Avant vs après Newrigen</h2>
-          <p className="text-slate-400">Voyez concrètement l'impact de l'automatisation IA sur votre quotidien.</p>
+          <p className="text-slate-400">Voyez concrètement ce que Newrigen change dans votre quotidien.</p>
         </div>
-        <div data-anim="tilt" data-delay="100" className="rounded-2xl overflow-hidden border" style={{ borderColor: `${TEAL}20` }}>
-          <div className="grid grid-cols-3 text-sm font-semibold" style={{ background: `${TEAL}15` }}>
-            <div className="p-4 text-slate-300">Fonctionnalité</div>
-            <div className="p-4 text-center text-red-400">✗ Sans Newrigen</div>
-            <div className="p-4 text-center" style={{ color: TEAL }}>✓ Avec Newrigen</div>
-          </div>
-          {rows.map(([feat, before, after], i) => (
-            <div key={feat} className={`grid grid-cols-3 text-sm border-t ${i % 2 === 0 ? '' : ''}`} style={{ borderColor: `${TEAL}10`, background: i % 2 === 0 ? 'transparent' : `${TEAL}05` }}>
-              <div className="p-4 text-slate-300 font-medium">{feat}</div>
-              <div className="p-4 text-center text-slate-500">{before}</div>
-              <div className="p-4 text-center font-semibold" style={{ color: TEAL }}>{after}</div>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Colonne SANS */}
+          <div data-anim="up" data-delay="100" className="rounded-2xl border border-red-500/20 overflow-hidden" style={{ background: 'rgba(239,68,68,0.04)' }}>
+            <div className="flex items-center gap-3 px-6 py-4 border-b border-red-500/20" style={{ background: 'rgba(239,68,68,0.08)' }}>
+              <span className="w-7 h-7 rounded-full bg-red-500/20 flex items-center justify-center text-red-400 font-bold text-sm">✗</span>
+              <span className="font-bold text-red-400 text-sm uppercase tracking-widest">Sans Newrigen</span>
             </div>
-          ))}
+            <ul className="divide-y divide-red-500/10">
+              {rows.map(([feat, before]) => (
+                <li key={feat} className="px-6 py-4">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">{feat}</div>
+                  <div className="text-slate-400 text-sm">{before}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Colonne AVEC */}
+          <div data-anim="up" data-delay="200" className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${TEAL}30`, background: `${TEAL}06` }}>
+            <div className="flex items-center gap-3 px-6 py-4 border-b" style={{ borderColor: `${TEAL}20`, background: `${TEAL}12` }}>
+              <span className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm" style={{ background: `${TEAL}25`, color: TEAL }}>✓</span>
+              <span className="font-bold text-sm uppercase tracking-widest" style={{ color: TEAL }}>Avec Newrigen</span>
+            </div>
+            <ul className="divide-y" style={{ borderColor: `${TEAL}10` }}>
+              {rows.map(([feat, , after]) => (
+                <li key={feat} className="px-6 py-4" style={{ borderColor: `${TEAL}10` }}>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">{feat}</div>
+                  <div className="text-sm font-semibold" style={{ color: TEAL }}>{after}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
