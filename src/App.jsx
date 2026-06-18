@@ -60,7 +60,7 @@ function PacksComparatif() {
             </div>
           </div>
           {/* Premium */}
-          <div data-anim="up" data-delay="200" className="rounded-2xl border overflow-hidden flex flex-col relative" style={{ borderColor: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
+          <div data-anim="up" data-delay="200" className="rounded-2xl border flex flex-col relative mt-4" style={{ borderColor: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-[#0A0A0F]" style={{ background: TEAL_PACKS }}>Recommandé</div>
             <div className="px-6 py-5 border-b" style={{ borderColor: `${TEAL_PACKS}25`, background: `${TEAL_PACKS}15` }}>
               <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Pack</div>
