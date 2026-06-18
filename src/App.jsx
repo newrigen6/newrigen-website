@@ -226,7 +226,7 @@ function Comparatif() {
             </div>
             <ul className="divide-y divide-red-500/10">
               {rows.map(([feat, before]) => (
-                <li key={feat} className="px-5 py-1.5">
+                <li key={feat} className="px-5 py-2.5">
                   <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-0.5">{feat}</div>
                   <div className="text-slate-400 text-sm">{before}</div>
                 </li>
@@ -241,7 +241,7 @@ function Comparatif() {
             </div>
             <ul className="divide-y" style={{ borderColor: `${TEAL}10` }}>
               {rows.map(([feat, , after]) => (
-                <li key={feat} className="px-5 py-1.5" style={{ borderColor: `${TEAL}10` }}>
+                <li key={feat} className="px-5 py-2.5" style={{ borderColor: `${TEAL}10` }}>
                   <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-0.5">{feat}</div>
                   <div className="text-sm font-semibold" style={{ color: TEAL }}>{after}</div>
                 </li>
