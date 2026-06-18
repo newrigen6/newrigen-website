@@ -211,7 +211,7 @@ const rows = [
 function Comparatif() {
   return (
     <section id="comparatif" className="py-24 px-6">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         <div data-anim="up" className="text-center mb-14">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Comparatif</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Avant vs après Newrigen</h2>
