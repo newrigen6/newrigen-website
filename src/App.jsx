@@ -266,8 +266,8 @@ function Processus() {
       <div className="max-w-5xl mx-auto">
         <div data-anim="up" className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Notre processus</span>
-          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Comment ça marche ?</h2>
-          <p className="text-slate-400">Un processus simple et transparent, de l'idée au déploiement en quelques semaines.</p>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">Opérationnel en 3 étapes.</h2>
+          <p className="text-slate-400">Une mise en place rapide, sans prise de tête — vous êtes prêt en quelques jours.</p>
         </div>
         <div className="space-y-6">
           {steps.map(({ n, title, desc, items }, i) => (
