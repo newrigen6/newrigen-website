@@ -104,7 +104,6 @@ function Navbar() {
     { href: '#services', label: 'Services' },
     { href: '#comparatif', label: 'Comparatif' },
     { href: '#processus', label: 'Comment ça marche' },
-    { href: '#temoignages', label: 'Témoignages' },
     { href: '/tarifs', label: 'Tarifs', route: true },
   ]
   return (
