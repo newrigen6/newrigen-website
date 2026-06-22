@@ -178,23 +178,43 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section id="hero" className="relative flex items-center justify-center overflow-hidden pt-24">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}15` }} />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ background: `${TEAL}10` }} />
-      <div className="relative max-w-5xl mx-auto px-6 text-center py-16">
-        <h1 data-anim="up" data-delay="100" className="text-3xl md:text-5xl font-black tracking-tight mb-6 leading-tight">
+    <section id="hero" className="relative flex items-center justify-center overflow-hidden pt-24 min-h-[90vh]">
+      {/* Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-3xl pointer-events-none opacity-20" style={{ background: `radial-gradient(ellipse, ${TEAL}, transparent 70%)` }} />
+      <div className="relative max-w-4xl mx-auto px-6 text-center">
+        {/* Pill */}
+        <div data-anim="up" className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-8 border" style={{ borderColor: `${TEAL}30`, background: `${TEAL}10`, color: TEAL }}>
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: TEAL }} />
+          On est à votre écoute — Réponse au plus vite
+        </div>
+        {/* Titre */}
+        <h1 data-anim="up" data-delay="100" className="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-[1.05]">
           Transformez votre{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>entreprise</span>
-          {' '}avec<br />l'intelligence{' '}
+          <br />avec l'intelligence{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, #7ee8e8, ${TEAL})` }}>artificielle</span>
         </h1>
-        <p data-anim="up" data-delay="200" className="text-sm text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        {/* Sous-titre */}
+        <p data-anim="up" data-delay="200" className="text-base text-slate-400 max-w-xl mx-auto mb-10 leading-relaxed">
           Centralisez toute votre activité sur une seule plateforme — gagnez des heures sur vos tâches administratives, suivez vos chiffres en temps réel et pilotez votre entreprise depuis une application claire et intuitive.
         </p>
-        <div data-anim="up" data-delay="300" className="flex flex-col sm:flex-row gap-4 justify-center">
+        {/* CTA */}
+        <div data-anim="up" data-delay="300" className="flex flex-col sm:flex-row gap-3 justify-center mb-16">
           <a href="#contact" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
-            Demande d'audit
+            Demande d'audit →
           </a>
+          <a href="#services" className="px-8 py-4 rounded-xl font-bold text-sm transition-all duration-200 border" style={{ borderColor: `${TEAL}30`, color: TEAL, background: `${TEAL}08` }}>
+            Découvrir les fonctionnalités
+          </a>
+        </div>
+        {/* Stats */}
+        <div data-anim="up" data-delay="400" className="flex flex-wrap justify-center gap-8 text-center">
+          {[['100%', 'Sans engagement'], ['24h', 'Réponse garantie'], ['1 mois', 'Essai gratuit']].map(([val, label]) => (
+            <div key={label}>
+              <div className="text-2xl font-black" style={{ color: TEAL }}>{val}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
