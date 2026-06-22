@@ -5,7 +5,6 @@ const navLinks = [
   { label: 'Services', href: '#services' },
   { label: 'Comparatif', href: '#comparatif' },
   { label: 'Comment ça marche', href: '#processus' },
-  { label: 'Témoignages', href: '#temoignages' },
 ]
 
 export default function Navbar() {
