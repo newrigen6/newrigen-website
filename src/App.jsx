@@ -43,7 +43,10 @@ function PacksComparatif() {
             <div className="px-6 py-5 border-b" style={{ borderColor: `${TEAL_PACKS}15`, background: `${TEAL_PACKS}10` }}>
               <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Pack</div>
               <div className="text-2xl font-black text-white">Standard</div>
-              <div className="text-3xl font-black mt-2" style={{ color: TEAL_PACKS }}>79.- <span className="text-sm font-normal text-slate-400">/mois</span></div>
+              <div className="flex items-baseline gap-2 mt-2">
+                <span className="text-3xl font-black" style={{ color: TEAL_PACKS }}>79.- <span className="text-sm font-normal text-slate-400">/mois</span></span>
+              </div>
+              <div className="mt-1 text-xs font-semibold" style={{ color: TEAL_PACKS }}>🎁 1er mois gratuit — sans carte requise</div>
             </div>
             <ul className="px-6 py-4 space-y-2 flex-1">
               {standardFeatures.map(f => (
@@ -65,7 +68,10 @@ function PacksComparatif() {
             <div className="px-6 py-5 border-b" style={{ borderColor: `${TEAL_PACKS}25`, background: `${TEAL_PACKS}15` }}>
               <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Pack</div>
               <div className="text-2xl font-black text-white">Premium</div>
-              <div className="text-3xl font-black mt-2" style={{ color: TEAL_PACKS }}>99.- <span className="text-sm font-normal text-slate-400">/mois</span></div>
+              <div className="flex items-baseline gap-2 mt-2">
+                <span className="text-3xl font-black" style={{ color: TEAL_PACKS }}>99.- <span className="text-sm font-normal text-slate-400">/mois</span></span>
+              </div>
+              <div className="mt-1 text-xs font-semibold" style={{ color: TEAL_PACKS }}>🎁 1er mois gratuit — sans carte requise</div>
             </div>
             <ul className="px-6 py-4 space-y-2 flex-1">
               {premiumFeatures.map(f => (
