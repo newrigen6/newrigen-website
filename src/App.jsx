@@ -55,7 +55,7 @@ function PacksComparatif() {
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4 text-white">Standard vs Premium</h2>
           <p className="text-slate-400">Choisissez le pack adapté à votre entreprise.</p>
           <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: `${TEAL_PACKS}15`, color: TEAL_PACKS, border: `1px solid ${TEAL_PACKS}40` }}>
-            <span>🎁</span> 1 mois d'essai gratuit — sans carte bancaire requise
+            <span>🎁</span> 1 mois d'essai gratuit
           </div>
         </div>
         {/* Toggle */}
@@ -69,7 +69,7 @@ function PacksComparatif() {
             className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${interval === 'annuel' ? 'text-[#0A0A0F]' : 'text-slate-400 border border-white/10'}`}
             style={interval === 'annuel' ? { background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` } : {}}>
             Annuel
-            <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: `${TEAL_PACKS}20`, color: TEAL_PACKS }}>2 mois offerts</span>
+            <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: `${TEAL_PACKS}20`, color: TEAL_PACKS }}>1 mois offert</span>
           </button>
         </div>
         {/* Cards */}
