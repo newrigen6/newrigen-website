@@ -366,8 +366,8 @@ function Contact() {
   const [sent, setSent] = useState(false)
   return (
     <section id="contact" className="py-24 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid md:grid-cols-5 gap-6 items-stretch">
+      <div className="max-w-3xl mx-auto">
+        <div className="grid md:grid-cols-5 gap-6 items-center">
           {/* Carte infos — 2/5 */}
           <div className="md:col-span-2 rounded-2xl p-8 flex flex-col justify-between" style={{ background: `${TEAL}10`, border: `1px solid ${TEAL}25` }}>
             <div>
@@ -393,7 +393,7 @@ function Contact() {
             </div>
           </div>
           {/* Carte formulaire — 3/5 */}
-          <div className="md:col-span-3 rounded-2xl p-6 flex flex-col justify-center max-w-sm" style={{ background: '#0F1318', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="md:col-span-3 rounded-2xl p-6 flex flex-col justify-center" style={{ background: '#0F1318', border: '1px solid rgba(255,255,255,0.06)' }}>
             {sent ? (
               <div className="flex flex-col items-center gap-4 text-center py-8">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: `${TEAL}20` }}>
