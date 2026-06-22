@@ -365,53 +365,62 @@ function Contact() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   return (
-    <section id="contact" className="py-24 px-6 relative overflow-hidden">
-      {/* Glow background */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 50% at 50% 100%, ${TEAL}12, transparent)` }} />
-      <div className="max-w-3xl mx-auto text-center relative">
-        <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>On est à votre écoute — Réponse au plus vite</span>
-        <h2 className="text-4xl md:text-5xl font-black mt-3 mb-4 text-white">
-          Une expérience <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>sur mesure</span><br/>pour votre entreprise
-        </h2>
-        <p className="text-slate-400 mb-10 max-w-xl mx-auto">Vous êtes adhérent Newrigen et souhaitez personnaliser votre expérience ? Contactez-nous — nous étudions ensemble ce qui est possible pour votre entreprise. Audit inclus pour nos clients.</p>
-
-        {/* Formulaire */}
-        {sent ? (
-          <div className="inline-flex flex-col items-center gap-3 px-10 py-8 rounded-2xl border" style={{ borderColor: `${TEAL}30`, background: `${TEAL}08` }}>
-            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: `${TEAL}20` }}>
-              <Check className="w-7 h-7" style={{ color: TEAL }} />
+    <section id="contact" className="py-24 px-6">
+      <div className="max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-5 gap-6 items-stretch">
+          {/* Carte infos — 2/5 */}
+          <div className="md:col-span-2 rounded-2xl p-8 flex flex-col justify-between" style={{ background: `${TEAL}10`, border: `1px solid ${TEAL}25` }}>
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Réponse au plus vite</span>
+              <h2 className="text-2xl font-black mt-3 mb-3 text-white leading-snug">
+                Une expérience <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>sur mesure</span> pour votre entreprise
+              </h2>
+              <p className="text-slate-400 text-sm leading-relaxed">Vous êtes adhérent Newrigen et souhaitez personnaliser votre expérience ? Nous étudions ensemble ce qui est possible. Audit inclus pour nos clients.</p>
             </div>
-            <p className="font-bold text-white text-lg">Message envoyé !</p>
-            <p className="text-slate-400 text-sm">Nous vous répondons sous 24h.</p>
+            <div className="mt-8 space-y-3 text-sm">
+              <a href="mailto:newrigen6@gmail.com" className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
+                <Mail className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />newrigen6@gmail.com
+              </a>
+              <a href="tel:+41798733791" className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
+                <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />079 873 37 91
+              </a>
+              <a href="tel:+41793246593" className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
+                <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />079 324 65 93
+              </a>
+              <span className="flex items-center gap-3 text-slate-300">
+                <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />Suisse romande et alémanique
+              </span>
+            </div>
           </div>
-        ) : (
-          <form onSubmit={e => { e.preventDefault(); setSent(true) }} className="flex gap-3 max-w-md mx-auto mb-3">
-            <input
-              type="email" required value={email} onChange={e => setEmail(e.target.value)}
-              placeholder="votre@email.ch"
-              className="flex-1 px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-[#4DD9D9]/50"
-            />
-            <button type="submit" className="px-6 py-3.5 rounded-xl font-bold text-sm text-[#0A0A0F] flex-shrink-0" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` }}>
-              Prendre contact →
-            </button>
-          </form>
-        )}
-        <p className="text-slate-600 text-xs mb-12">En soumettant ce formulaire, vous acceptez notre politique de confidentialité. Pas de spam.</p>
-
-        {/* Coordonnées en ligne */}
-        <div className="flex flex-wrap justify-center gap-3 text-sm">
-          <a href="mailto:newrigen6@gmail.com" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border text-slate-300 hover:text-white transition-colors" style={{ borderColor: `${TEAL}20`, background: `${TEAL}08` }}>
-            <Mail className="w-4 h-4" style={{ color: TEAL }} />newrigen6@gmail.com
-          </a>
-          <a href="tel:+41798733791" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border text-slate-300 hover:text-white transition-colors" style={{ borderColor: `${TEAL}20`, background: `${TEAL}08` }}>
-            <Phone className="w-4 h-4" style={{ color: TEAL }} />079 873 37 91
-          </a>
-          <a href="tel:+41793246593" className="flex items-center gap-2 px-4 py-2.5 rounded-xl border text-slate-300 hover:text-white transition-colors" style={{ borderColor: `${TEAL}20`, background: `${TEAL}08` }}>
-            <Phone className="w-4 h-4" style={{ color: TEAL }} />079 324 65 93
-          </a>
-          <span className="flex items-center gap-2 px-4 py-2.5 rounded-xl border text-slate-300" style={{ borderColor: `${TEAL}20`, background: `${TEAL}08` }}>
-            <MapPin className="w-4 h-4" style={{ color: TEAL }} />Suisse romande et alémanique
-          </span>
+          {/* Carte formulaire — 3/5 */}
+          <div className="md:col-span-3 rounded-2xl p-8 flex flex-col justify-center" style={{ background: '#0F1318', border: '1px solid rgba(255,255,255,0.06)' }}>
+            {sent ? (
+              <div className="flex flex-col items-center gap-4 text-center py-8">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: `${TEAL}20` }}>
+                  <Check className="w-8 h-8" style={{ color: TEAL }} />
+                </div>
+                <p className="font-bold text-white text-xl">Message envoyé !</p>
+                <p className="text-slate-400 text-sm">Nous vous répondons sous 24h.</p>
+              </div>
+            ) : (
+              <>
+                <h3 className="text-xl font-black text-white mb-1">Prendre contact</h3>
+                <p className="text-slate-400 text-sm mb-8">Entrez votre email et nous vous recontactons rapidement.</p>
+                <form onSubmit={e => { e.preventDefault(); setSent(true) }} className="space-y-3">
+                  <input
+                    type="email" required value={email} onChange={e => setEmail(e.target.value)}
+                    placeholder="votre@email.ch"
+                    className="w-full px-4 py-3.5 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+                  />
+                  <button type="submit" className="w-full py-3.5 rounded-xl font-bold text-sm text-[#0A0A0F]" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` }}>
+                    Prendre contact →
+                  </button>
+                </form>
+                <p className="text-slate-600 text-xs mt-4">En soumettant ce formulaire, vous acceptez notre politique de confidentialité. Pas de spam.</p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </section>
