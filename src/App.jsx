@@ -4,89 +4,118 @@ import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapP
 
 const TEAL_PACKS = '#4DD9D9'
 
-const standardFeatures = [
-  'Dashboard',
-  'Création de devis (manuel)',
-  'Import de devis (Excel / PDF)',
-  'Catalogue de produits',
-  'Soumissions en ligne',
-  'Saisie des heures',
-  'Facturation QR suisse',
-  'Gestion des employés (jusqu\'à 5)',
-  'Signature électronique',
-  '🎙️ Devis Vocal (add-on +15.-/mois)',
-]
-
-const premiumFeatures = [
-  'Tout le pack Standard',
-  'Agenda & planning',
-  'Bons de régie avec signature client',
-  'Accès fiduciaire / comptable',
-  'Pré-comptabilité',
-  'Rapport d\'heures',
-  'Employés illimités',
-  '🎙️ Devis Vocal (add-on +15.-/mois)',
+const homePlans = [
+  {
+    id: 'standard',
+    name: 'Pack Standard',
+    desc: 'Pour les PME de 1 à 5 employés',
+    priceMensuel: 79,
+    priceAnnuel: 790,
+    extra: '+5.-/mois par employé supplémentaire',
+    highlight: false,
+    features: [
+      'Dashboard temps réel',
+      'Devis illimités avec marge',
+      'Import devis (Excel / PDF)',
+      'Catalogue produits',
+      'Soumissions en ligne',
+      'Saisie des heures',
+      'Facturation QR suisse',
+      'Gestion des employés (jusqu\'à 5)',
+      'Signature électronique',
+    ],
+  },
+  {
+    id: 'premium',
+    name: 'Pack Premium',
+    desc: 'Tout inclus + fonctionnalités avancées',
+    priceMensuel: 99,
+    priceAnnuel: 990,
+    extra: 'Employés illimités inclus',
+    highlight: true,
+    features: [
+      'Tout le Pack Standard',
+      'Agenda & planning',
+      'Bons de régie avec signature client',
+      'Accès fiduciaire / comptable',
+      'Pré-comptabilité',
+      'Extraits bancaires',
+      'Support prioritaire',
+    ],
+  },
 ]
 
 function PacksComparatif() {
+  const [interval, setInterval] = useState('mensuel')
   return (
     <section className="py-24 px-6">
       <div className="max-w-4xl mx-auto">
-        <div data-anim="up" className="text-center mb-12">
+        <div data-anim="up" className="text-center mb-10">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL_PACKS }}>Nos packs</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4 text-white">Standard vs Premium</h2>
           <p className="text-slate-400">Choisissez le pack adapté à votre entreprise.</p>
+          <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: `${TEAL_PACKS}15`, color: TEAL_PACKS, border: `1px solid ${TEAL_PACKS}40` }}>
+            <span>🎁</span> 1 mois d'essai gratuit — sans carte bancaire requise
+          </div>
         </div>
+        {/* Toggle */}
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <button onClick={() => setInterval('mensuel')}
+            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${interval === 'mensuel' ? 'text-[#0A0A0F]' : 'text-slate-400 border border-white/10'}`}
+            style={interval === 'mensuel' ? { background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` } : {}}>
+            Mensuel
+          </button>
+          <button onClick={() => setInterval('annuel')}
+            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${interval === 'annuel' ? 'text-[#0A0A0F]' : 'text-slate-400 border border-white/10'}`}
+            style={interval === 'annuel' ? { background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` } : {}}>
+            Annuel
+            <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: `${TEAL_PACKS}20`, color: TEAL_PACKS }}>2 mois offerts</span>
+          </button>
+        </div>
+        {/* Cards */}
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Standard */}
-          <div data-anim="up" data-delay="100" className="rounded-2xl border overflow-hidden flex flex-col" style={{ borderColor: `${TEAL_PACKS}20`, background: `${TEAL_PACKS}05` }}>
-            <div className="px-6 py-5 border-b" style={{ borderColor: `${TEAL_PACKS}15`, background: `${TEAL_PACKS}10` }}>
-              <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Pack</div>
-              <div className="text-2xl font-black text-white">Standard</div>
-              <div className="flex items-baseline gap-2 mt-2">
-                <span className="text-3xl font-black" style={{ color: TEAL_PACKS }}>79.- <span className="text-sm font-normal text-slate-400">/mois</span></span>
+          {homePlans.map(plan => (
+            <div key={plan.id} className="rounded-2xl p-8 border flex flex-col" style={{
+              background: plan.highlight ? `${TEAL_PACKS}08` : `${TEAL_PACKS}04`,
+              borderColor: plan.highlight ? TEAL_PACKS : `${TEAL_PACKS}20`,
+              boxShadow: plan.highlight ? `0 0 40px ${TEAL_PACKS}15` : 'none',
+            }}>
+              {plan.highlight && (
+                <div className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full self-start mb-4 text-[#0A0A0F]" style={{ background: TEAL_PACKS }}>
+                  Recommandé
+                </div>
+              )}
+              <h2 className="text-2xl font-black text-white mb-1">{plan.name}</h2>
+              <p className="text-slate-400 text-sm mb-5">{plan.desc}</p>
+              <div className="mb-1">
+                <span className="text-2xl font-bold line-through text-slate-600 mr-2">
+                  {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.-
+                </span>
+                <span className="text-sm font-bold px-2 py-0.5 rounded-full text-[#0A0A0F]" style={{ background: TEAL_PACKS }}>1 mois gratuit</span>
               </div>
-              <div className="mt-1 text-xs font-semibold" style={{ color: TEAL_PACKS }}>🎁 1er mois gratuit — sans carte requise</div>
-            </div>
-            <ul className="px-6 py-4 space-y-2 flex-1">
-              {standardFeatures.map(f => (
-                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
-                  <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: TEAL_PACKS }} />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <div className="px-6 pb-5">
-              <Link to="/tarifs" className="block text-center px-5 py-2.5 rounded-xl font-bold text-sm transition-all" style={{ background: `${TEAL_PACKS}18`, color: TEAL_PACKS, border: `1px solid ${TEAL_PACKS}40` }}>
-                Choisir Standard →
+              <div className="mb-2 mt-1">
+                <span className="text-5xl font-black" style={{ color: TEAL_PACKS }}>0.-</span>
+                <span className="text-slate-400 text-sm ml-2">le 1er mois</span>
+              </div>
+              <p className="text-xs text-slate-500 mb-1">Puis {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.- CHF/{interval === 'annuel' ? 'an' : 'mois'} — {plan.extra}</p>
+              <p className="text-xs mb-6" style={{ color: TEAL_PACKS }}>Sans engagement sur 1 mois</p>
+              <ul className="space-y-3 mb-8 flex-1">
+                {plan.features.map(f => (
+                  <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
+                    <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL_PACKS }} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/tarifs"
+                className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
+                style={plan.highlight
+                  ? { background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)`, color: '#0A0A0F' }
+                  : { border: `1px solid ${TEAL_PACKS}40`, color: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
+                Commencer l'essai gratuit →
               </Link>
             </div>
-          </div>
-          {/* Premium */}
-          <div data-anim="up" data-delay="200" className="rounded-2xl border flex flex-col relative mt-4" style={{ borderColor: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold text-[#0A0A0F]" style={{ background: TEAL_PACKS }}>Recommandé</div>
-            <div className="px-6 py-5 border-b" style={{ borderColor: `${TEAL_PACKS}25`, background: `${TEAL_PACKS}15` }}>
-              <div className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-1">Pack</div>
-              <div className="text-2xl font-black text-white">Premium</div>
-              <div className="flex items-baseline gap-2 mt-2">
-                <span className="text-3xl font-black" style={{ color: TEAL_PACKS }}>99.- <span className="text-sm font-normal text-slate-400">/mois</span></span>
-              </div>
-              <div className="mt-1 text-xs font-semibold" style={{ color: TEAL_PACKS }}>🎁 1er mois gratuit — sans carte requise</div>
-            </div>
-            <ul className="px-6 py-4 space-y-2 flex-1">
-              {premiumFeatures.map(f => (
-                <li key={f} className="flex items-start gap-2 text-sm text-slate-300">
-                  <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: TEAL_PACKS }} />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <div className="px-6 pb-5">
-              <Link to="/tarifs" className="block text-center px-5 py-2.5 rounded-xl font-bold text-sm text-[#0A0A0F] transition-all" style={{ background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` }}>
-                Choisir Premium →
-              </Link>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
