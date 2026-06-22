@@ -64,6 +64,7 @@ function PacksComparatif() {
             className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${interval === 'mensuel' ? 'text-[#0A0A0F]' : 'text-slate-400 border border-white/10'}`}
             style={interval === 'mensuel' ? { background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)` } : {}}>
             Mensuel
+            <span className="text-xs px-2 py-0.5 rounded-full font-bold ml-1" style={{ background: `${TEAL_PACKS}20`, color: TEAL_PACKS }}>1 mois offert</span>
           </button>
           <button onClick={() => setInterval('annuel')}
             className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${interval === 'annuel' ? 'text-[#0A0A0F]' : 'text-slate-400 border border-white/10'}`}
