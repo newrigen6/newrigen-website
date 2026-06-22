@@ -285,7 +285,7 @@ function Comparatif() {
 const steps = [
   { n: '01', title: 'Inscription', desc: "Choisissez l'offre adaptée à vos besoins et créez votre compte en quelques minutes. Nous vous guidons pour démarrer sur les bonnes bases.", items: ['Choix de l\'offre', 'Création du compte', 'Accompagnement personnalisé'] },
   { n: '02', title: 'Configuration', desc: "Paramétrez votre espace de travail : ajoutez vos employés, configurez vos signatures électroniques, votre catalogue et vos préférences.", items: ['Ajout des employés', 'Signatures électroniques', 'Catalogue & préférences'] },
-  { n: '03', title: 'Gain de temps', desc: "En saisissant vos données une seule fois, vous pouvez générer en quelques secondes des PDF prêts à l'envoi — devis, factures et rapports avec une mise en page professionnelle.", items: ['Export PDF prêt à l\'envoi', 'Mise en page professionnelle', 'Moins de ressaisie'] },
+  { n: '03', title: 'Gain de temps', desc: "En saisissant vos données une seule fois, vous pouvez générer en quelques secondes des PDF prêts à l'envoi — devis, factures et rapports.", items: ['Export PDF prêt à l\'envoi', 'Mise en page professionnelle', 'Moins de ressaisie'] },
 ]
 
 function Processus() {
