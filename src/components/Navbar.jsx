@@ -6,7 +6,6 @@ const navLinks = [
   { label: 'Services', href: '#services', anchor: true },
   { label: 'Comparatif', href: '#comparatif', anchor: true },
   { label: 'Comment ça marche', href: '#processus', anchor: true },
-  { label: 'Témoignages', href: '#temoignages', anchor: true },
   { label: 'Tarifs', href: '/tarifs', anchor: false },
 ]
 
