@@ -125,6 +125,7 @@ function PacksComparatif() {
 import Tarifs from './pages/Tarifs'
 import Merci from './pages/Merci'
 import ConsentGate from './components/ConsentGate'
+import { MentionsLegales, Confidentialite, CGV } from './pages/Legal'
 
 const TEAL = '#4DD9D9'
 
@@ -500,6 +501,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/tarifs" element={<Tarifs />} />
           <Route path="/merci" element={<Merci />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
+          <Route path="/confidentialite" element={<Confidentialite />} />
+          <Route path="/cgv" element={<CGV />} />
         </Routes>
       </BrowserRouter>
     </ConsentGate>

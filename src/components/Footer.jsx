@@ -1,4 +1,5 @@
 ﻿import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   const [logo, setLogo] = useState(() => { try { return localStorage.getItem('newrigen-logo') || null } catch { return null } })
@@ -129,20 +130,28 @@ export default function Footer() {
                 </li>
               ))}
               <li>
-                <a
-                  href="mailto:newrigen6@gmail.com?subject=Mentions légales"
+                <Link
+                  to="/mentions-legales"
                   className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
                 >
                   Mentions légales
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="mailto:newrigen6@gmail.com?subject=Politique de confidentialité"
+                <Link
+                  to="/confidentialite"
                   className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
                 >
                   Politique de confidentialité
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/cgv"
+                  className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  Conditions générales de vente
+                </Link>
               </li>
             </ul>
           </div>
