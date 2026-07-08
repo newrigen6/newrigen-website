@@ -454,6 +454,9 @@ function Footer() {
               {[['#processus', 'Comment ça marche'], ['#contact', 'Contact'], ['/tarifs', 'Tarifs']].map(([h, l]) => (
                 <li key={l}><a href={h} className="hover:text-white transition-colors">{l}</a></li>
               ))}
+              <li><Link to="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link></li>
+              <li><Link to="/confidentialite" className="hover:text-white transition-colors">Politique de confidentialité</Link></li>
+              <li><Link to="/cgv" className="hover:text-white transition-colors">Conditions générales de vente</Link></li>
             </ul>
           </div>
         </div>
