@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Check, X, Loader2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { track } from '@vercel/analytics'
 
 const TEAL = '#4DD9D9'
 
@@ -79,6 +80,7 @@ function CheckoutModal({ plan, interval, onClose }) {
       if (data?.error) {
         setError(data.error)
       } else if (data?.url) {
+        track('checkout_stripe', { pack: plan.id, interval })
         window.location.href = data.url
       } else {
         setError('Réponse inattendue. Veuillez réessayer.')
@@ -315,7 +317,7 @@ export default function Tarifs() {
                 </ul>
 
                 <button
-                  onClick={() => setSelected(plan)}
+                  onClick={() => { track('pack_choisi', { pack: plan.id, interval }); setSelected(plan) }}
                   className="w-full py-4 rounded-xl font-bold text-sm transition-all"
                   style={plan.highlight
                     ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F', boxShadow: `0 0 20px ${TEAL}40` }
