@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight } from 'lucide-react'
+import { useSiteContent } from './content/SiteContent'
 
 const TEAL_PACKS = '#4DD9D9'
 
@@ -362,9 +363,12 @@ function Processus() {
 
 function Temoignages() { return null }
 
+const telHref = (n) => 'tel:+41' + String(n || '').replace(/\D/g, '').replace(/^0/, '')
+
 function Contact() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
+  const { contact } = useSiteContent()
   return (
     <section id="contact" className="py-24 px-6">
       <div className="max-w-3xl mx-auto">
@@ -379,15 +383,19 @@ function Contact() {
               <p className="text-slate-400 text-sm leading-relaxed">Vous êtes adhérent Newrigen et souhaitez personnaliser votre expérience ? Nous étudions ensemble ce qui est possible. Audit inclus pour nos clients.</p>
             </div>
             <div className="mt-8 space-y-3 text-sm">
-              <a href="mailto:newrigen6@gmail.com" className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
-                <Mail className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />newrigen6@gmail.com
+              <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
+                <Mail className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{contact.email}
               </a>
-              <a href="tel:+41798733791" className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
-                <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />079 873 37 91
-              </a>
-              <a href="tel:+41793246593" className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
-                <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />079 324 65 93
-              </a>
+              {contact.telephone1 && (
+                <a href={telHref(contact.telephone1)} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
+                  <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{contact.telephone1}
+                </a>
+              )}
+              {contact.telephone2 && (
+                <a href={telHref(contact.telephone2)} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
+                  <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{contact.telephone2}
+                </a>
+              )}
               <span className="flex items-center gap-3 text-slate-300">
                 <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />Suisse romande et alémanique
               </span>

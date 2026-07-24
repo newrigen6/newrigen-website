@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Check, X, Loader2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { track } from '@vercel/analytics'
+import { useSiteContent } from '../content/SiteContent'
 
 const TEAL = '#4DD9D9'
 
@@ -52,9 +53,10 @@ function CheckoutModal({ plan, interval, onClose }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  const { prix } = useSiteContent()
   const extra = Math.max(0, employes - 5)
-  const extraCoutMensuel = extra * 5
-  const extraCoutAnnuel = extra * 60
+  const extraCoutMensuel = extra * (prix.employe_sup_mensuel ?? 5)
+  const extraCoutAnnuel = extra * (prix.employe_sup_annuel ?? 60)
 
   function handleChange(e) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -217,6 +219,14 @@ function CheckoutModal({ plan, interval, onClose }) {
 export default function Tarifs() {
   const [interval, setInterval] = useState('mensuel')
   const [selected, setSelected] = useState(null)
+  const { prix } = useSiteContent()
+
+  // Prix pilotés depuis l'admin (repli sur les valeurs codées en dur)
+  const livePlans = plans.map(p => ({
+    ...p,
+    priceMensuel: prix[`${p.id}_mensuel`] ?? p.priceMensuel,
+    priceAnnuel:  prix[`${p.id}_annuel`]  ?? p.priceAnnuel,
+  }))
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white">
@@ -270,7 +280,7 @@ export default function Tarifs() {
 
           {/* Cards */}
           <div className="grid md:grid-cols-2 gap-6">
-            {plans.map((plan) => (
+            {livePlans.map((plan) => (
               <div
                 key={plan.id}
                 className="rounded-2xl p-8 border flex flex-col"

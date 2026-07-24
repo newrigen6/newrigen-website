@@ -1,7 +1,16 @@
 ﻿import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { useSiteContent } from '../content/SiteContent'
 
+// Styles de carte par position (les services venant de l'admin n'ont pas de style)
+const CARD_STYLE = [
+  { color: 'from-[#F97316]/20 to-[#1F0A00]/5', border: 'border-[#F97316]/20', iconBg: 'bg-[#F97316]/10' },
+  { color: 'from-[#F97316]/15 to-[#1F0A00]/5', border: 'border-[#F97316]/20', iconBg: 'bg-[#F97316]/10' },
+  { color: 'from-[#EA6C0A]/15 to-[#1F0A00]/5', border: 'border-[#EA6C0A]/20', iconBg: 'bg-[#EA6C0A]/10' },
+]
+
+// Défaut de repli (le contenu réel vient de l'admin / defaults.js)
 const services = [
   {
     icon: '📋',
@@ -75,6 +84,7 @@ function ServiceCard({ service, index }) {
 export default function Services() {
   const titleRef = useRef(null)
   const titleInView = useInView(titleRef, { once: true })
+  const { services: svc } = useSiteContent()
 
   return (
     <section id="services" className="py-24 px-6 relative">
@@ -102,8 +112,8 @@ export default function Services() {
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, i) => (
-            <ServiceCard key={service.title} service={service} index={i} />
+          {svc.map((service, i) => (
+            <ServiceCard key={service.title} service={{ ...CARD_STYLE[i % CARD_STYLE.length], ...service }} index={i} />
           ))}
         </div>
       </div>

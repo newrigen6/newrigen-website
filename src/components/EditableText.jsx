@@ -1,52 +1,18 @@
-﻿import { useRef, useEffect, useState } from 'react'
-import { getSavedContent, saveContent } from '../hooks/useEditMode'
+import { useText } from '../content/SiteContent'
 
 /**
- * Composant texte éditable en mode édition.
+ * Texte du site, éventuellement surchargé depuis l'admin Newrigen
+ * (table site_content → data.texts[id]). Sinon, on garde le contenu par défaut.
  * Props :
- *   id        — identifiant unique pour la sauvegarde (ex: "hero-title")
+ *   id        — identifiant unique (ex: "hero-title")
  *   tag       — balise HTML à rendre (default: "span")
  *   className — classes Tailwind
- *   children  — contenu par défaut (si rien de sauvegardé)
- *   editMode  — booléen activant l'édition
+ *   children  — contenu par défaut
  */
-export default function EditableText({ id, tag: Tag = 'span', className = '', children, editMode }) {
-  const ref = useRef(null)
-  const saved = getSavedContent()
-  const [content] = useState(saved[id] ?? null)
-
-  // Charge le contenu sauvegardé au montage
-  useEffect(() => {
-    if (ref.current && content !== null) {
-      ref.current.innerHTML = content
-    }
-  }, [])
-
-  // Active/désactive contenteditable
-  useEffect(() => {
-    if (!ref.current) return
-    ref.current.contentEditable = editMode ? 'true' : 'false'
-    if (editMode) {
-      ref.current.focus()
-    }
-  }, [editMode])
-
-  function handleInput() {
-    if (ref.current) {
-      saveContent(id, ref.current.innerHTML)
-    }
+export default function EditableText({ id, tag: Tag = 'span', className = '', children }) {
+  const override = useText(id, null)
+  if (override != null && override !== '') {
+    return <Tag className={className}>{override}</Tag>
   }
-
-  return (
-    <Tag
-      ref={ref}
-      className={`${className} ${editMode ? 'outline-dashed outline-2 outline-[#F97316]/60 outline-offset-2 cursor-text rounded' : ''}`}
-      onInput={handleInput}
-      suppressContentEditableWarning
-    >
-      {content === null ? children : undefined}
-    </Tag>
-  )
+  return <Tag className={className}>{children}</Tag>
 }
-
-

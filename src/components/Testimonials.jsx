@@ -1,8 +1,12 @@
 ﻿import { motion } from 'framer-motion'
 import { useEdit } from '../App'
 import EditableText from './EditableText'
+import { useSiteContent } from '../content/SiteContent'
 
-// Remplacer par de vrais témoignages
+// Couleurs d'avatar par position (les témoignages venant de l'admin n'ont pas de couleur)
+const AVATAR_COLORS = ['from-[#F97316] to-[#EA6C0A]', 'from-orange-500 to-purple-500', 'from-blue-500 to-orange-500']
+
+// Défaut de repli (le contenu réel vient de l'admin / defaults.js)
 const testimonials = [
   {
     name: 'Sophie Müller',
@@ -35,6 +39,7 @@ const testimonials = [
 
 export default function Testimonials() {
   const editMode = useEdit()
+  const { temoignages } = useSiteContent()
   return (
     <section id="temoignages" className="py-24 px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-950/10 to-transparent pointer-events-none" />
@@ -62,7 +67,7 @@ export default function Testimonials() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
+          {temoignages.map((t, i) => (
             <motion.div
               key={t.name}
               initial={{ opacity: 0, y: 30 }}
@@ -86,7 +91,7 @@ export default function Testimonials() {
 
               {/* Author */}
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-white font-bold text-sm flex-shrink-0`}>
+                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color || AVATAR_COLORS[i % AVATAR_COLORS.length]} flex items-center justify-center text-white font-bold text-sm flex-shrink-0`}>
                   <EditableText id={`testi-${i}-avatar`} editMode={editMode}>{t.avatar}</EditableText>
                 </div>
                 <div>
