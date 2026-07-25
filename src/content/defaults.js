@@ -4,10 +4,10 @@
 export const DEFAULT_CONTENT = {
   texts: {}, // surcharges de textes par id (sinon le composant garde son texte JSX)
   prix: {
-    standard_mensuel: 79,
-    standard_annuel: 790,
-    premium_mensuel: 99,
-    premium_annuel: 990,
+    standard_mensuel: 49,
+    standard_annuel: 490,
+    premium_mensuel: 79,
+    premium_annuel: 790,
     employe_sup_mensuel: 5,
     employe_sup_annuel: 60,
   },

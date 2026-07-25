@@ -12,8 +12,8 @@ const plans = [
     id: 'standard',
     name: 'Pack Standard',
     desc: 'Pour les PME de 1 à 5 employés',
-    priceMensuel: 79,
-    priceAnnuel: 790,
+    priceMensuel: 49,
+    priceAnnuel: 490,
     extra: '+5.-/mois par employé supplémentaire',
     highlight: false,
     features: [
@@ -32,8 +32,8 @@ const plans = [
     id: 'premium',
     name: 'Pack Premium',
     desc: 'Tout inclus + fonctionnalités avancées',
-    priceMensuel: 99,
-    priceAnnuel: 990,
+    priceMensuel: 79,
+    priceAnnuel: 790,
     extra: 'Employés illimités inclus',
     highlight: true,
     features: [
