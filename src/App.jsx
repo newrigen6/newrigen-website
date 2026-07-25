@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight } from 'lucide-react'
 import { useSiteContent } from './content/SiteContent'
+import { useModuleTiers } from './content/moduleTiers'
 
 const TEAL_PACKS = '#4DD9D9'
 
@@ -48,6 +49,23 @@ const homePlans = [
 
 function PacksComparatif() {
   const [interval, setInterval] = useState('mensuel')
+  const liveModules = useModuleTiers()
+
+  // Fonctionnalités pilotées depuis l'admin (repli sur les listes codées en dur
+  // tant que Supabase n'a pas répondu, ou en cas d'échec)
+  const livePacks = homePlans.map(p => {
+    if (!liveModules) return p
+    if (p.id === 'standard') {
+      const features = liveModules.filter(m => m.tier === 'standard').map(m => m.label)
+      return features.length ? { ...p, features } : p
+    }
+    if (p.id === 'premium') {
+      const premiumOnly = liveModules.filter(m => m.tier === 'premium').map(m => m.label)
+      return premiumOnly.length ? { ...p, features: ['Tout le Pack Standard', ...premiumOnly] } : p
+    }
+    return p
+  })
+
   return (
     <section className="py-24 px-6">
       <div className="max-w-4xl mx-auto">
@@ -76,7 +94,7 @@ function PacksComparatif() {
         </div>
         {/* Cards */}
         <div className="grid md:grid-cols-2 gap-6">
-          {homePlans.map(plan => (
+          {livePacks.map(plan => (
             <div key={plan.id} className="rounded-2xl p-8 border flex flex-col" style={{
               background: plan.highlight ? `${TEAL_PACKS}08` : `${TEAL_PACKS}04`,
               borderColor: plan.highlight ? TEAL_PACKS : `${TEAL_PACKS}20`,
