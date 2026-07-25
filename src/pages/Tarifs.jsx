@@ -3,6 +3,7 @@ import { Check, X, Loader2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { track } from '@vercel/analytics'
 import { useSiteContent } from '../content/SiteContent'
+import { useModuleTiers } from '../content/moduleTiers'
 
 const TEAL = '#4DD9D9'
 
@@ -220,13 +221,27 @@ export default function Tarifs() {
   const [interval, setInterval] = useState('mensuel')
   const [selected, setSelected] = useState(null)
   const { prix } = useSiteContent()
+  const liveModules = useModuleTiers()
 
-  // Prix pilotés depuis l'admin (repli sur les valeurs codées en dur)
-  const livePlans = plans.map(p => ({
-    ...p,
-    priceMensuel: prix[`${p.id}_mensuel`] ?? p.priceMensuel,
-    priceAnnuel:  prix[`${p.id}_annuel`]  ?? p.priceAnnuel,
-  }))
+  // Prix + fonctionnalités pilotés depuis l'admin (repli sur les valeurs codées en dur
+  // tant que Supabase n'a pas répondu, ou en cas d'échec)
+  const livePlans = plans.map(p => {
+    const priced = {
+      ...p,
+      priceMensuel: prix[`${p.id}_mensuel`] ?? p.priceMensuel,
+      priceAnnuel:  prix[`${p.id}_annuel`]  ?? p.priceAnnuel,
+    }
+    if (!liveModules) return priced
+    if (p.id === 'standard') {
+      const features = liveModules.filter(m => m.tier === 'standard').map(m => m.label)
+      return features.length ? { ...priced, features } : priced
+    }
+    if (p.id === 'premium') {
+      const premiumOnly = liveModules.filter(m => m.tier === 'premium').map(m => m.label)
+      return premiumOnly.length ? { ...priced, features: ['Tout le Pack Standard', ...premiumOnly] } : priced
+    }
+    return priced
+  })
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white">
