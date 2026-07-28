@@ -29,7 +29,7 @@ function PacksComparatif() {
       id: 'premium',
       name: t('tarifs.premium.nom'),
       desc: t('tarifs.premium.desc'),
-      priceMensuel: 79,
+      priceMensuel: 89,
       priceAnnuel: 790,
       extra: t('tarifs.premium.extra'),
       highlight: true,
