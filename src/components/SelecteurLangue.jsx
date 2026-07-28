@@ -1,6 +1,51 @@
 import { useState, useRef, useEffect } from 'react'
 import { LANGUES, useLangue } from '../i18n'
 
+// Petits drapeaux en SVG plutôt qu'en emoji : Windows n'a pas de police
+// affichant les drapeaux emoji (🇫🇷 etc.) et retombe sur le code pays en
+// texte brut, ce qui rendait le sélecteur illisible pour une bonne partie
+// des visiteurs.
+const DRAPEAUX_SVG = {
+  fr: (
+    <svg viewBox="0 0 24 16" className="w-full h-full">
+      <rect width="8" height="16" fill="#0055A4" />
+      <rect x="8" width="8" height="16" fill="#FFFFFF" />
+      <rect x="16" width="8" height="16" fill="#EF4135" />
+    </svg>
+  ),
+  de: (
+    <svg viewBox="0 0 24 16" className="w-full h-full">
+      <rect width="24" height="16" fill="#FFCE00" />
+      <rect width="24" height="10.67" fill="#DD0000" />
+      <rect width="24" height="5.33" fill="#000000" />
+    </svg>
+  ),
+  en: (
+    <svg viewBox="0 0 24 16" className="w-full h-full">
+      <rect width="24" height="16" fill="#00247D" />
+      <path d="M0,0 L24,16 M24,0 L0,16" stroke="#FFFFFF" strokeWidth="3" />
+      <path d="M0,0 L24,16 M24,0 L0,16" stroke="#CF142B" strokeWidth="1.2" />
+      <path d="M12,0 V16 M0,8 H24" stroke="#FFFFFF" strokeWidth="5" />
+      <path d="M12,0 V16 M0,8 H24" stroke="#CF142B" strokeWidth="3" />
+    </svg>
+  ),
+  pt: (
+    <svg viewBox="0 0 24 16" className="w-full h-full">
+      <rect width="24" height="16" fill="#FF0000" />
+      <rect width="9.6" height="16" fill="#046A38" />
+      <circle cx="9.6" cy="8" r="3.2" fill="#FFCC00" stroke="#FFFFFF" strokeWidth="0.5" />
+    </svg>
+  ),
+}
+
+function Drapeau({ code }) {
+  return (
+    <span className="inline-block w-5 h-[14px] rounded-[3px] overflow-hidden border border-white/15 flex-shrink-0" aria-hidden="true">
+      {DRAPEAUX_SVG[code]}
+    </span>
+  )
+}
+
 // Sélecteur de langue. Volontairement discret dans la barre de navigation :
 // un visiteur qui arrive déjà dans sa langue (détection navigateur) n'a rien
 // à faire, il sert surtout à corriger la détection.
@@ -29,7 +74,7 @@ export default function SelecteurLangue({ pleineLargeur = false }) {
         aria-expanded={ouvert}
         className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white border border-slate-700 hover:border-[#F97316]/50 transition-colors ${pleineLargeur ? 'w-full justify-center' : ''}`}
       >
-        <span aria-hidden="true">{active.drapeau}</span>
+        <Drapeau code={active.code} />
         <span className="uppercase tracking-wide">{active.code}</span>
       </button>
 
@@ -44,7 +89,7 @@ export default function SelecteurLangue({ pleineLargeur = false }) {
                 l.code === langue ? 'text-[#F97316] font-semibold' : 'text-slate-300 hover:text-white hover:bg-white/5'
               }`}
             >
-              <span aria-hidden="true">{l.drapeau}</span>
+              <Drapeau code={l.code} />
               {l.label}
             </button>
           ))}
