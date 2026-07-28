@@ -105,8 +105,8 @@ function PacksComparatif() {
               </div>
               <p className="text-xs text-slate-500 mb-1">{t('tarifs.puis', { prix: interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel, periode: interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois'), extra: plan.extra })}</p>
               <ul className="space-y-3 mb-8 flex-1">
-                {plan.features.map(f => (
-                  <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
+                {plan.features.map((f, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-sm text-slate-300">
                     <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL_PACKS }} />
                     {f}
                   </li>
@@ -246,7 +246,7 @@ function Services() {
         <div className="grid md:grid-cols-3 gap-5">
           {services.map(({ icon: Icon, title, desc, items: sItems }, i) => (
             <div
-              key={title}
+              key={i}
               data-anim="up"
               data-delay={String(i * 150)}
               className="group relative rounded-2xl p-7 flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1"
@@ -269,8 +269,8 @@ function Services() {
               <p className="text-slate-500 text-sm mb-5 leading-relaxed flex-1">{desc}</p>
 
               <div className="space-y-2 pt-4 border-t" style={{ borderColor: `${TEAL}12` }}>
-                {sItems.map(item => (
-                  <div key={item} className="flex items-center gap-2.5 text-sm">
+                {sItems.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2.5 text-sm">
                     <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: TEAL }} />
                     <span className="text-slate-300">{item}</span>
                   </div>
@@ -307,8 +307,8 @@ function Comparatif() {
               <span className="font-bold text-red-400 text-sm uppercase tracking-widest">{t('accueil.comparatif.sansLabel')}</span>
             </div>
             <ul className="divide-y divide-red-500/10">
-              {rows.map(([feat, before]) => (
-                <li key={feat} className="px-5 py-2.5">
+              {rows.map(([feat, before], idx) => (
+                <li key={idx} className="px-5 py-2.5">
                   <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-0.5">{feat}</div>
                   <div className="text-slate-400 text-sm">{before}</div>
                 </li>
@@ -322,8 +322,8 @@ function Comparatif() {
               <span className="font-bold text-sm uppercase tracking-widest" style={{ color: TEAL }}>{t('accueil.comparatif.avecLabel')}</span>
             </div>
             <ul className="divide-y" style={{ borderColor: `${TEAL}10` }}>
-              {rows.map(([feat, , after]) => (
-                <li key={feat} className="px-5 py-2.5" style={{ borderColor: `${TEAL}10` }}>
+              {rows.map(([feat, , after], idx) => (
+                <li key={idx} className="px-5 py-2.5" style={{ borderColor: `${TEAL}10` }}>
                   <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-0.5">{feat}</div>
                   <div className="text-sm font-semibold" style={{ color: TEAL }}>{after}</div>
                 </li>
@@ -363,8 +363,8 @@ function Processus() {
                 <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
                 <p className="text-slate-400 text-sm mb-3 leading-relaxed">{desc}</p>
                 <ul className="flex flex-wrap gap-2">
-                  {items.map(item => (
-                    <li key={item} className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full" style={{ background: `${TEAL}12`, color: TEAL }}>
+                  {items.map((item, idx) => (
+                    <li key={idx} className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full" style={{ background: `${TEAL}12`, color: TEAL }}>
                       <Check className="w-3 h-3" />{item}
                     </li>
                   ))}
@@ -458,8 +458,8 @@ function Footer() {
           <div>
             <h4 className="font-semibold text-white text-sm mb-3">{t('accueil.footer.servicesLabel')}</h4>
             <ul className="space-y-2 text-sm text-slate-400">
-              {[t('accueil.footer.s1'), t('accueil.footer.s2'), t('accueil.footer.s3')].map(s => (
-                <li key={s}><a href="#services" className="hover:text-white transition-colors">{s}</a></li>
+              {[t('accueil.footer.s1'), t('accueil.footer.s2'), t('accueil.footer.s3')].map((s, idx) => (
+                <li key={idx}><a href="#services" className="hover:text-white transition-colors">{s}</a></li>
               ))}
             </ul>
           </div>
@@ -467,7 +467,7 @@ function Footer() {
             <h4 className="font-semibold text-white text-sm mb-3">{t('accueil.footer.entrepriseLabel')}</h4>
             <ul className="space-y-2 text-sm text-slate-400">
               {[['#processus', t('nav.processus')], ['#contact', t('accueil.footer.contactLabel')], ['/tarifs', t('nav.tarifs')]].map(([h, l]) => (
-                <li key={l}><a href={h} className="hover:text-white transition-colors">{l}</a></li>
+                <li key={h}><a href={h} className="hover:text-white transition-colors">{l}</a></li>
               ))}
               <li><Link to="/mentions-legales" className="hover:text-white transition-colors">{t('legal.mentions')}</Link></li>
               <li><Link to="/confidentialite" className="hover:text-white transition-colors">{t('consent.lien')}</Link></li>
