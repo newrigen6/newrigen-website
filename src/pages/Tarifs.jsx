@@ -267,7 +267,7 @@ export default function Tarifs() {
               Choisissez le pack adapté à votre PME. Sans frais cachés.
             </p>
             <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: `${TEAL}15`, color: TEAL, border: `1px solid ${TEAL}40` }}>
-              <span>🎁</span> 1 mois d'essai gratuit — sans carte bancaire requise
+              <span>🎁</span> 1 mois d'essai gratuit
             </div>
           </div>
 
@@ -288,7 +288,7 @@ export default function Tarifs() {
               Annuel
               <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${interval === 'annuel' ? 'bg-[#0A0A0F]/20 text-[#0A0A0F]' : 'text-[#4DD9D9]'}`}
                 style={interval !== 'annuel' ? { background: `${TEAL}20` } : {}}>
-                2 mois offerts
+                1 mois offert
               </span>
             </button>
           </div>
