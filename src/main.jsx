@@ -4,13 +4,16 @@ import App from './App'
 import './index.css'
 import { inject } from '@vercel/analytics'
 import { SiteContentProvider } from './content/SiteContent'
+import { LangueProvider } from './i18n'
 
 inject()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <SiteContentProvider>
-      <App />
-    </SiteContentProvider>
+    <LangueProvider>
+      <SiteContentProvider>
+        <App />
+      </SiteContentProvider>
+    </LangueProvider>
   </React.StrictMode>
 )

@@ -1,34 +1,16 @@
-﻿import { useRef } from 'react'
+import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useT } from '../i18n'
 
+// Les textes viennent du dictionnaire ; seuls le numéro et l'icône restent ici.
 const steps = [
-  {
-    number: '01',
-    icon: '🔍',
-    title: 'Audit & analyse',
-    description:
-      'Nous commençons par un audit gratuit de vos processus métier pour identifier les tâches chronophages et les opportunités d\'automatisation à fort impact.',
-    details: ['Réunion de découverte (60 min)', 'Analyse de vos outils actuels', 'Rapport d\'opportunités gratuit'],
-  },
-  {
-    number: '02',
-    icon: '⚙️',
-    title: 'Conception & développement',
-    description:
-      'Nos experts conçoivent et développent vos automatisations sur mesure — workflows n8n, agents IA, intégrations API — en collaboration étroite avec vos équipes.',
-    details: ['Prototype en 5 jours ouvrables', 'Tests et validations', 'Documentation complète'],
-  },
-  {
-    number: '03',
-    icon: '🚀',
-    title: 'Déploiement & suivi',
-    description:
-      'Mise en production progressive, formation de vos équipes et monitoring continu. Vous gardez le contrôle, nous gérons la technique.',
-    details: ['Déploiement sans interruption', 'Formation de votre équipe', 'Support et optimisation continus'],
-  },
+  { number: '01', icon: '🔍' },
+  { number: '02', icon: '⚙️' },
+  { number: '03', icon: '🚀' },
 ]
 
 export default function HowItWorks() {
+  const t = useT()
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -45,13 +27,13 @@ export default function HowItWorks() {
           className="text-center mb-20"
         >
           <span className="text-[#F97316] text-sm font-semibold uppercase tracking-widest mb-3 block">
-            Notre processus
+            {t('processus.eyebrow')}
           </span>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
-            Comment ça marche ?
+            {t('processus.titre')}
           </h2>
           <p className="text-slate-400 text-base max-w-xl mx-auto">
-            Un processus simple et transparent, de l'idée au déploiement en quelques semaines.
+            {t('processus.soustitre')}
           </p>
         </motion.div>
 
@@ -78,13 +60,13 @@ export default function HowItWorks() {
                         {step.icon}
                       </div>
                       <div>
-                        <div className="text-xs font-bold text-[#F97316] tracking-widest mb-1">ÉTAPE {step.number}</div>
-                        <h3 className="text-lg font-bold text-white mb-3">{step.title}</h3>
-                        <p className="text-slate-400 text-sm leading-relaxed mb-4">{step.description}</p>
+                        <div className="text-xs font-bold text-[#F97316] tracking-widest mb-1">{t('processus.etape')} {step.number}</div>
+                        <h3 className="text-lg font-bold text-white mb-3">{t(`processus.${i + 1}.titre`)}</h3>
+                        <p className="text-slate-400 text-sm leading-relaxed mb-4">{t(`processus.${i + 1}.description`)}</p>
                         <ul className="space-y-1.5">
-                          {step.details.map((d) => (
-                            <li key={d} className="flex items-center gap-2 text-sm text-slate-300">
-                              <span className="text-[#F97316]">→</span> {d}
+                          {[1, 2, 3].map((n) => (
+                            <li key={n} className="flex items-center gap-2 text-sm text-slate-300">
+                              <span className="text-[#F97316]">→</span> {t(`processus.${i + 1}.detail${n}`)}
                             </li>
                           ))}
                         </ul>

@@ -1,15 +1,18 @@
-﻿import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useLangue } from '../i18n'
+import SelecteurLangue from './SelecteurLangue'
 
 const navLinks = [
-  { label: 'Services', href: '#services', anchor: true },
-  { label: 'Comparatif', href: '#comparatif', anchor: true },
-  { label: 'Comment ça marche', href: '#processus', anchor: true },
-  { label: 'Tarifs', href: '/tarifs', anchor: false },
+  { cle: 'nav.services',   href: '#services',   anchor: true },
+  { cle: 'nav.comparatif', href: '#comparatif', anchor: true },
+  { cle: 'nav.processus',  href: '#processus',  anchor: true },
+  { cle: 'nav.tarifs',     href: '/tarifs',     anchor: false },
 ]
 
 export default function Navbar() {
+  const { t } = useLangue()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [logo, setLogo] = useState(() => { try { return localStorage.getItem('newrigen-logo') || null } catch { return null } })
@@ -89,7 +92,7 @@ export default function Navbar() {
               onClick={(e) => handleNavClick(e, link.href)}
               className="text-sm text-slate-400 hover:text-white transition-colors duration-200 font-medium"
             >
-              {link.label}
+              {t(link.cle)}
             </a>
           ) : (
             <Link
@@ -97,19 +100,20 @@ export default function Navbar() {
               to={link.href}
               className="text-sm text-slate-400 hover:text-white transition-colors duration-200 font-medium"
             >
-              {link.label}
+              {t(link.cle)}
             </Link>
           ))}
         </div>
 
         {/* CTA */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
+          <SelecteurLangue />
           <a
             href="#contact"
             onClick={(e) => handleNavClick(e, '#contact')}
             className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#F97316] to-[#FB923C] hover:from-[#F97316]/90 hover:to-[#FB923C]/90 text-gray-900 font-bold transition-all duration-200 shadow-lg shadow-[#F97316]/20 hover:shadow-[#F97316]/30 hover:-translate-y-0.5"
           >
-            Demander un devis
+            {t('nav.cta')}
           </a>
         </div>
 
@@ -117,7 +121,7 @@ export default function Navbar() {
         <button
           className="md:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
+          aria-label={t('nav.menu')}
         >
           <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
           <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
@@ -135,6 +139,7 @@ export default function Navbar() {
             className="md:hidden glass border-t border-[#F97316]/10"
           >
             <div className="px-6 py-4 flex flex-col gap-4">
+              <SelecteurLangue pleineLargeur />
               {navLinks.map((link) => link.anchor ? (
                 <a
                   key={link.href}
@@ -142,7 +147,7 @@ export default function Navbar() {
                   onClick={(e) => handleNavClick(e, link.href)}
                   className="text-slate-300 hover:text-white font-medium py-2 transition-colors"
                 >
-                  {link.label}
+                  {t(link.cle)}
                 </a>
               ) : (
                 <Link
@@ -151,7 +156,7 @@ export default function Navbar() {
                   onClick={() => setMenuOpen(false)}
                   className="text-slate-300 hover:text-white font-medium py-2 transition-colors"
                 >
-                  {link.label}
+                  {t(link.cle)}
                 </Link>
               ))}
               <a
@@ -159,7 +164,7 @@ export default function Navbar() {
                 onClick={(e) => handleNavClick(e, '#contact')}
                 className="px-5 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-[#F97316] to-[#FB923C] text-center"
               >
-                Demander un devis
+                {t('nav.cta')}
               </a>
             </div>
           </motion.div>
