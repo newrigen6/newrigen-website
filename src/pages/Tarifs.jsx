@@ -24,7 +24,9 @@ function CheckoutModal({ plan, interval, onClose }) {
   const [error, setError] = useState(null)
 
   const { prix } = useSiteContent()
-  const extra = Math.max(0, employes - 5)
+  // Le pack Premium inclut les employés illimités : aucun siège supplémentaire
+  // n'est facturé (même règle que la fonction create-checkout).
+  const extra = plan.id === 'premium' ? 0 : Math.max(0, employes - 5)
   const extraCoutMensuel = extra * (prix.employe_sup_mensuel ?? 5)
   const extraCoutAnnuel = extra * (prix.employe_sup_annuel ?? 60)
 
