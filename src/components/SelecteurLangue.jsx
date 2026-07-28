@@ -34,7 +34,7 @@ export default function SelecteurLangue({ pleineLargeur = false }) {
       </button>
 
       {ouvert && (
-        <div className={`absolute right-0 mt-2 py-1 rounded-xl glass border border-[#F97316]/20 shadow-xl z-50 min-w-[10rem] ${pleineLargeur ? 'left-0' : ''}`}>
+        <div className={`absolute right-0 mt-2 py-1 rounded-xl bg-[#0A0A0F]/95 backdrop-blur-md border border-[#F97316]/20 shadow-xl z-50 min-w-[10rem] ${pleineLargeur ? 'left-0' : ''}`}>
           {LANGUES.map(l => (
             <button
               key={l.code}
