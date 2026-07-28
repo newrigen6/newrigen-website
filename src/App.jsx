@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, ChevronRight, Instagram } from 'lucide-react'
 import { useSiteContent } from './content/SiteContent'
 import { useModuleTiers } from './content/moduleTiers'
+import dashboardScreenshot from './assets/dashboard-screenshot.jpg'
 
 const TEAL_PACKS = '#4DD9D9'
 
@@ -214,6 +215,15 @@ function Hero() {
           <a href="#contact" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             Demande d'audit
           </a>
+        </div>
+        <div data-anim="up" data-delay="400" className="relative mt-16">
+          <div className="absolute inset-x-0 top-4 h-2/3 blur-3xl pointer-events-none" style={{ background: `${TEAL}25` }} />
+          <img
+            src={dashboardScreenshot}
+            alt="Interface de l'application Newrigen — tableau de bord"
+            className="relative w-full max-w-4xl mx-auto rounded-xl border shadow-2xl"
+            style={{ borderColor: `${TEAL}30` }}
+          />
         </div>
       </div>
     </section>
