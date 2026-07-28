@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Shield, X, ChevronDown } from 'lucide-react'
 import { useT } from '../i18n'
 
 const TEAL = '#4DD9D9'
-const STORAGE_KEY = 'newrigen-consent-v1'
 
 const politique = [
   {
@@ -50,18 +49,11 @@ const politique = [
 
 export default function ConsentGate({ children }) {
   const t = useT()
-  const [accepted, setAccepted] = useState(null)
+  // Volontairement non persisté (pas de localStorage) : le consentement est
+  // redemandé à chaque chargement du site plutôt que mémorisé durablement.
+  const [accepted, setAccepted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [expanded, setExpanded] = useState(null)
-
-  useEffect(() => {
-    try {
-      const val = localStorage.getItem(STORAGE_KEY)
-      setAccepted(val === 'true')
-    } catch {
-      setAccepted(false)
-    }
-  }, [])
 
   function handleScroll(e) {
     const el = e.currentTarget
@@ -69,16 +61,13 @@ export default function ConsentGate({ children }) {
   }
 
   function accept() {
-    try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
     setAccepted(true)
   }
 
   function refuse() {
-    try { localStorage.removeItem(STORAGE_KEY) } catch {}
     setAccepted(false)
   }
 
-  if (accepted === null) return null
   if (accepted) {
     return (
       <>
