@@ -487,13 +487,11 @@ function Footer() {
         </div>
         <div className="border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
           <span>© 2026 Newrigen. Tous droits réservés. · Siège social en Suisse</span>
-          <div className="flex items-center gap-4">
-            <span>🇨🇭 Fabriqué en Suisse</span>
-            <a href="https://www.instagram.com/newrigen.app/" target="_blank" rel="noopener noreferrer"
-              className="text-slate-500 hover:text-white transition-colors" aria-label="Instagram">
-              <Instagram className="w-4 h-4" />
-            </a>
-          </div>
+          <span>🇨🇭 Fabriqué en Suisse</span>
+          <a href="https://www.instagram.com/newrigen.app/" target="_blank" rel="noopener noreferrer"
+            className="ml-auto text-slate-500 hover:text-white transition-colors" aria-label="Instagram">
+            <Instagram className="w-6 h-6" />
+          </a>
         </div>
       </div>
     </footer>
