@@ -221,7 +221,7 @@ function Hero() {
           <img
             src={dashboardScreenshot}
             alt="Interface de l'application Newrigen — tableau de bord"
-            className="relative w-full max-w-4xl mx-auto rounded-xl border shadow-2xl"
+            className="relative w-full max-w-2xl mx-auto rounded-xl border shadow-2xl"
             style={{ borderColor: `${TEAL}30` }}
           />
         </div>
