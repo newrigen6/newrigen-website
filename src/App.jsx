@@ -4,6 +4,7 @@ import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapP
 import { useSiteContent } from './content/SiteContent'
 import { useModuleTiers } from './content/moduleTiers'
 import dashboardScreenshot from './assets/dashboard-screenshot.jpg'
+import SelecteurLangue from './components/SelecteurLangue'
 
 const TEAL_PACKS = '#4DD9D9'
 
@@ -175,10 +176,14 @@ function Navbar() {
             : <a key={l.href} href={l.href} className="text-sm text-slate-400 hover:text-white transition-colors font-medium">{l.label}</a>
           )}
         </div>
-        <Link to="/tarifs" className="hidden md:block px-5 py-2.5 rounded-xl text-sm font-semibold text-[#0A0A0F] transition-all duration-200 shadow-lg" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 20px ${TEAL}40` }}>
-          S'abonner
-        </Link>
+        <div className="hidden md:flex items-center gap-3">
+          <SelecteurLangue />
+          <Link to="/tarifs" className="px-5 py-2.5 rounded-xl text-sm font-semibold text-[#0A0A0F] transition-all duration-200 shadow-lg" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 20px ${TEAL}40` }}>
+            S'abonner
+          </Link>
+        </div>
         <div className="md:hidden flex items-center gap-2">
+          <SelecteurLangue />
           <Link to="/tarifs" className="px-4 py-2 rounded-xl text-xs font-semibold text-[#0A0A0F]" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` }}>S'abonner</Link>
           <button className="text-white" onClick={() => setOpen(v => !v)}>{open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</button>
         </div>
