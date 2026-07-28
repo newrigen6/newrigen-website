@@ -330,7 +330,6 @@ export default function Tarifs() {
                 <p className="text-xs text-slate-500 mb-1">
                   Puis {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.- CHF/{interval === 'annuel' ? 'an' : 'mois'} — {plan.extra}
                 </p>
-                <p className="text-xs mb-6" style={{ color: TEAL }}>Sans engagement sur 1 mois</p>
 
                 <ul className="space-y-3 mb-8 flex-1">
                   {plan.features.map((f) => (

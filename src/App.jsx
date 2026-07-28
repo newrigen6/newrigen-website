@@ -118,7 +118,6 @@ function PacksComparatif() {
                 <span className="text-slate-400 text-sm ml-2">le 1er mois</span>
               </div>
               <p className="text-xs text-slate-500 mb-1">Puis {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.- CHF/{interval === 'annuel' ? 'an' : 'mois'} — {plan.extra}</p>
-              <p className="text-xs mb-6" style={{ color: TEAL_PACKS }}>Sans engagement sur 1 mois</p>
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map(f => (
                   <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
