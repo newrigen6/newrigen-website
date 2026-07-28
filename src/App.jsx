@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight, Instagram } from 'lucide-react'
+import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, ChevronRight, Instagram } from 'lucide-react'
 import { useSiteContent } from './content/SiteContent'
 import { useModuleTiers } from './content/moduleTiers'
 
@@ -380,8 +380,6 @@ function Processus() {
 
 function Temoignages() { return null }
 
-const telHref = (n) => 'tel:+41' + String(n || '').replace(/\D/g, '').replace(/^0/, '')
-
 function Contact() {
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
@@ -403,16 +401,6 @@ function Contact() {
               <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
                 <Mail className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{contact.email}
               </a>
-              {contact.telephone1 && (
-                <a href={telHref(contact.telephone1)} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
-                  <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{contact.telephone1}
-                </a>
-              )}
-              {contact.telephone2 && (
-                <a href={telHref(contact.telephone2)} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
-                  <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{contact.telephone2}
-                </a>
-              )}
               <span className="flex items-center gap-3 text-slate-300">
                 <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />Suisse romande et alémanique
               </span>
