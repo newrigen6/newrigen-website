@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { track } from '@vercel/analytics'
 import { useSiteContent } from '../content/SiteContent'
 import { useT, useLangue } from '../i18n'
+import SelecteurLangue from '../components/SelecteurLangue'
 import { useModuleTiers } from '../content/moduleTiers'
 
 const TEAL = '#4DD9D9'
@@ -224,7 +225,10 @@ export default function Tarifs() {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm" style={{ background: '#0A0A0F', border: `1.5px solid ${TEAL}`, color: TEAL }}>N</div>
             <span className="font-bold text-white">Newrigen</span>
           </Link>
-          <Link to="/" className="text-sm text-slate-400 hover:text-white transition-colors">← Retour</Link>
+          <div className="flex items-center gap-3">
+            <SelecteurLangue />
+            <Link to="/" className="text-sm text-slate-400 hover:text-white transition-colors">{t('nav.retour')}</Link>
+          </div>
         </div>
       </nav>
 

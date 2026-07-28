@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useT } from '../i18n'
+import SelecteurLangue from '../components/SelecteurLangue'
 
 const TEAL = '#4DD9D9'
 
@@ -24,7 +25,10 @@ function LegalLayout({ title, updated, children }) {
     <div className="min-h-screen bg-[#0B1220] text-slate-300">
       <nav className="max-w-3xl mx-auto px-6 py-6 flex items-center justify-between">
         <Link to="/" className="font-black text-white text-lg">Newrigen</Link>
-        <Link to="/" className="text-sm text-slate-400 hover:text-white transition-colors">← Retour</Link>
+        <div className="flex items-center gap-3">
+          <SelecteurLangue />
+          <Link to="/" className="text-sm text-slate-400 hover:text-white transition-colors">{t('nav.retour')}</Link>
+        </div>
       </nav>
       <main className="max-w-3xl mx-auto px-6 pb-24">
         <h1 className="text-3xl md:text-4xl font-black text-white mb-2">{title}</h1>
@@ -38,8 +42,8 @@ function LegalLayout({ title, updated, children }) {
         <div className="space-y-8 text-sm leading-relaxed">{children}</div>
       </main>
       <footer className="max-w-3xl mx-auto px-6 pb-10 border-t border-white/5 pt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
-        <Link to="/mentions-legales" className="hover:text-slate-300">Mentions légales</Link>
-        <Link to="/confidentialite" className="hover:text-slate-300">Politique de confidentialité</Link>
+        <Link to="/mentions-legales" className="hover:text-slate-300">{t('legal.mentions')}</Link>
+        <Link to="/confidentialite" className="hover:text-slate-300">{t('consent.lien')}</Link>
         <Link to="/cgv" className="hover:text-slate-300">CGV</Link>
       </footer>
     </div>

@@ -13,6 +13,8 @@ export const DICT = {
     'nav.processus': 'Comment ça marche',
     'nav.tarifs': 'Tarifs',
     'nav.cta': 'Demander un devis',
+    'nav.retour': '← Retour',
+    'legal.mentions': 'Mentions légales',
     'nav.menu': 'Menu',
     'nav.langue': 'Langue',
 
@@ -188,6 +190,8 @@ export const DICT = {
     'nav.processus': 'So funktioniert’s',
     'nav.tarifs': 'Preise',
     'nav.cta': 'Offerte anfragen',
+    'nav.retour': '← Zurück',
+    'legal.mentions': 'Impressum',
     'nav.menu': 'Menü',
     'nav.langue': 'Sprache',
 
@@ -363,6 +367,8 @@ export const DICT = {
     'nav.processus': 'How it works',
     'nav.tarifs': 'Pricing',
     'nav.cta': 'Request a quote',
+    'nav.retour': '← Back',
+    'legal.mentions': 'Legal notice',
     'nav.menu': 'Menu',
     'nav.langue': 'Language',
 
@@ -538,6 +544,8 @@ export const DICT = {
     'nav.processus': 'Como funciona',
     'nav.tarifs': 'Preços',
     'nav.cta': 'Pedir orçamento',
+    'nav.retour': '← Voltar',
+    'legal.mentions': 'Menções legais',
     'nav.menu': 'Menu',
     'nav.langue': 'Idioma',
 
