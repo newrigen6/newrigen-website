@@ -1,11 +1,15 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useT } from '../i18n'
+import { useSiteContent } from '../content/SiteContent'
 import SelecteurLangue from '../components/SelecteurLangue'
 
 const TEAL = '#4DD9D9'
 
 // À compléter par Newrigen : raison sociale exacte, adresse du siège et numéro IDE.
+// ⚠️ Adresse et IDE sont des informations légales obligatoires en Suisse dès
+// l'inscription au registre du commerce. Elles ne peuvent pas être devinées :
+// les renseigner ici avant toute campagne commerciale.
 const ENTREPRISE = {
   nom: 'Newrigen',
   adresse: '[Adresse du siège à compléter], Suisse',
@@ -56,7 +60,7 @@ function H2({ children }) {
 
 export function MentionsLegales() {
   return (
-    <LegalLayout title="Mentions légales" updated="8 juillet 2026">
+    <LegalLayout title="Mentions légales" updated="28 juillet 2026">
       <section>
         <H2>Éditeur du site</H2>
         <p className="mt-2">
@@ -95,7 +99,7 @@ export function MentionsLegales() {
 
 export function Confidentialite() {
   return (
-    <LegalLayout title="Politique de confidentialité" updated="8 juillet 2026">
+    <LegalLayout title="Politique de confidentialité" updated="28 juillet 2026">
       <p>
         La présente politique décrit comment {ENTREPRISE.nom} traite vos données personnelles, conformément à la loi
         fédérale suisse sur la protection des données (nLPD).
@@ -156,10 +160,44 @@ export function Confidentialite() {
         </p>
       </section>
       <section>
+        <H2>Sécurité</H2>
+        <p className="mt-2">
+          Les données sont hébergées sur une infrastructure sécurisée, chiffrées en transit (HTTPS) et au repos. Les
+          mots de passe ne sont jamais stockés en clair. L'accès aux données de chaque entreprise est cloisonné :
+          un compte ne peut accéder qu'aux données de sa propre entreprise. Les accès administrateurs sont limités
+          aux personnes qui en ont besoin pour exploiter le service.
+        </p>
+      </section>
+      <section>
+        <H2>Recours à l'intelligence artificielle</H2>
+        <p className="mt-2">
+          Certaines fonctions facultatives (dictée vocale, lecture de documents importés, génération de devis à
+          partir de photos) transmettent le contenu concerné à notre prestataire d'intelligence artificielle pour
+          être analysé. Ces contenus ne sont pas utilisés pour entraîner des modèles. Ces fonctions ne prennent
+          aucune décision produisant des effets juridiques : leur résultat est une proposition que vous relisez et
+          validez avant tout envoi.
+        </p>
+      </section>
+      <section>
         <H2>Cookies et stockage local</H2>
         <p className="mt-2">
           Le site n'utilise pas de cookies publicitaires ni de traçage tiers. Un stockage local technique peut être
           utilisé pour le bon fonctionnement de l'application (session, préférences).
+        </p>
+      </section>
+      <section>
+        <H2>Droit de recours</H2>
+        <p className="mt-2">
+          Si vous estimez que le traitement de vos données n'est pas conforme, vous pouvez vous adresser au Préposé
+          fédéral à la protection des données et à la transparence (PFPDT), Feldeggweg 1, 3003 Berne.
+        </p>
+      </section>
+      <section>
+        <H2>Modification de la présente politique</H2>
+        <p className="mt-2">
+          Cette politique peut être adaptée pour tenir compte d'évolutions légales ou techniques. La version en
+          vigueur est celle publiée sur cette page ; sa date de mise à jour figure en haut du document. Toute
+          modification substantielle vous sera signalée par email.
         </p>
       </section>
     </LegalLayout>
@@ -167,8 +205,12 @@ export function Confidentialite() {
 }
 
 export function CGV() {
+  // Les tarifs viennent de la même source que la page Tarifs (admin).
+  // Les recopier ici les ferait diverger : des CGV qui annoncent un autre prix
+  // que celui facturé sont opposables au client.
+  const { prix } = useSiteContent()
   return (
-    <LegalLayout title="Conditions générales de vente" updated="8 juillet 2026">
+    <LegalLayout title="Conditions générales de vente" updated="28 juillet 2026">
       <section>
         <H2>1. Objet</H2>
         <p className="mt-2">
@@ -180,9 +222,10 @@ export function CGV() {
       <section>
         <H2>2. Offres et tarifs</H2>
         <ul className="mt-2 list-disc pl-5 space-y-1">
-          <li><strong className="text-white">Pack Standard</strong> : 79 CHF/mois ou 790 CHF/an (2 mois offerts) ;</li>
-          <li><strong className="text-white">Pack Premium</strong> : 99 CHF/mois ou 990 CHF/an (2 mois offerts) ;</li>
-          <li>Chaque pack inclut jusqu'à 5 employés ; chaque employé supplémentaire est facturé 5 CHF/mois (60 CHF/an).</li>
+          <li><strong className="text-white">Pack Standard</strong> : {prix.standard_mensuel} CHF/mois ou {prix.standard_annuel} CHF/an (2 mois offerts) ;</li>
+          <li><strong className="text-white">Pack Premium</strong> : {prix.premium_mensuel} CHF/mois ou {prix.premium_annuel} CHF/an (2 mois offerts) ;</li>
+          <li>Chaque pack inclut jusqu'à 5 employés ; chaque employé supplémentaire est facturé {prix.employe_sup_mensuel} CHF/mois ({prix.employe_sup_annuel} CHF/an).</li>
+          <li><strong className="text-white">Option Devis vocal</strong> : 15 CHF/mois, activable et désactivable à tout moment depuis les paramètres de l'application.</li>
         </ul>
         <p className="mt-2">Les prix s'entendent en francs suisses. {ENTREPRISE.nom} se réserve le droit de modifier ses tarifs ; les modifications s'appliquent au renouvellement suivant, après information préalable.</p>
       </section>
@@ -195,7 +238,16 @@ export function CGV() {
         </p>
       </section>
       <section>
-        <H2>4. Durée, renouvellement et résiliation</H2>
+        <H2>4. Essai gratuit</H2>
+        <p className="mt-2">
+          Un essai gratuit de 30 jours est proposé lors de la souscription, sans carte bancaire requise à
+          l'inscription. Pendant l'essai, le service est accessible sans engagement et peut être interrompu à tout
+          moment ; aucun montant n'est prélevé avant son terme. À défaut d'annulation avant la fin de l'essai,
+          l'abonnement choisi démarre et le premier paiement est prélevé.
+        </p>
+      </section>
+      <section>
+        <H2>5. Durée, renouvellement et résiliation</H2>
         <p className="mt-2">
           L'abonnement est conclu pour la période choisie (mensuelle ou annuelle) et se renouvelle automatiquement.
           Il peut être résilié à tout moment depuis le portail client (accessible dans les paramètres de
@@ -203,7 +255,7 @@ export function CGV() {
         </p>
       </section>
       <section>
-        <H2>5. Défaut de paiement</H2>
+        <H2>6. Défaut de paiement</H2>
         <p className="mt-2">
           En cas d'échec de paiement, l'accès au service peut être suspendu après notification, jusqu'à
           régularisation. Les données du client sont conservées pendant une période raisonnable pour permettre la
@@ -211,7 +263,7 @@ export function CGV() {
         </p>
       </section>
       <section>
-        <H2>6. Disponibilité et support</H2>
+        <H2>7. Disponibilité et support</H2>
         <p className="mt-2">
           {ENTREPRISE.nom} met en œuvre les moyens raisonnables pour assurer une disponibilité continue du service,
           sans garantie de disponibilité absolue (maintenances, incidents des prestataires d'hébergement). Le support
@@ -219,7 +271,7 @@ export function CGV() {
         </p>
       </section>
       <section>
-        <H2>7. Données du client</H2>
+        <H2>8. Données du client</H2>
         <p className="mt-2">
           Les données saisies dans l'application (devis, clients, heures, factures) restent la propriété du client.
           Elles sont traitées conformément à notre <Link to="/confidentialite" className="underline hover:text-white">politique de confidentialité</Link>.
@@ -227,7 +279,7 @@ export function CGV() {
         </p>
       </section>
       <section>
-        <H2>8. Responsabilité</H2>
+        <H2>9. Responsabilité</H2>
         <p className="mt-2">
           La responsabilité de {ENTREPRISE.nom} est limitée aux dommages directs prouvés et ne peut excéder le
           montant des sommes versées par le client au cours des douze derniers mois. Le client reste seul responsable
@@ -235,7 +287,31 @@ export function CGV() {
         </p>
       </section>
       <section>
-        <H2>9. Droit applicable et for</H2>
+        <H2>10. Propriété intellectuelle</H2>
+        <p className="mt-2">
+          L'abonnement confère un droit d'utilisation personnel, non exclusif et non transférable du logiciel, pour
+          la durée de l'abonnement. Il n'emporte aucune cession de droits. Le client s'interdit de copier,
+          décompiler, revendre ou mettre le service à disposition de tiers en dehors de ses propres utilisateurs.
+        </p>
+      </section>
+      <section>
+        <H2>11. Réversibilité et fin de contrat</H2>
+        <p className="mt-2">
+          Le client peut exporter ses données à tout moment depuis l'application. Après la fin de l'abonnement,
+          ses données restent récupérables sur demande pendant 30 jours, puis sont supprimées, sous réserve des
+          durées de conservation légales.
+        </p>
+      </section>
+      <section>
+        <H2>12. Modification des CGV</H2>
+        <p className="mt-2">
+          Les présentes conditions peuvent être modifiées. Le client est informé par email au moins 30 jours avant
+          l'entrée en vigueur des nouvelles conditions ; à défaut d'acceptation, il peut résilier son abonnement
+          avant cette date, sans frais.
+        </p>
+      </section>
+      <section>
+        <H2>13. Droit applicable et for</H2>
         <p className="mt-2">
           Les présentes CGV sont soumises au droit suisse. Le for exclusif est au siège de {ENTREPRISE.nom}, sous
           réserve des fors impératifs prévus par la loi.

@@ -32,7 +32,7 @@ const politique = [
   },
   {
     titre: '7. Sécurité des données',
-    texte: `Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, perte ou destruction. Nos données sont hébergées sur des serveurs situés dans l'Union Européenne.`,
+    texte: `Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, perte ou destruction : chiffrement des échanges (HTTPS), cloisonnement des accès et mots de passe jamais stockés en clair. La base de données est hébergée en Irlande (Union européenne) ; l'hébergement du site est assuré par Vercel Inc., société américaine. Voir la rubrique « Transferts internationaux ».`,
   },
   {
     titre: '8. Vos droits',
