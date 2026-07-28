@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight } from 'lucide-react'
+import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight, Instagram } from 'lucide-react'
 import { useSiteContent } from './content/SiteContent'
 import { useModuleTiers } from './content/moduleTiers'
 
@@ -487,7 +487,13 @@ function Footer() {
         </div>
         <div className="border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
           <span>© 2026 Newrigen. Tous droits réservés. · Siège social en Suisse</span>
-          <span>🇨🇭 Fabriqué en Suisse</span>
+          <div className="flex items-center gap-4">
+            <span>🇨🇭 Fabriqué en Suisse</span>
+            <a href="https://www.instagram.com/newrigen.app/" target="_blank" rel="noopener noreferrer"
+              className="text-slate-500 hover:text-white transition-colors" aria-label="Instagram">
+              <Instagram className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
