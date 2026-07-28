@@ -6,15 +6,13 @@ import SelecteurLangue from '../components/SelecteurLangue'
 
 const TEAL = '#4DD9D9'
 
-// À compléter par Newrigen : raison sociale exacte, adresse du siège et numéro IDE.
-// ⚠️ Adresse et IDE sont des informations légales obligatoires en Suisse dès
-// l'inscription au registre du commerce. Elles ne peuvent pas être devinées :
-// les renseigner ici avant toute campagne commerciale.
+// Pas de numéro IDE : Newrigen n'est pas encore inscrite au registre du
+// commerce. Mieux vaut ne rien afficher qu'un numéro faux ou un champ à trous.
+// À ajouter ici (et dans la rubrique « Éditeur du site ») après l'inscription.
 const ENTREPRISE = {
   nom: 'Newrigen',
-  adresse: '[Adresse du siège à compléter], Suisse',
+  adresse: 'Valais, Suisse',
   email: 'newrigen6@gmail.com',
-  ide: 'CHE-XXX.XXX.XXX [à compléter]',
 }
 
 function LegalLayout({ title, updated, children }) {
@@ -66,8 +64,7 @@ export function MentionsLegales() {
         <p className="mt-2">
           {ENTREPRISE.nom}<br />
           {ENTREPRISE.adresse}<br />
-          Email : <a href={`mailto:${ENTREPRISE.email}`} className="underline hover:text-white">{ENTREPRISE.email}</a><br />
-          IDE / TVA : {ENTREPRISE.ide}
+          Email : <a href={`mailto:${ENTREPRISE.email}`} className="underline hover:text-white">{ENTREPRISE.email}</a>
         </p>
       </section>
       <section>

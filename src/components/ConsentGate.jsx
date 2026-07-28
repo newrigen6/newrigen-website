@@ -8,7 +8,7 @@ const STORAGE_KEY = 'newrigen-consent-v1'
 const politique = [
   {
     titre: '1. Responsable du traitement',
-    texte: `Newrigen (ci-après "nous", "notre", "nos") est responsable du traitement de vos données personnelles. Siège social en Suisse. Contact : newrigen6@gmail.com — Tél. 079 873 37 91 / 079 324 65 93.`,
+    texte: `Newrigen (ci-après "nous", "notre", "nos") est responsable du traitement de vos données personnelles. Siège en Valais, Suisse. Contact : newrigen6@gmail.com — Tél. 079 873 37 91 / 079 324 65 93.`,
   },
   {
     titre: '2. Données collectées',
