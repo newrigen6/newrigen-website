@@ -1,7 +1,8 @@
-﻿import { motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEdit } from '../App'
 import EditableText from './EditableText'
 import { useSiteContent } from '../content/SiteContent'
+import { useT } from '../i18n'
 
 // Couleurs d'avatar par position (les témoignages venant de l'admin n'ont pas de couleur)
 const AVATAR_COLORS = ['from-[#F97316] to-[#EA6C0A]', 'from-orange-500 to-purple-500', 'from-blue-500 to-orange-500']
@@ -38,6 +39,7 @@ const testimonials = [
 ]
 
 export default function Testimonials() {
+  const t = useT()
   const editMode = useEdit()
   const { temoignages } = useSiteContent()
   return (
@@ -55,13 +57,13 @@ export default function Testimonials() {
           className="text-center mb-14"
         >
           <span className="text-[#F97316] text-sm font-semibold uppercase tracking-widest mb-3 block">
-            Témoignages
+            {t('temoignages.eyebrow')}
           </span>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
-            Ce que disent nos clients
+            {t('temoignages.titre')}
           </h2>
           <p className="text-slate-400 text-base max-w-xl mx-auto">
-            Des PME suisses qui ont déjà franchi le cap de l'automatisation IA.
+            {t('temoignages.soustitre')}
           </p>
         </motion.div>
 

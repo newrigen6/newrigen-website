@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Shield, X, ChevronDown } from 'lucide-react'
+import { useT } from '../i18n'
 
 const TEAL = '#4DD9D9'
 const STORAGE_KEY = 'newrigen-consent-v1'
@@ -48,6 +49,7 @@ const politique = [
 ]
 
 export default function ConsentGate({ children }) {
+  const t = useT()
   const [accepted, setAccepted] = useState(null)
   const [scrolled, setScrolled] = useState(false)
   const [expanded, setExpanded] = useState(null)
@@ -86,7 +88,7 @@ export default function ConsentGate({ children }) {
           title="Retirer mon consentement"
           className="fixed bottom-4 left-4 z-50 text-xs text-slate-600 hover:text-slate-400 transition-colors underline"
         >
-          Politique de confidentialité
+          {t('consent.lien')}
         </button>
       </>
     )
@@ -107,12 +109,12 @@ export default function ConsentGate({ children }) {
               <Shield className="w-4 h-4" style={{ color: TEAL }} />
             </div>
             <div>
-              <h1 className="font-black text-white text-lg leading-tight">Politique de confidentialité</h1>
-              <p className="text-xs text-slate-500">Newrigen · Dernière mise à jour : juin 2026</p>
+              <h1 className="font-black text-white text-lg leading-tight">{t('consent.titre')}</h1>
+              <p className="text-xs text-slate-500">{t('consent.maj')}</p>
             </div>
           </div>
           <p className="text-slate-400 text-sm leading-relaxed mt-3">
-            Avant d'accéder au site, veuillez lire et accepter notre politique de confidentialité. Nous nous engageons à protéger vos données personnelles conformément au <strong className="text-white">RGPD</strong> et à la <strong className="text-white">LPD suisse</strong>.
+            {t('consent.intro')}
           </p>
         </div>
 
@@ -145,7 +147,7 @@ export default function ConsentGate({ children }) {
 
           <div className="pt-2 pb-1 text-center">
             <p className="text-xs text-slate-600">
-              En cliquant sur "Accepter", vous consentez au traitement de vos données tel que décrit ci-dessus.
+              {t('consent.note')}
             </p>
           </div>
         </div>
@@ -157,13 +159,13 @@ export default function ConsentGate({ children }) {
             className="flex-1 py-3 rounded-xl font-bold text-sm text-[#0A0A0F] transition-all duration-200 hover:opacity-90"
             style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 20px ${TEAL}40` }}
           >
-            ✓ Accepter et accéder au site
+            ✓ {t('consent.accepter')}
           </button>
           <button
             onClick={() => window.location.href = 'about:blank'}
             className="flex-1 py-3 rounded-xl font-semibold text-sm text-slate-400 border border-white/10 hover:border-white/20 hover:text-white transition-all duration-200"
           >
-            Refuser
+            {t('consent.refuser')}
           </button>
         </div>
       </div>

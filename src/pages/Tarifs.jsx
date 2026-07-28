@@ -3,52 +3,20 @@ import { Check, X, Loader2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { track } from '@vercel/analytics'
 import { useSiteContent } from '../content/SiteContent'
+import { useT, useLangue } from '../i18n'
 import { useModuleTiers } from '../content/moduleTiers'
 
 const TEAL = '#4DD9D9'
 
+// Libellés dans le dictionnaire (tarifs.<id>.*) ; ici seuls l'identifiant, les
+// prix de repli et le nombre de points de la liste.
 const plans = [
-  {
-    id: 'standard',
-    name: 'Pack Standard',
-    desc: 'Pour les PME de 1 à 5 employés',
-    priceMensuel: 49,
-    priceAnnuel: 490,
-    extra: '+5.-/mois par employé supplémentaire',
-    highlight: false,
-    features: [
-      'Dashboard temps réel',
-      'Devis illimités avec marge',
-      'Import devis (Excel / PDF)',
-      'Catalogue produits',
-      'Soumissions en ligne',
-      'Saisie des heures',
-      'Facturation QR suisse',
-      'Gestion des employés (jusqu\'à 5)',
-      'Signature électronique',
-    ],
-  },
-  {
-    id: 'premium',
-    name: 'Pack Premium',
-    desc: 'Tout inclus + fonctionnalités avancées',
-    priceMensuel: 79,
-    priceAnnuel: 790,
-    extra: 'Employés illimités inclus',
-    highlight: true,
-    features: [
-      'Tout le Pack Standard',
-      'Agenda & planning',
-      'Bons de régie avec signature client',
-      'Accès fiduciaire / comptable',
-      'Pré-comptabilité',
-      'Extraits bancaires',
-      'Support prioritaire',
-    ],
-  },
+  { id: 'standard', priceMensuel: 49, priceAnnuel: 490, nbFeatures: 9, highlight: false },
+  { id: 'premium',  priceMensuel: 79, priceAnnuel: 790, nbFeatures: 7, highlight: true  },
 ]
 
 function CheckoutModal({ plan, interval, onClose }) {
+  const t = useT()
   const [form, setForm] = useState({ nom: '', contact: '', email: '', telephone: '', npa: '', ville: '' })
   const [employes, setEmployes] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -86,10 +54,10 @@ function CheckoutModal({ plan, interval, onClose }) {
         track('checkout_stripe', { pack: plan.id, interval })
         window.location.href = data.url
       } else {
-        setError('Réponse inattendue. Veuillez réessayer.')
+        setError(t('checkout.erreur.inattendue'))
       }
     } catch {
-      setError('Erreur réseau. Veuillez réessayer.')
+      setError(t('checkout.erreur.reseau'))
     } finally {
       setLoading(false)
     }
@@ -100,7 +68,7 @@ function CheckoutModal({ plan, interval, onClose }) {
       <div className="bg-[#0F1723] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl">
         <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/5">
           <div>
-            <h2 className="font-bold text-white text-lg">Commencer avec {plan.name}</h2>
+            <h2 className="font-bold text-white text-lg">Commencer avec {t(`tarifs.${plan.id}.nom`)}</h2>
             <p className="text-sm mt-0.5" style={{ color: TEAL }}>
               1 mois gratuit — puis{' '}
               {interval === 'annuel'
@@ -116,50 +84,50 @@ function CheckoutModal({ plan, interval, onClose }) {
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Entreprise *</label>
+              <label className="block text-xs text-slate-400 mb-1">{t('checkout.entreprise')}</label>
               <input name="nom" required value={form.nom} onChange={handleChange}
-                placeholder="Müller SA"
+                placeholder={t('checkout.entreprise.exemple')}
                 className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Contact *</label>
+              <label className="block text-xs text-slate-400 mb-1">{t('checkout.contact')}</label>
               <input name="contact" required value={form.contact} onChange={handleChange}
-                placeholder="Jean Dupont"
+                placeholder={t('checkout.contact.exemple')}
                 className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Email *</label>
+            <label className="block text-xs text-slate-400 mb-1">{t('checkout.email')}</label>
             <input name="email" type="email" required value={form.email} onChange={handleChange}
-              placeholder="contact@entreprise.ch"
+              placeholder={t('checkout.email.exemple')}
               className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
           </div>
 
           <div className="grid grid-cols-3 gap-3">
             <div className="col-span-1">
-              <label className="block text-xs text-slate-400 mb-1">NPA</label>
+              <label className="block text-xs text-slate-400 mb-1">{t('checkout.npa')}</label>
               <input name="npa" value={form.npa} onChange={handleChange}
                 placeholder="1200"
                 className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
             </div>
             <div className="col-span-2">
-              <label className="block text-xs text-slate-400 mb-1">Ville</label>
+              <label className="block text-xs text-slate-400 mb-1">{t('checkout.ville')}</label>
               <input name="ville" value={form.ville} onChange={handleChange}
-                placeholder="Genève"
+                placeholder={t('checkout.ville.exemple')}
                 className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Téléphone</label>
+            <label className="block text-xs text-slate-400 mb-1">{t('checkout.telephone')}</label>
             <input name="telephone" value={form.telephone} onChange={handleChange}
               placeholder="+41 79 000 00 00"
               className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
           </div>
 
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Nombre d'employés *</label>
+            <label className="block text-xs text-slate-400 mb-1">{t('checkout.employes')}</label>
             <input
               type="number" min="1" max="50" required
               value={employes}
@@ -183,7 +151,7 @@ function CheckoutModal({ plan, interval, onClose }) {
                 <span>{interval === 'annuel' ? `${extraCoutAnnuel}.-/an` : `${extraCoutMensuel}.-/mois`}</span>
               </div>
               <div className="flex justify-between font-bold text-white border-t border-white/10 pt-1 mt-1">
-                <span>Total</span>
+                <span>{t('checkout.total')}</span>
                 <span>
                   {interval === 'annuel'
                     ? `${plan.priceAnnuel + extraCoutAnnuel}.-/an`
@@ -208,7 +176,7 @@ function CheckoutModal({ plan, interval, onClose }) {
             <button type="submit" disabled={loading}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-[#0A0A0F] transition-all"
               style={{ background: loading ? '#4DD9D980' : `linear-gradient(135deg, ${TEAL}, #3BC8C8)` }}>
-              {loading ? <><Loader2 className="w-4 h-4 animate-spin" />Chargement…</> : 'Continuer vers le paiement →'}
+              {loading ? <><Loader2 className="w-4 h-4 animate-spin" />{t('checkout.chargement')}</> : t('checkout.continuer')}
             </button>
           </div>
         </form>
@@ -218,6 +186,8 @@ function CheckoutModal({ plan, interval, onClose }) {
 }
 
 export default function Tarifs() {
+  const t = useT()
+  const { langue } = useLangue()
   const [interval, setInterval] = useState('mensuel')
   const [selected, setSelected] = useState(null)
   const { prix } = useSiteContent()
@@ -231,7 +201,9 @@ export default function Tarifs() {
       priceMensuel: prix[`${p.id}_mensuel`] ?? p.priceMensuel,
       priceAnnuel:  prix[`${p.id}_annuel`]  ?? p.priceAnnuel,
     }
-    if (!liveModules) return priced
+    // Les libellés de module_tiers sont saisis en français dans l'admin : dans
+    // les autres langues on garde la liste traduite du dictionnaire.
+    if (!liveModules || langue !== 'fr') return priced
     if (p.id === 'standard') {
       const features = liveModules.filter(m => m.tier === 'standard').map(m => m.label)
       return features.length ? { ...priced, features } : priced
@@ -261,13 +233,13 @@ export default function Tarifs() {
 
           {/* Header */}
           <div className="text-center mb-12">
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>Tarifs</span>
-            <h1 className="text-4xl md:text-6xl font-black mt-3 mb-4">Simple et transparent</h1>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>{t('tarifs.eyebrow')}</span>
+            <h1 className="text-4xl md:text-6xl font-black mt-3 mb-4">{t('tarifs.titre')}</h1>
             <p className="text-slate-400 text-lg max-w-xl mx-auto">
-              Choisissez le pack adapté à votre PME. Sans frais cachés.
+              {t('tarifs.soustitre')}
             </p>
             <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: `${TEAL}15`, color: TEAL, border: `1px solid ${TEAL}40` }}>
-              <span>🎁</span> 1 mois d'essai gratuit
+              <span>🎁</span> {t('tarifs.essai')}
             </div>
           </div>
 
@@ -278,17 +250,17 @@ export default function Tarifs() {
               className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${interval === 'mensuel' ? 'text-[#0A0A0F]' : 'text-slate-400 hover:text-white border border-white/10'}`}
               style={interval === 'mensuel' ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` } : {}}
             >
-              Mensuel
+              {t('tarifs.mensuel')}
             </button>
             <button
               onClick={() => setInterval('annuel')}
               className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${interval === 'annuel' ? 'text-[#0A0A0F]' : 'text-slate-400 hover:text-white border border-white/10'}`}
               style={interval === 'annuel' ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` } : {}}
             >
-              Annuel
+              {t('tarifs.annuel')}
               <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${interval === 'annuel' ? 'bg-[#0A0A0F]/20 text-[#0A0A0F]' : 'text-[#4DD9D9]'}`}
                 style={interval !== 'annuel' ? { background: `${TEAL}20` } : {}}>
-                1 mois offert
+                {t('tarifs.unMoisOffert')}
               </span>
             </button>
           </div>
@@ -312,8 +284,8 @@ export default function Tarifs() {
                   </div>
                 )}
 
-                <h2 className="text-2xl font-black text-white mb-1">{plan.name}</h2>
-                <p className="text-slate-400 text-sm mb-6">{plan.desc}</p>
+                <h2 className="text-2xl font-black text-white mb-1">{t(`tarifs.${plan.id}.nom`)}</h2>
+                <p className="text-slate-400 text-sm mb-6">{t(`tarifs.${plan.id}.desc`)}</p>
 
                 <div className="mb-1">
                   <span className="text-2xl font-bold line-through text-slate-600 mr-2">
@@ -328,11 +300,15 @@ export default function Tarifs() {
                   <span className="text-slate-400 text-sm ml-2">le 1er mois</span>
                 </div>
                 <p className="text-xs text-slate-500 mb-1">
-                  Puis {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.- CHF/{interval === 'annuel' ? 'an' : 'mois'} — {plan.extra}
+                  {t('tarifs.puis', {
+                    prix: interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel,
+                    periode: interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois'),
+                    extra: t(`tarifs.${plan.id}.extra`),
+                  })}
                 </p>
 
                 <ul className="space-y-3 mb-8 flex-1">
-                  {plan.features.map((f) => (
+                  {(plan.features ?? Array.from({ length: plan.nbFeatures }, (_, k) => t(`tarifs.${plan.id}.f${k + 1}`))).map((f) => (
                     <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
                       <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
                       {f}
@@ -348,7 +324,7 @@ export default function Tarifs() {
                     : { border: `1px solid ${TEAL}40`, color: TEAL, background: `${TEAL}08` }
                   }
                 >
-                  Commencer l'essai gratuit →
+                  {t('tarifs.commencerEssai')}
                 </button>
               </div>
             ))}
@@ -359,21 +335,21 @@ export default function Tarifs() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-base font-black text-white">🎙️ Option Devis Vocal</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: `${TEAL}20`, color: TEAL }}>Add-on</span>
+                  <span className="text-base font-black text-white">🎙️ {t('tarifs.vocal.titre')}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: `${TEAL}20`, color: TEAL }}>{t('tarifs.addon')}</span>
                 </div>
-                <p className="text-slate-400 text-sm">Créez vos devis par dictée vocale — l'IA structure automatiquement votre devis depuis votre catalogue. Disponible en option sur tous les packs. Activable directement depuis les Paramètres de l'application, sans nous contacter.</p>
+                <p className="text-slate-400 text-sm">{t('tarifs.vocal.description')}</p>
                 <ul className="mt-2 space-y-1">
-                  {['Dictée vocale en français', 'Génération automatique depuis le catalogue', 'Activable / désactivable depuis les Paramètres'].map(f => (
-                    <li key={f} className="flex items-center gap-2 text-xs text-slate-300">
-                      <Check className="w-3 h-3 flex-shrink-0" style={{ color: TEAL }} />{f}
+                  {[1, 2, 3].map(n => (
+                    <li key={n} className="flex items-center gap-2 text-xs text-slate-300">
+                      <Check className="w-3 h-3 flex-shrink-0" style={{ color: TEAL }} />{t(`tarifs.vocal.${n}`)}
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="text-right flex-shrink-0">
                 <p className="text-2xl font-black" style={{ color: TEAL }}>15.-</p>
-                <p className="text-slate-400 text-xs">CHF/mois</p>
+                <p className="text-slate-400 text-xs">{t('tarifs.chfMois')}</p>
                 <p className="text-slate-500 text-xs mt-1">ou 180.-/an</p>
               </div>
             </div>
@@ -381,7 +357,7 @@ export default function Tarifs() {
 
           {/* Note bas */}
           <p className="text-center text-slate-500 text-sm mt-8">
-            Questions ? Écrivez-nous à{' '}
+            {t('tarifs.questions')}{' '}
             <a href="mailto:newrigen6@gmail.com" className="hover:text-white transition-colors" style={{ color: TEAL }}>
               newrigen6@gmail.com
             </a>

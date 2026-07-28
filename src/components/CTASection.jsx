@@ -1,7 +1,9 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useT } from '../i18n'
 
 export default function CTASection() {
+  const t = useT()
   const [form, setForm] = useState({ name: '', email: '', company: '', message: '' })
   const [sent, setSent] = useState(false)
 
@@ -42,18 +44,17 @@ export default function CTASection() {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F97316]/10 border border-[#F97316]/30 text-sm text-[#F97316] font-medium mb-8">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Audit gratuit — Réponse sous 24h
+            {t('contact.badge')}
           </div>
 
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
-            Prêt à automatiser votre
+            {t('contact.titre.1')}
             <br />
-            <span className="gradient-text">entreprise ?</span>
+            <span className="gradient-text">{t('contact.titre.2')}</span>
           </h2>
 
           <p className="text-slate-400 text-base max-w-xl mx-auto mb-10 leading-relaxed">
-            Remplissez le formulaire ci-dessous — nous vous répondons sous 24h pour
-            un audit gratuit de vos processus, sans engagement.
+            {t('contact.soustitre')}
           </p>
 
           {/* Formulaire fonctionnel — envoie via mailto: */}
@@ -61,13 +62,13 @@ export default function CTASection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">
-                  Nom *
+                  {t('contact.champ.nom')}
                 </label>
                 <input
                   type="text"
                   name="name"
                   required
-                  placeholder="Jean Dupont"
+                  placeholder={t('contact.champ.nom.exemple')}
                   value={form.name}
                   onChange={handleChange}
                   className={inputClass}
@@ -75,13 +76,13 @@ export default function CTASection() {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">
-                  Email *
+                  {t('contact.champ.email')}
                 </label>
                 <input
                   type="email"
                   name="email"
                   required
-                  placeholder="jean@entreprise.ch"
+                  placeholder={t('contact.champ.email.exemple')}
                   value={form.email}
                   onChange={handleChange}
                   className={inputClass}
@@ -91,12 +92,12 @@ export default function CTASection() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">
-                Entreprise
+                {t('contact.champ.entreprise')}
               </label>
               <input
                 type="text"
                 name="company"
-                placeholder="Ma Société SA"
+                placeholder={t('contact.champ.entreprise.exemple')}
                 value={form.company}
                 onChange={handleChange}
                 className={inputClass}
@@ -105,13 +106,13 @@ export default function CTASection() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wide">
-                Votre besoin *
+                {t('contact.champ.besoin')}
               </label>
               <textarea
                 name="message"
                 required
                 rows={4}
-                placeholder="Décrivez brièvement votre besoin ou le processus que vous souhaitez automatiser..."
+                placeholder={t('contact.champ.besoin.exemple')}
                 value={form.message}
                 onChange={handleChange}
                 className={inputClass + ' resize-none'}
@@ -122,17 +123,17 @@ export default function CTASection() {
               type="submit"
               className="w-full py-4 rounded-xl font-bold text-base bg-gradient-to-r from-[#F97316] to-[#FB923C] text-gray-900 hover:opacity-90 transition-all duration-200 shadow-lg shadow-[#F97316]/25 hover:-translate-y-0.5 active:translate-y-0"
             >
-              {sent ? '✓ Vérifiez votre appli mail !' : 'Envoyer ma demande →'}
+              {sent ? t('contact.envoye') : t('contact.envoyer')}
             </button>
 
             <p className="text-xs text-slate-600 text-center pt-1">
-              Aucun spam. Vos données restent confidentielles.
+              {t('contact.confidentialite')}
             </p>
           </form>
 
           {/* Contacts directs */}
           <div className="mt-10 pt-8 border-t border-[#F97316]/20">
-            <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-5">Ou contactez-nous directement</p>
+            <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-5">{t('contact.direct')}</p>
             <div className="flex flex-wrap justify-center gap-4">
               <a href="mailto:newrigen6@gmail.com" className="flex items-center gap-3 px-5 py-3 rounded-xl glass border border-[#F97316]/30 text-white font-medium hover:border-[#F97316]/70 hover:text-[#F97316] transition-all duration-200">
                 <span className="text-xl">📧</span>
@@ -148,7 +149,7 @@ export default function CTASection() {
               </a>
               <span className="flex items-center gap-3 px-5 py-3 rounded-xl glass border border-[#F97316]/10 text-slate-400 font-medium">
                 <span className="text-xl">📍</span>
-                <span>Suisse romande &amp; alémanique</span>
+                <span>{t('contact.region')}</span>
               </span>
             </div>
           </div>

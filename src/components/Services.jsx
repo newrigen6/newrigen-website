@@ -1,7 +1,8 @@
-﻿import { motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { useSiteContent } from '../content/SiteContent'
+import { useT } from '../i18n'
 
 // Styles de carte par position (les services venant de l'admin n'ont pas de style)
 const CARD_STYLE = [
@@ -82,6 +83,7 @@ function ServiceCard({ service, index }) {
 }
 
 export default function Services() {
+  const t = useT()
   const titleRef = useRef(null)
   const titleInView = useInView(titleRef, { once: true })
   const { services: svc } = useSiteContent()
@@ -99,13 +101,13 @@ export default function Services() {
           className="text-center mb-16"
         >
           <span className="text-[#F97316] text-sm font-semibold uppercase tracking-widest mb-3 block">
-            Nos services
+            {t('services.eyebrow')}
           </span>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
-            Tout ce dont votre PME a besoin
+            {t('services.titre')}
           </h2>
           <p className="text-slate-400 text-base max-w-2xl mx-auto">
-            Des solutions IA clés en main, conçues spécifiquement pour les entreprises suisses
+            {t('services.soustitre')}
             qui veulent gagner en efficacité sans complexité inutile.
           </p>
         </motion.div>
