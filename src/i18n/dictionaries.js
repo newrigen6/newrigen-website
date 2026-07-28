@@ -110,6 +110,7 @@ export const DICT = {
     'merci.cta': "Accéder à l'application →",
     'merci.retour': 'Retour au site',
 
+    'legal.francaisSeulement': "Cette page n'existe qu'en français : c'est la version qui fait foi juridiquement.",
     'consent.lien': 'Politique de confidentialité',
     'consent.titre': 'Politique de confidentialité',
     'consent.maj': 'Newrigen · Dernière mise à jour : juin 2026',
@@ -284,6 +285,7 @@ export const DICT = {
     'merci.cta': 'Zur Anwendung →',
     'merci.retour': 'Zurück zur Website',
 
+    'legal.francaisSeulement': "Diese Seite gibt es nur auf Französisch — nur diese Fassung ist rechtlich verbindlich.",
     'consent.lien': 'Datenschutzerklärung',
     'consent.titre': 'Datenschutzerklärung',
     'consent.maj': 'Newrigen · Letzte Aktualisierung: Juni 2026',
@@ -458,6 +460,7 @@ export const DICT = {
     'merci.cta': 'Go to the app →',
     'merci.retour': 'Back to the website',
 
+    'legal.francaisSeulement': "This page is available in French only; the French version is the legally binding one.",
     'consent.lien': 'Privacy policy',
     'consent.titre': 'Privacy policy',
     'consent.maj': 'Newrigen · Last updated: June 2026',
@@ -632,6 +635,7 @@ export const DICT = {
     'merci.cta': 'Aceder à aplicação →',
     'merci.retour': 'Voltar ao site',
 
+    'legal.francaisSeulement': "Esta página existe apenas em francês: é a versão juridicamente vinculativa.",
     'consent.lien': 'Política de privacidade',
     'consent.titre': 'Política de privacidade',
     'consent.maj': 'Newrigen · Última actualização: Junho de 2026',

@@ -124,6 +124,9 @@ export default function ConsentGate({ children }) {
           className="flex-1 overflow-y-auto px-6 py-4 space-y-2"
           style={{ background: '#0A0A0F' }}
         >
+          <p className="text-xs text-slate-500 border border-white/10 rounded-lg px-3 py-2 mb-2">
+            {t('legal.francaisSeulement')}
+          </p>
           {politique.map(({ titre, texte }, i) => (
             <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: `${TEAL}15` }}>
               <button

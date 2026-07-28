@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useT } from '../i18n'
 
 const TEAL = '#4DD9D9'
 
@@ -12,6 +13,7 @@ const ENTREPRISE = {
 }
 
 function LegalLayout({ title, updated, children }) {
+  const t = useT()
   useEffect(() => {
     document.title = `${title} — Newrigen`
     window.scrollTo(0, 0)
@@ -26,7 +28,13 @@ function LegalLayout({ title, updated, children }) {
       </nav>
       <main className="max-w-3xl mx-auto px-6 pb-24">
         <h1 className="text-3xl md:text-4xl font-black text-white mb-2">{title}</h1>
-        <p className="text-xs text-slate-500 mb-10">Dernière mise à jour : {updated}</p>
+        <p className="text-xs text-slate-500 mb-4">Dernière mise à jour : {updated}</p>
+        {/* Les textes juridiques restent en français : c'est la version qui
+            engage Newrigen. On prévient le visiteur plutôt que de le laisser
+            devant une page qu'il ne comprend pas. */}
+        <p className="text-xs text-slate-400 border border-white/10 rounded-xl px-4 py-3 mb-10">
+          {t('legal.francaisSeulement')}
+        </p>
         <div className="space-y-8 text-sm leading-relaxed">{children}</div>
       </main>
       <footer className="max-w-3xl mx-auto px-6 pb-10 border-t border-white/5 pt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
