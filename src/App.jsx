@@ -196,7 +196,8 @@ function Hero() {
         <h1 data-anim="up" data-delay="100" className="text-3xl md:text-5xl font-black tracking-tight mb-6 leading-tight">
           {t('hero.titre.1')}{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${TEAL}, #7ee8e8)` }}>{t('hero.titre.2')}</span>
-          {' '}{t('hero.titre.3')}<br />{' '}
+          <br />
+          {t('hero.titre.3')}{' '}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, #7ee8e8, ${TEAL})` }}>{t('hero.titre.4')}</span>
         </h1>
         <p data-anim="up" data-delay="200" className="text-sm text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
