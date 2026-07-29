@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://newrigen-website.vercel.app/sitemap.xml
+Sitemap: https://newrigen.ch/sitemap.xml

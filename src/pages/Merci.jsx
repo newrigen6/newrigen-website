@@ -22,7 +22,7 @@ export default function Merci() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a
-            href="https://newrigen-app.vercel.app/login"
+            href="https://app.newrigen.ch/login"
             className="px-8 py-4 rounded-xl font-bold text-sm text-[#0A0A0F] transition-all"
             style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 20px ${TEAL}40` }}
           >
