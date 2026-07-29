@@ -14,8 +14,11 @@ function merge(base, over) {
     texts:       { ...base.texts, ...(over.texts || {}) },
     prix:        { ...base.prix, ...(over.prix || {}) },
     contact:     { ...base.contact, ...(over.contact || {}) },
-    temoignages: Array.isArray(over.temoignages) && over.temoignages.length ? over.temoignages : base.temoignages,
-    services:    Array.isArray(over.services) && over.services.length ? over.services : base.services,
+    // Une liste VIDE est un choix explicite de l'admin (« je n'ai pas encore de
+    // témoignage »), pas une absence de contenu : il ne faut surtout pas
+    // retomber sur le défaut, sinon vider depuis l'admin ne sert à rien.
+    temoignages: Array.isArray(over.temoignages) ? over.temoignages : base.temoignages,
+    services:    Array.isArray(over.services)    ? over.services    : base.services,
   }
 }
 
