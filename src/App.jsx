@@ -12,6 +12,7 @@ const TEAL_PACKS = '#4DD9D9'
 function PacksComparatif() {
   const [interval, setInterval] = useState('mensuel')
   const liveModules = useModuleTiers()
+  const { prix } = useSiteContent()
   const t = useT()
 
   const homePlans = [
@@ -19,8 +20,8 @@ function PacksComparatif() {
       id: 'standard',
       name: t('tarifs.standard.nom'),
       desc: t('tarifs.standard.desc'),
-      priceMensuel: 49,
-      priceAnnuel: 490,
+      priceMensuel: prix.standard_mensuel,
+      priceAnnuel: prix.standard_annuel,
       extra: t('tarifs.standard.extra'),
       highlight: false,
       features: [1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => t(`tarifs.standard.f${n}`)),
@@ -29,8 +30,8 @@ function PacksComparatif() {
       id: 'premium',
       name: t('tarifs.premium.nom'),
       desc: t('tarifs.premium.desc'),
-      priceMensuel: 89,
-      priceAnnuel: 790,
+      priceMensuel: prix.premium_mensuel,
+      priceAnnuel: prix.premium_annuel,
       extra: t('tarifs.premium.extra'),
       highlight: true,
       features: [1, 2, 3, 4, 5, 6, 7].map(n => t(`tarifs.premium.f${n}`)),

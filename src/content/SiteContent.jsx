@@ -29,6 +29,15 @@ const Ctx = createContext(DEFAULT_CONTENT)
 export const ligneContenu = langue =>
   langue === LANGUE_DEFAUT ? 'main' : `main-${langue}`
 
+function chargerLigne(id) {
+  return fetch(`${SUPABASE_URL}/rest/v1/site_content?id=eq.${id}&select=data`, {
+    headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
+  })
+    .then(r => (r.ok ? r.json() : null))
+    .then(rows => rows?.[0]?.data ?? null)
+    .catch(() => null)
+}
+
 export function SiteContentProvider({ children }) {
   const { langue } = useLangue()
 
@@ -37,24 +46,36 @@ export function SiteContentProvider({ children }) {
   const socle = useMemo(() => defaultsPourLangue(langue), [langue])
   const [surcharge, setSurcharge] = useState(null)
 
+  // Prix et coordonnées de contact : toujours ceux de la ligne française
+  // « main », quelle que soit la langue affichée. Seule cette ligne est
+  // tenue à jour depuis l'admin — les prix ne varient pas avec la langue,
+  // et une ligne « main-de »/« main-en »/... absente ne doit jamais faire
+  // retomber sur d'anciens montants codés en dur dans defaults.js.
+  const [surchargePrincipale, setSurchargePrincipale] = useState(null)
+
   useEffect(() => {
     let vivant = true
     // On repart des défauts à chaque changement de langue, sinon le contenu
     // de la langue précédente resterait affiché le temps de la requête.
     setSurcharge(null)
-    fetch(`${SUPABASE_URL}/rest/v1/site_content?id=eq.${ligneContenu(langue)}&select=data`, {
-      headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
-    })
-      .then(r => (r.ok ? r.json() : null))
-      .then(rows => {
-        if (!vivant || !rows?.[0]?.data) return
-        setSurcharge(rows[0].data)
-      })
-      .catch(() => { /* on garde les défauts traduits */ })
+    chargerLigne(ligneContenu(langue)).then(data => { if (vivant && data) setSurcharge(data) })
     return () => { vivant = false }
   }, [langue])
 
-  const content = useMemo(() => merge(socle, surcharge), [socle, surcharge])
+  useEffect(() => {
+    let vivant = true
+    chargerLigne('main').then(data => { if (vivant && data) setSurchargePrincipale(data) })
+    return () => { vivant = false }
+  }, [])
+
+  const content = useMemo(() => {
+    const fusionne = merge(socle, surcharge)
+    return {
+      ...fusionne,
+      prix: surchargePrincipale?.prix ? { ...fusionne.prix, ...surchargePrincipale.prix } : fusionne.prix,
+      contact: surchargePrincipale?.contact ? { ...fusionne.contact, ...surchargePrincipale.contact } : fusionne.contact,
+    }
+  }, [socle, surcharge, surchargePrincipale])
 
   return <Ctx.Provider value={content}>{children}</Ctx.Provider>
 }

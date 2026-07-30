@@ -8,9 +8,9 @@
 
 const PRIX = {
   standard_mensuel: 49,
-  standard_annuel: 490,
-  premium_mensuel: 79,
-  premium_annuel: 790,
+  standard_annuel: 539,
+  premium_mensuel: 89,
+  premium_annuel: 979,
   employe_sup_mensuel: 5,
   employe_sup_annuel: 60,
 }

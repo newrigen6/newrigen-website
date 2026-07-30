@@ -12,8 +12,8 @@ const TEAL = '#4DD9D9'
 // Libellés dans le dictionnaire (tarifs.<id>.*) ; ici seuls l'identifiant, les
 // prix de repli et le nombre de points de la liste.
 const plans = [
-  { id: 'standard', priceMensuel: 49, priceAnnuel: 490, nbFeatures: 9, highlight: false },
-  { id: 'premium',  priceMensuel: 79, priceAnnuel: 790, nbFeatures: 7, highlight: true  },
+  { id: 'standard', priceMensuel: 49, priceAnnuel: 539, nbFeatures: 9, highlight: false },
+  { id: 'premium',  priceMensuel: 89, priceAnnuel: 979, nbFeatures: 7, highlight: true  },
 ]
 
 function CheckoutModal({ plan, interval, onClose }) {
