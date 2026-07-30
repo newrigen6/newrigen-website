@@ -383,7 +383,56 @@ function Processus() {
   )
 }
 
-function Temoignages() { return null }
+function Temoignages() {
+  const t = useT()
+  const { temoignages } = useSiteContent()
+
+  // Aucun témoignage saisi depuis l'admin : on masque toute la section plutôt
+  // que d'afficher un titre suivi du vide, et surtout on n'invente rien ici.
+  if (!temoignages?.length) return null
+
+  return (
+    <section id="temoignages" className="py-24 px-6 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#4DD9D9]/5 to-transparent pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div data-anim="up" className="text-center mb-14">
+          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>{t('temoignages.eyebrow')}</span>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4">{t('temoignages.titre')}</h2>
+          <p className="text-slate-400 max-w-xl mx-auto">{t('temoignages.soustitre')}</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {temoignages.map((temoin, i) => (
+            <div
+              key={i}
+              data-anim="up"
+              data-delay={String(i * 150)}
+              className="rounded-2xl p-7 border"
+              style={{ background: 'linear-gradient(145deg, #0F1520, #0A0E17)', border: `1px solid ${TEAL}18` }}
+            >
+              <div className="flex gap-1 mb-5">
+                {Array.from({ length: temoin.stars || 5 }).map((_, j) => (
+                  <span key={j} className="text-yellow-400 text-sm">★</span>
+                ))}
+              </div>
+              <p className="text-slate-300 text-sm leading-relaxed mb-6 italic">"{temoin.text}"</p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0" style={{ background: `${TEAL}20`, color: TEAL }}>
+                  {temoin.avatar}
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-white">{temoin.name}</div>
+                  <div className="text-xs text-slate-500">{[temoin.role, temoin.location].filter(Boolean).join(' · ')}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
 
 function Contact() {
   const [email, setEmail] = useState('')
@@ -511,8 +560,8 @@ function Home() {
         <Services />
         <Comparatif />
         <Processus />
-        <Temoignages />
         <PacksComparatif />
+        <Temoignages />
         <Contact />
       </main>
       <Footer />
