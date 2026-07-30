@@ -211,9 +211,6 @@ function Hero() {
           <Link to="/tarifs" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             {t('accueil.hero.cta')}
           </Link>
-          <a href="#contact" className="px-8 py-4 rounded-xl font-semibold text-sm border border-white/15 text-slate-300 hover:text-white hover:border-white/30 transition-all duration-200">
-            {t('accueil.hero.cta2')}
-          </a>
         </div>
         <div data-anim="up" data-delay="400" className="relative mt-16">
           <div className="absolute inset-x-0 top-4 h-2/3 blur-3xl pointer-events-none" style={{ background: `${TEAL}25` }} />
