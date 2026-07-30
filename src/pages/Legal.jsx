@@ -237,10 +237,10 @@ export function CGV() {
       <section>
         <H2>4. Essai gratuit</H2>
         <p className="mt-2">
-          Un essai gratuit de 30 jours est proposé lors de la souscription, sans carte bancaire requise à
-          l'inscription. Pendant l'essai, le service est accessible sans engagement et peut être interrompu à tout
-          moment ; aucun montant n'est prélevé avant son terme. À défaut d'annulation avant la fin de l'essai,
-          l'abonnement choisi démarre et le premier paiement est prélevé.
+          Un essai gratuit de 30 jours est proposé lors de la souscription ; une empreinte bancaire (autorisation de
+          carte, sans prélèvement) est requise à l'inscription. Pendant l'essai, le service est accessible sans
+          engagement et peut être interrompu à tout moment ; aucun montant n'est prélevé avant son terme. À défaut
+          d'annulation avant la fin de l'essai, l'abonnement choisi démarre et le premier paiement est prélevé.
         </p>
       </section>
       <section>
