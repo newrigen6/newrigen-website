@@ -73,7 +73,7 @@ function CheckoutModal({ plan, interval, onClose }) {
           <div>
             <h2 className="font-bold text-white text-lg">Commencer avec {t(`tarifs.${plan.id}.nom`)}</h2>
             <p className="text-sm mt-0.5" style={{ color: TEAL }}>
-              1 mois gratuit — puis{' '}
+              {t('accueil.packs.moisGratuit')} {t('tarifs.puisCourt')}{' '}
               {interval === 'annuel'
                 ? `${plan.priceAnnuel}.-/an`
                 : `${plan.priceMensuel}.-/mois`}
@@ -286,7 +286,7 @@ export default function Tarifs() {
                 {plan.highlight && (
                   <div className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full self-start mb-4 text-[#0A0A0F]"
                     style={{ background: TEAL }}>
-                    Recommandé
+                    {t('accueil.packs.recommande')}
                   </div>
                 )}
 
@@ -297,13 +297,13 @@ export default function Tarifs() {
                   <span className="text-2xl font-bold line-through text-slate-600 mr-2">
                     {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.-
                   </span>
-                  <span className="text-sm font-bold px-2 py-0.5 rounded-full text-[#0A0A0F]" style={{ background: TEAL }}>1 mois gratuit</span>
+                  <span className="text-sm font-bold px-2 py-0.5 rounded-full text-[#0A0A0F]" style={{ background: TEAL }}>{t('accueil.packs.moisGratuit')}</span>
                 </div>
                 <div className="mb-2 mt-1">
                   <span className="text-5xl font-black" style={{ color: TEAL }}>
                     0.-
                   </span>
-                  <span className="text-slate-400 text-sm ml-2">le 1er mois</span>
+                  <span className="text-slate-400 text-sm ml-2">{t('accueil.packs.premierMois')}</span>
                 </div>
                 <p className="text-xs text-slate-500 mb-1">
                   {t('tarifs.puis', {
