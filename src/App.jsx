@@ -181,7 +181,7 @@ function Navbar() {
             ? <Link key={l.href} to={l.href} onClick={() => setOpen(false)} className="block text-slate-300 hover:text-white py-1">{l.label}</Link>
             : <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="block text-slate-300 hover:text-white py-1">{l.label}</a>
           )}
-          <Link to="/tarifs" onClick={() => setOpen(false)} className="block text-center py-2.5 rounded-xl font-semibold text-[#0A0A0F]" style={{ background: TEAL }}>{t('accueil.nav.abonner')}</Link>
+          <Link to="/tarifs" onClick={() => setOpen(false)} className="block text-center py-2.5 rounded-xl text-sm font-semibold text-[#0A0A0F]" style={{ background: TEAL }}>{t('accueil.nav.abonner')}</Link>
         </div>
       )}
     </nav>
