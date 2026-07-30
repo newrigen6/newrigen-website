@@ -184,7 +184,7 @@ export const DICT = {
 
     // Contenu spécifique à la page d'accueil (App.jsx) — texte réellement
     // affiché en direct, distinct de celui des composants non utilisés ci-dessus.
-    'accueil.nav.abonner': "S'abonner",
+    'accueil.nav.abonner': "Essayer 30 jours gratuitement",
     'accueil.hero.texte': "Centralisez toute votre activité sur une seule plateforme — gagnez des heures sur vos tâches administratives, suivez vos chiffres en temps réel et pilotez votre entreprise depuis une application claire et intuitive.",
     'accueil.hero.cta': "Essayer 30 jours gratuitement",
     'accueil.hero.cta2': "Une question ? Écrivez-nous",
@@ -456,7 +456,7 @@ export const DICT = {
     'checkout.erreur.reseau': 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
     'checkout.erreur.inattendue': 'Unerwartete Antwort. Bitte versuchen Sie es erneut.',
 
-    'accueil.nav.abonner': 'Abonnieren',
+    'accueil.nav.abonner': '30 Tage gratis testen',
     'accueil.hero.texte': 'Zentralisieren Sie Ihre gesamte Geschäftstätigkeit auf einer Plattform — sparen Sie Stunden bei administrativen Aufgaben, verfolgen Sie Ihre Zahlen in Echtzeit und steuern Sie Ihr Unternehmen über eine klare, intuitive Anwendung.',
     'accueil.hero.cta': "30 Tage gratis testen",
     'accueil.hero.cta2': "Eine Frage? Schreiben Sie uns",
@@ -728,7 +728,7 @@ export const DICT = {
     'checkout.erreur.reseau': 'Network error. Please try again.',
     'checkout.erreur.inattendue': 'Unexpected response. Please try again.',
 
-    'accueil.nav.abonner': 'Subscribe',
+    'accueil.nav.abonner': 'Try it free for 30 days',
     'accueil.hero.texte': 'Centralize your entire business on a single platform — save hours on admin tasks, track your numbers in real time and manage your business from a clear, intuitive app.',
     'accueil.hero.cta': "Try it free for 30 days",
     'accueil.hero.cta2': "A question? Write to us",
@@ -1000,7 +1000,7 @@ export const DICT = {
     'checkout.erreur.reseau': 'Erro de rede. Tente novamente.',
     'checkout.erreur.inattendue': 'Resposta inesperada. Tente novamente.',
 
-    'accueil.nav.abonner': 'Subscrever',
+    'accueil.nav.abonner': 'Experimentar 30 dias grátis',
     'accueil.hero.texte': 'Centralize toda a sua actividade numa única plataforma — poupe horas em tarefas administrativas, acompanhe os seus números em tempo real e giria a sua empresa a partir de uma aplicação clara e intuitiva.',
     'accueil.hero.cta': "Experimentar 30 dias grátis",
     'accueil.hero.cta2': "Uma dúvida? Escreva-nos",
