@@ -277,6 +277,7 @@ export const DICT = {
     'accueil.packs.essai': "1 mois d'essai gratuit — empreinte bancaire requise",
     'accueil.packs.recommande': 'Recommandé',
     'accueil.packs.moisGratuit': '1 mois gratuit',
+    'accueil.packs.empreinte': 'Empreinte bancaire requise',
     'accueil.packs.premierMois': 'le 1er mois',
   },
 
@@ -549,6 +550,7 @@ export const DICT = {
     'accueil.packs.essai': '1 Monat gratis testen — Kreditkarte erforderlich',
     'accueil.packs.recommande': 'Empfohlen',
     'accueil.packs.moisGratuit': '1 Monat gratis',
+    'accueil.packs.empreinte': 'Kreditkarte erforderlich',
     'accueil.packs.premierMois': 'im 1. Monat',
   },
 
@@ -821,6 +823,7 @@ export const DICT = {
     'accueil.packs.essai': '1-month free trial — credit card required',
     'accueil.packs.recommande': 'Recommended',
     'accueil.packs.moisGratuit': '1 month free',
+    'accueil.packs.empreinte': 'Credit card required',
     'accueil.packs.premierMois': 'for the 1st month',
   },
 
@@ -1093,6 +1096,7 @@ export const DICT = {
     'accueil.packs.essai': '1 mês de teste gratuito — cartão bancário necessário',
     'accueil.packs.recommande': 'Recomendado',
     'accueil.packs.moisGratuit': '1 mês gratuito',
+    'accueil.packs.empreinte': 'Cartão bancário necessário',
     'accueil.packs.premierMois': 'no 1.º mês',
   },
 }

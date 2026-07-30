@@ -312,6 +312,7 @@ export default function Tarifs() {
                     extra: t(`tarifs.${plan.id}.extra`),
                   })}
                 </p>
+                <p className="text-xs text-slate-500 mb-4">{t('accueil.packs.empreinte')}</p>
 
                 <ul className="space-y-3 mb-8 flex-1">
                   {(plan.features ?? Array.from({ length: plan.nbFeatures }, (_, k) => t(`tarifs.${plan.id}.f${k + 1}`))).map((f) => (

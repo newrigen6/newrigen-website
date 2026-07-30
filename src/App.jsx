@@ -104,6 +104,7 @@ function PacksComparatif() {
                 <span className="text-slate-400 text-sm ml-2">{t('accueil.packs.premierMois')}</span>
               </div>
               <p className="text-xs text-slate-500 mb-1">{t('tarifs.puis', { prix: interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel, periode: interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois'), extra: plan.extra })}</p>
+              <p className="text-xs text-slate-500 mb-4">{t('accueil.packs.empreinte')}</p>
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((f, idx) => (
                   <li key={idx} className="flex items-center gap-3 text-sm text-slate-300">
