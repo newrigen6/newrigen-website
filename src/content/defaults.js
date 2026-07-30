@@ -61,6 +61,13 @@ const TRADUCTIONS = {
       { title: 'Auditoria e personalização', description: 'Para além da aplicação, adaptamos a experiência às necessidades próprias da sua empresa. Contacte-nos para vermos em que medida é possível.', features: ['Análise das suas necessidades', 'Personalização à medida', 'Flexibilidade conforme a sua actividade'] },
     ],
   },
+  it: {
+    services: [
+      { title: 'Creazione di preventivi', description: 'Create i vostri preventivi manualmente o tramite dettatura vocale, e importate quelli esistenti. Una volta convalidato, il preventivo viene inviato automaticamente via e-mail al vostro cliente.', features: ['Inserimento manuale e vocale', 'Importazione di preventivi esistenti', 'Invio automatico via e-mail'] },
+      { title: 'Intelligenza artificiale', description: "L'IA analizza la vostra dettatura vocale per costruire un preventivo, ordina in modo intelligente il vostro catalogo prodotti e legge i documenti importati come fatture o preventivi esistenti.", features: ['Preventivo per dettatura vocale', 'Smistamento intelligente del catalogo', 'Lettura di documenti (PDF, Excel)'] },
+      { title: 'Audit e personalizzazione', description: "Oltre alla nostra applicazione, siamo pronti a personalizzare l'esperienza secondo le esigenze specifiche della vostra azienda. Contattateci per vedere cosa è possibile fare.", features: ['Analisi delle vostre esigenze', 'Personalizzazione su misura', 'Flessibilità secondo il vostro mestiere'] },
+    ],
+  },
 }
 
 export function defaultsPourLangue(langue = 'fr') {

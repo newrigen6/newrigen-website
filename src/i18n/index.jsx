@@ -8,6 +8,7 @@ export const LANGUES = [
   { code: 'de', label: 'Deutsch',   drapeau: '🇩🇪' },
   { code: 'en', label: 'English',   drapeau: '🇬🇧' },
   { code: 'pt', label: 'Português', drapeau: '🇵🇹' },
+  { code: 'it', label: 'Italiano',  drapeau: '🇮🇹' },
 ]
 export const LANGUE_DEFAUT = 'fr'
 const CODES = LANGUES.map(l => l.code)

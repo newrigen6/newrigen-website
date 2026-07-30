@@ -36,6 +36,13 @@ const DRAPEAUX_SVG = {
       <circle cx="9.6" cy="8" r="3.2" fill="#FFCC00" stroke="#FFFFFF" strokeWidth="0.5" />
     </svg>
   ),
+  it: (
+    <svg viewBox="0 0 24 16" className="w-full h-full">
+      <rect width="8" height="16" fill="#009246" />
+      <rect x="8" width="8" height="16" fill="#FFFFFF" />
+      <rect x="16" width="8" height="16" fill="#CE2B37" />
+    </svg>
+  ),
 }
 
 function Drapeau({ code }) {
