@@ -487,7 +487,7 @@ function Footer() {
           <span>{t('accueil.footer.droits', { annee: 2026 })}</span>
           <span>🇨🇭 {t('accueil.footer.swiss')}</span>
           <a href="https://www.instagram.com/newrigen.app/" target="_blank" rel="noopener noreferrer"
-            className="ml-auto text-slate-500 hover:text-white transition-colors" aria-label="Instagram">
+            className="ml-auto hover:opacity-80 transition-opacity" style={{ color: TEAL }} aria-label="Instagram">
             <Instagram className="w-6 h-6" />
           </a>
         </div>
