@@ -53,7 +53,7 @@ function PacksComparatif() {
   })
 
   return (
-    <section className="py-24 px-6">
+    <section className="py-14 px-6">
       <div className="max-w-4xl mx-auto">
         <div data-anim="up" className="text-center mb-10">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL_PACKS }}>{t('accueil.packs.eyebrow')}</span>
@@ -239,7 +239,7 @@ function Services() {
     items: [1, 2, 3].map(n => t(`accueil.services.${i + 1}.item${n}`)),
   }))
   return (
-    <section id="services" className="py-24 px-6 relative overflow-hidden">
+    <section id="services" className="py-14 px-6 relative overflow-hidden">
       {/* Glow background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none" style={{ background: `radial-gradient(circle, ${TEAL}08 0%, transparent 70%)` }} />
 
@@ -299,7 +299,7 @@ function Comparatif() {
     t(`accueil.comparatif.${n}.avec`),
   ])
   return (
-    <section id="comparatif" className="py-24 px-6">
+    <section id="comparatif" className="py-14 px-6">
       <div className="max-w-2xl mx-auto">
         <div data-anim="up" className="text-center mb-14">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>{t('comparatif.eyebrow')}</span>
@@ -352,7 +352,7 @@ function Processus() {
     items: [1, 2, 3].map(k => t(`accueil.processus.${i + 1}.item${k}`)),
   }))
   return (
-    <section id="processus" className="py-24 px-6">
+    <section id="processus" className="py-14 px-6">
       <div className="max-w-5xl mx-auto">
         <div data-anim="up" className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>{t('processus.eyebrow')}</span>
@@ -394,7 +394,7 @@ function Temoignages() {
   if (!temoignages?.length) return null
 
   return (
-    <section id="temoignages" className="py-24 px-6 relative overflow-hidden">
+    <section id="temoignages" className="py-14 px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#4DD9D9]/5 to-transparent pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
@@ -442,7 +442,7 @@ function Contact() {
   const { contact } = useSiteContent()
   const t = useT()
   return (
-    <section id="contact" className="py-24 px-6">
+    <section id="contact" className="py-14 px-6">
       <div className="max-w-3xl mx-auto">
         <div className="grid md:grid-cols-5 gap-6 items-center">
           {/* Carte infos — 2/5 */}
