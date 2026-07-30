@@ -147,6 +147,7 @@ function Navbar() {
     { href: '#comparatif', label: t('nav.comparatif') },
     { href: '#processus', label: t('nav.processus') },
     { href: '/tarifs', label: t('nav.tarifs'), route: true },
+    { href: '#contact', label: t('accueil.footer.contactLabel') },
   ]
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0A0A0F]/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'}`}>
