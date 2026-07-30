@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, ChevronRight, Instagram } from 'lucide-react'
+import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, ChevronRight, Instagram, Facebook } from 'lucide-react'
 import { useSiteContent } from './content/SiteContent'
 import { useModuleTiers } from './content/moduleTiers'
 import dashboardScreenshot from './assets/dashboard-screenshot.jpg'
@@ -532,10 +532,16 @@ function Footer() {
         <div className="border-t border-white/5 pt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
           <span>{t('accueil.footer.droits', { annee: 2026 })}</span>
           <span>🇨🇭 {t('accueil.footer.swiss')}</span>
-          <a href="https://www.instagram.com/newrigen.app/" target="_blank" rel="noopener noreferrer"
-            className="ml-auto hover:opacity-80 transition-opacity" style={{ color: TEAL }} aria-label="Instagram">
-            <Instagram className="w-6 h-6" />
-          </a>
+          <div className="ml-auto flex items-center gap-4">
+            <a href="https://www.instagram.com/newrigen.app/" target="_blank" rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity" style={{ color: TEAL }} aria-label="Instagram">
+              <Instagram className="w-6 h-6" />
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61592481936710" target="_blank" rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity" style={{ color: TEAL }} aria-label="Facebook">
+              <Facebook className="w-6 h-6" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
