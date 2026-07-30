@@ -186,7 +186,7 @@ export const DICT = {
     // affiché en direct, distinct de celui des composants non utilisés ci-dessus.
     'accueil.nav.abonner': "Essayer 30 jours gratuitement",
     'accueil.hero.texte': "Centralisez toute votre activité sur une seule plateforme — gagnez des heures sur vos tâches administratives, suivez vos chiffres en temps réel et pilotez votre entreprise depuis une application claire et intuitive.",
-    'accueil.hero.cta': "Essayer 30 jours gratuitement",
+    'accueil.hero.cta': "Optimisez votre temps",
     'accueil.hero.cta2': "Une question ? Écrivez-nous",
     'accueil.services.titre': 'Tout ce dont votre entreprise a besoin',
     'accueil.services.soustitre': "Tout ce qu'il faut pour piloter votre activité, sans multiplier les outils.",
@@ -458,7 +458,7 @@ export const DICT = {
 
     'accueil.nav.abonner': '30 Tage gratis testen',
     'accueil.hero.texte': 'Zentralisieren Sie Ihre gesamte Geschäftstätigkeit auf einer Plattform — sparen Sie Stunden bei administrativen Aufgaben, verfolgen Sie Ihre Zahlen in Echtzeit und steuern Sie Ihr Unternehmen über eine klare, intuitive Anwendung.',
-    'accueil.hero.cta': "30 Tage gratis testen",
+    'accueil.hero.cta': "Optimieren Sie Ihre Zeit",
     'accueil.hero.cta2': "Eine Frage? Schreiben Sie uns",
     'accueil.services.titre': 'Alles, was Ihr Unternehmen braucht',
     'accueil.services.soustitre': "Alles, was Sie zur Führung Ihres Betriebs brauchen — ohne einen Werkzeugkasten voller Programme.",
@@ -730,7 +730,7 @@ export const DICT = {
 
     'accueil.nav.abonner': 'Try it free for 30 days',
     'accueil.hero.texte': 'Centralize your entire business on a single platform — save hours on admin tasks, track your numbers in real time and manage your business from a clear, intuitive app.',
-    'accueil.hero.cta': "Try it free for 30 days",
+    'accueil.hero.cta': "Optimize your time",
     'accueil.hero.cta2': "A question? Write to us",
     'accueil.services.titre': 'Everything your business needs',
     'accueil.services.soustitre': "Everything you need to run the business, without juggling half a dozen tools.",
@@ -1002,7 +1002,7 @@ export const DICT = {
 
     'accueil.nav.abonner': 'Experimentar 30 dias grátis',
     'accueil.hero.texte': 'Centralize toda a sua actividade numa única plataforma — poupe horas em tarefas administrativas, acompanhe os seus números em tempo real e giria a sua empresa a partir de uma aplicação clara e intuitiva.',
-    'accueil.hero.cta': "Experimentar 30 dias grátis",
+    'accueil.hero.cta': "Optimize o seu tempo",
     'accueil.hero.cta2': "Uma dúvida? Escreva-nos",
     'accueil.services.titre': 'Tudo o que a sua empresa precisa',
     'accueil.services.soustitre': "Tudo o que é preciso para gerir a actividade, sem multiplicar ferramentas.",
