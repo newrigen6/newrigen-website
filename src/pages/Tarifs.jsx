@@ -365,8 +365,8 @@ export default function Tarifs() {
           {/* Note bas */}
           <p className="text-center text-slate-500 text-sm mt-8">
             {t('tarifs.questions')}{' '}
-            <a href="mailto:newrigen6@gmail.com" className="hover:text-white transition-colors" style={{ color: TEAL }}>
-              newrigen6@gmail.com
+            <a href="mailto:info@newrigen.ch" className="hover:text-white transition-colors" style={{ color: TEAL }}>
+              info@newrigen.ch
             </a>
           </p>
         </div>

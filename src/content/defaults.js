@@ -18,7 +18,7 @@ const PRIX = {
 const CONTACT = {
   telephone1: '079 324 65 93',
   telephone2: '079 873 37 91',
-  email: 'newrigen6@gmail.com',
+  email: 'info@newrigen.ch',
 }
 
 // Habillage des cartes, identique quelle que soit la langue.

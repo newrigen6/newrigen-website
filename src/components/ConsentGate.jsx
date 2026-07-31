@@ -8,7 +8,7 @@ const STORAGE_KEY = 'newrigen-consent-v1'
 const politique = [
   {
     titre: '1. Responsable du traitement',
-    texte: `Newrigen (ci-après "nous", "notre", "nos") est responsable du traitement de vos données personnelles. Siège en Valais, Suisse. Contact : newrigen6@gmail.com.`,
+    texte: `Newrigen (ci-après "nous", "notre", "nos") est responsable du traitement de vos données personnelles. Siège en Valais, Suisse. Contact : info@newrigen.ch.`,
   },
   {
     titre: '2. Données collectées',
@@ -36,7 +36,7 @@ const politique = [
   },
   {
     titre: '8. Vos droits',
-    texte: `Conformément au RGPD et à la LPD, vous disposez des droits suivants : accès à vos données, rectification, effacement ("droit à l'oubli"), limitation du traitement, portabilité, opposition. Pour exercer ces droits, contactez-nous à newrigen6@gmail.com. Vous disposez également du droit d'introduire une réclamation auprès de l'autorité de protection des données compétente.`,
+    texte: `Conformément au RGPD et à la LPD, vous disposez des droits suivants : accès à vos données, rectification, effacement ("droit à l'oubli"), limitation du traitement, portabilité, opposition. Pour exercer ces droits, contactez-nous à info@newrigen.ch. Vous disposez également du droit d'introduire une réclamation auprès de l'autorité de protection des données compétente.`,
   },
   {
     titre: '9. Transferts internationaux',

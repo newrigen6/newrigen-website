@@ -12,7 +12,7 @@ const TEAL = '#4DD9D9'
 const ENTREPRISE = {
   nom: 'Newrigen',
   adresse: 'Valais, Suisse',
-  email: 'newrigen6@gmail.com',
+  email: 'info@newrigen.ch',
 }
 
 function LegalLayout({ title, updated, children }) {
