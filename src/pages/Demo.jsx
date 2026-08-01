@@ -1,298 +1,317 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  LayoutDashboard, FileText, Users, Building2, Wallet, Plus, Trash2,
-  TrendingUp, Clock, Percent, CheckCircle2, ArrowLeft, Send,
+  LayoutDashboard, Calendar, FileText, Upload, HardHat, Package, ClipboardList,
+  Wrench, Calculator, Users, Boxes, Settings, ChevronDown, Search, SlidersHorizontal,
+  ChevronsUpDown, Plus, Trash2, X, Send, CheckCircle2, HelpCircle, ArrowLeft,
 } from 'lucide-react'
 
-// Reproduction légère du design "neumorphique" réel de l'application
-// (src/index.css de newrigen-devistrack) — même palette claire, même
-// accent turquoise — pour que la démo ressemble vraiment à l'app plutôt
-// qu'au site vitrine (sombre).
-const NEU = {
-  bg: '#e8ecf1',
-  dark: '#c8d0da',
-  light: '#ffffff',
-  text: '#3d4654',
-  sub: '#8792a2',
-  accent: '#4DD9D9',
+// Reproduction fidèle du vrai visuel de l'application (capture d'écran du
+// Dashboard réel : sidebar sombre + contenu clair, cartes plates, vraie
+// table de données) — pas une réinterprétation "neumorphique" comme la
+// première version.
+const C = {
+  sidebarBg: '#0A0A10',
+  sidebarActive: '#1B1E27',
+  sidebarText: '#8A93A6',
+  mainBg: '#F5F6F8',
+  card: '#FFFFFF',
+  border: '#E7E9EE',
+  text: '#12141A',
+  sub: '#8A93A6',
+  teal: '#4DD9D9',
+  green: '#16A34A',
+  greenBg: '#DCFCE7',
+  red: '#DC2626',
+  redBg: '#FEE2E2',
 }
 
-const raised = { background: NEU.bg, boxShadow: `8px 8px 16px ${NEU.dark}, -8px -8px 16px ${NEU.light}` }
-const raisedSm = { background: NEU.bg, boxShadow: `4px 4px 10px ${NEU.dark}, -4px -4px 10px ${NEU.light}` }
-const pressed = { background: NEU.bg, boxShadow: `inset 4px 4px 8px ${NEU.dark}, inset -4px -4px 8px ${NEU.light}` }
-
-const DEVIS_EXEMPLE = [
-  { client: 'Müller Sanitaire SA', montant: 4850, statut: 'Envoyé', marge: 32 },
-  { client: 'Favre Construction', montant: 12300, statut: 'Accepté', marge: 28 },
-  { client: 'Keller Traiteur', montant: 2100, statut: 'Brouillon', marge: 41 },
-  { client: 'Rossi Toiture Sàrl', montant: 7600, statut: 'Accepté', marge: 24 },
+const NAV = [
+  {
+    section: 'ACCUEIL', ouvert: true, items: [
+      { label: 'Dashboard', icon: LayoutDashboard, actif: true, id: 'dashboard' },
+      { label: 'Agenda', icon: Calendar, actif: false },
+    ],
+  },
+  { section: 'DEVIS', items: [{ label: 'Importer', icon: Upload, actif: false }] },
+  {
+    section: 'CHANTIERS', items: [
+      { label: 'Saisie Matériaux', icon: Package, actif: false },
+      { label: 'Bons de Régie', icon: ClipboardList, actif: false },
+      { label: "Bons d'intervention", icon: Wrench, actif: false },
+    ],
+  },
+  { section: 'COMPTABILITÉ', items: [{ label: 'Comptabilité', icon: Calculator, actif: false }] },
+  {
+    section: 'GESTION', items: [
+      { label: 'Team', icon: Users, actif: false },
+      { label: 'Produits', icon: Boxes, actif: false },
+      { label: 'Paramètres', icon: Settings, actif: false },
+    ],
+  },
 ]
 
-const STATUT_STYLE = {
-  Envoyé: { color: '#2563EB', bg: '#2563EB18' },
-  Accepté: { color: '#10B981', bg: '#10B98118' },
-  Brouillon: { color: NEU.sub, bg: `${NEU.sub}18` },
+const DEVIS_EXEMPLE = [
+  { nature: 'Devis', client: 'Resort Spa', adresse: 'Avenue de la Gare 12', date: '02.06.2026', montant: 282.39, materiaux: 345.92, mainOeuvre: 0, cout: 345.92, margeChf: -63.53, margePct: -22.5, statut: 'En cours' },
+  { nature: 'Devis', client: 'Hugo Clair', adresse: 'Rue du Quartier 19', date: '15.04.2026', montant: 20589.18, materiaux: 172.96, mainOeuvre: 120, cout: 292.96, margeChf: 20296.22, margePct: 98.6, statut: 'En cours' },
+  { nature: 'Devis', client: 'Müller Sanitaire SA', adresse: 'Chemin des Vignes 4', date: '28.03.2026', montant: 4850, materiaux: 2100, mainOeuvre: 980, cout: 3080, margeChf: 1770, margePct: 36.5, statut: 'Accepté' },
+]
+
+function chf(v) {
+  return v.toLocaleString('fr-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' CHF'
 }
 
-function StatCard({ icon: Icon, label, value, sub }) {
+function Sidebar() {
   return (
-    <div className="rounded-2xl p-5 flex items-start gap-4" style={raised}>
-      <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={pressed}>
-        <Icon className="w-5 h-5" style={{ color: NEU.accent }} />
+    <aside className="hidden lg:flex flex-col w-64 flex-shrink-0" style={{ background: C.sidebarBg }}>
+      <div className="flex items-center justify-between px-5 pt-5 pb-4">
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded flex items-center justify-center font-black text-xs flex-shrink-0" style={{ background: C.teal, color: '#0A0A0F' }}>N</div>
+          <span className="font-black text-sm tracking-wide text-white">NEWRIGEN</span>
+        </Link>
       </div>
-      <div className="min-w-0">
-        <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: NEU.sub }}>{label}</p>
-        <p className="text-xl font-bold mt-0.5 truncate" style={{ color: NEU.text }}>{value}</p>
-        {sub && <p className="text-xs mt-0.5" style={{ color: NEU.sub }}>{sub}</p>}
-      </div>
-    </div>
-  )
-}
 
-function DonutChart() {
-  const segments = [
-    { label: 'Matériaux', value: 12400, color: '#F59E0B' },
-    { label: "Main d'œuvre", value: 8200, color: '#6366F1' },
-    { label: 'Marge brute', value: 6150, color: NEU.accent },
-  ]
-  const total = segments.reduce((s, d) => s + d.value, 0)
-  const size = 140, cx = 70, cy = 70, r = 50, sw = 22
-  const circ = 2 * Math.PI * r
-  let cum = 0
-  return (
-    <div className="flex items-center gap-5 flex-wrap">
-      <svg width={size} height={size} className="flex-shrink-0">
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke={NEU.dark} strokeWidth={sw} opacity="0.4" />
-        {segments.map((seg, i) => {
-          const pct = seg.value / total
-          const startAngle = cum * 360 - 90
-          cum += pct
-          return (
-            <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={seg.color} strokeWidth={sw}
-              strokeDasharray={`${pct * circ} ${circ}`} transform={`rotate(${startAngle} ${cx} ${cy})`} />
-          )
-        })}
-        <text x={cx} y={cy - 4} textAnchor="middle" fill={NEU.text} fontSize="10" fontWeight="700">CHF</text>
-        <text x={cx} y={cy + 10} textAnchor="middle" fill={NEU.sub} fontSize="9">{(total / 1000).toFixed(1)}k</text>
-      </svg>
-      <div className="space-y-2.5 flex-1 min-w-[140px]">
-        {segments.map((seg, i) => (
-          <div key={i} className="flex items-start gap-2">
-            <div className="w-2.5 h-2.5 rounded-full mt-0.5 flex-shrink-0" style={{ background: seg.color }} />
-            <div className="min-w-0">
-              <p className="text-xs font-medium" style={{ color: NEU.text }}>{seg.label}</p>
-              <p className="text-xs" style={{ color: NEU.sub }}>{seg.value.toLocaleString('fr-CH')}.- · {((seg.value / total) * 100).toFixed(0)}%</p>
+      <div className="mx-4 mb-4 flex items-center justify-between rounded-xl bg-white px-3 py-2.5">
+        <span className="font-bold text-sm" style={{ color: C.text }}>T&D</span>
+        <ChevronsUpDown className="w-3.5 h-3.5" style={{ color: C.sub }} />
+      </div>
+
+      <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-4">
+        {NAV.map(section => (
+          <div key={section.section}>
+            <div className="flex items-center justify-between px-2 py-1">
+              <span className="text-[11px] font-bold tracking-wider" style={{ color: section.ouvert ? C.teal : C.sidebarText }}>{section.section}</span>
+              <ChevronDown className="w-3 h-3" style={{ color: section.ouvert ? C.teal : C.sidebarText }} />
+            </div>
+            <div className="space-y-0.5 mt-0.5">
+              {section.items.map(item => (
+                <div
+                  key={item.label}
+                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium"
+                  style={item.actif ? { background: C.sidebarActive, color: '#fff' } : { color: C.sidebarText }}
+                >
+                  <item.icon className="w-4 h-4 flex-shrink-0" />
+                  {item.label}
+                </div>
+              ))}
             </div>
           </div>
         ))}
+      </nav>
+
+      <div className="p-4">
+        <Link to="/" className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium" style={{ color: C.sidebarText }}>
+          <ArrowLeft className="w-3.5 h-3.5" /> Retour au site
+        </Link>
       </div>
+    </aside>
+  )
+}
+
+function StatCard({ label, value, sub, alerte }) {
+  return (
+    <div className="rounded-2xl p-5" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+      <div className="flex items-start justify-between mb-3">
+        <span className="text-xs" style={{ color: C.sub }}>{label}</span>
+        <span className="text-xs flex-shrink-0" style={{ color: C.sub }}>voir</span>
+      </div>
+      <p className="text-2xl font-black" style={{ color: alerte ? C.red : C.text }}>{value}</p>
+      <p className="text-xs mt-1" style={{ color: C.sub }}>{sub}</p>
     </div>
   )
 }
+
+const COLONNES = ['Nature', 'Client', 'Adresse', 'Date', 'Montant', 'Matériaux', "Main d'œuvre", 'Coût total', 'Marge CHF', 'Marge %', 'Statut']
 
 function EcranDashboard() {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={TrendingUp} label="CA du mois" value="26 850.-" sub="+18% vs mois dernier" />
-        <StatCard icon={Clock} label="Devis en attente" value="7" sub="3 depuis 5 jours" />
-        <StatCard icon={Percent} label="Marge moyenne" value="31%" sub="Objectif : 30%" />
-        <StatCard icon={CheckCircle2} label="Chantiers actifs" value="5" sub="2 se terminent cette semaine" />
+    <>
+      <span className="text-xs font-semibold tracking-wider" style={{ color: C.sub }}>RENTABILITÉ</span>
+      <h1 className="text-3xl font-black mb-6" style={{ color: C.text }}>Tableau de bord</h1>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <StatCard label="Chiffre d'affaires total" value="25 721,57 CHF" sub="Tous devis confondus" />
+        <StatCard label="Devis en cours (3)" value="25 721,57 CHF" sub="À facturer" />
+        <StatCard label="Marges réelles cumulées" value="22 002,69 CHF" sub="Mat. + main d'œuvre déduits" />
+        <StatCard label="Marges sous l'objectif (< 15 %)" value="1 devis" sub="À surveiller" alerte />
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-2 rounded-2xl p-5" style={raised}>
-          <p className="text-sm font-bold mb-4" style={{ color: NEU.text }}>Répartition des coûts</p>
-          <DonutChart />
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <div className="flex-1 flex items-center gap-2 rounded-xl px-4 py-2.5" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+          <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sub }} />
+          <span className="text-sm" style={{ color: C.sub }}>Rechercher un client…</span>
         </div>
+        <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+          <SlidersHorizontal className="w-4 h-4" style={{ color: C.sub }} />
+        </div>
+        <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm" style={{ background: C.card, border: `1px solid ${C.border}`, color: C.sub }}>Tous statuts</div>
+        <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm" style={{ background: C.card, border: `1px solid ${C.border}`, color: C.sub }}>Toutes marges</div>
+      </div>
 
-        <div className="lg:col-span-3 rounded-2xl p-5" style={raised}>
-          <p className="text-sm font-bold mb-4" style={{ color: NEU.text }}>Derniers devis</p>
-          <div className="space-y-2">
-            {DEVIS_EXEMPLE.map((d, i) => (
-              <div key={i} className="flex items-center justify-between gap-3 rounded-xl px-4 py-3" style={raisedSm}>
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold truncate" style={{ color: NEU.text }}>{d.client}</p>
-                  <p className="text-xs" style={{ color: NEU.sub }}>Marge {d.marge}%</p>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full" style={{ color: STATUT_STYLE[d.statut].color, background: STATUT_STYLE[d.statut].bg }}>
-                    {d.statut}
-                  </span>
-                  <span className="text-sm font-bold w-20 text-right" style={{ color: NEU.text }}>{d.montant.toLocaleString('fr-CH')}.-</span>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="rounded-2xl overflow-hidden mb-2" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr style={{ borderBottom: `1px solid ${C.border}` }}>
+                {COLONNES.map(c => (
+                  <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sub }}>
+                    <span className="inline-flex items-center gap-1">{c.toUpperCase()}<ChevronsUpDown className="w-3 h-3" /></span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {DEVIS_EXEMPLE.map((d, i) => (
+                <tr key={i} style={{ borderBottom: i < DEVIS_EXEMPLE.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" style={{ background: C.mainBg, color: C.sub }}>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.sub }} />{d.nature}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 font-bold whitespace-nowrap" style={{ color: C.text }}>{d.client}</td>
+                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.sub }}>{d.adresse}</td>
+                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.text }}>{d.date}</td>
+                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.text }}>{chf(d.montant)}</td>
+                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.text }}>{chf(d.materiaux)}</td>
+                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.text }}>{chf(d.mainOeuvre)}</td>
+                  <td className="px-4 py-3 font-semibold whitespace-nowrap" style={{ color: C.text }}>{chf(d.cout)}</td>
+                  <td className="px-4 py-3 font-semibold whitespace-nowrap" style={{ color: d.margeChf < 0 ? C.red : C.green }}>{chf(d.margeChf)}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ color: d.margePct < 0 ? C.red : C.green, background: d.margePct < 0 ? C.redBg : C.greenBg }}>
+                      {d.margePct > 0 ? '+' : ''}{d.margePct}%
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" style={{ background: C.mainBg, color: C.sub }}>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.teal }} />{d.statut}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-    </div>
+      <p className="text-xs" style={{ color: C.sub }}>{DEVIS_EXEMPLE.length} devis · 0 bons de régie</p>
+    </>
   )
 }
 
-function EcranNouveauDevis() {
+function EcranNouveauDevis({ onClose }) {
   const [client, setClient] = useState('')
   const [lignes, setLignes] = useState([{ desc: '', qte: 1, prix: 0 }])
   const [envoye, setEnvoye] = useState(false)
-
   const total = useMemo(() => lignes.reduce((s, l) => s + (Number(l.qte) || 0) * (Number(l.prix) || 0), 0), [lignes])
 
   function majLigne(i, champ, valeur) {
     setLignes(prev => prev.map((l, idx) => (idx === i ? { ...l, [champ]: valeur } : l)))
   }
-  function ajouterLigne() {
-    setLignes(prev => [...prev, { desc: '', qte: 1, prix: 0 }])
-  }
-  function supprimerLigne(i) {
-    setLignes(prev => prev.filter((_, idx) => idx !== i))
-  }
-
-  if (envoye) {
-    return (
-      <div className="rounded-2xl p-10 flex flex-col items-center text-center gap-3" style={raised}>
-        <div className="w-14 h-14 rounded-full flex items-center justify-center" style={pressed}>
-          <CheckCircle2 className="w-7 h-7" style={{ color: NEU.accent }} />
-        </div>
-        <p className="font-bold text-lg" style={{ color: NEU.text }}>Devis envoyé ! (démo)</p>
-        <p className="text-sm max-w-sm" style={{ color: NEU.sub }}>
-          Dans la vraie application, {client || 'votre client'} recevrait ce devis par e-mail immédiatement, prêt à signer.
-        </p>
-        <button onClick={() => { setEnvoye(false); setClient(''); setLignes([{ desc: '', qte: 1, prix: 0 }]) }}
-          className="mt-2 text-sm font-semibold px-4 py-2 rounded-xl" style={{ ...raisedSm, color: NEU.accent }}>
-          Recommencer
-        </button>
-      </div>
-    )
-  }
 
   return (
-    <div className="rounded-2xl p-6" style={raised}>
-      <p className="text-sm font-bold mb-4" style={{ color: NEU.text }}>Nouveau devis</p>
-
-      <label className="block text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: NEU.sub }}>Client</label>
-      <input
-        value={client} onChange={e => setClient(e.target.value)} placeholder="Nom du client"
-        className="w-full px-4 py-3 rounded-xl text-sm mb-5 focus:outline-none"
-        style={{ ...pressed, color: NEU.text }}
-      />
-
-      <p className="text-xs font-semibold uppercase tracking-wide mb-1.5" style={{ color: NEU.sub }}>Lignes du devis</p>
-      <div className="space-y-2 mb-4">
-        {lignes.map((l, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <input
-              value={l.desc} onChange={e => majLigne(i, 'desc', e.target.value)} placeholder="Description (ex: Pose de carrelage)"
-              className="flex-1 min-w-0 px-3 py-2.5 rounded-xl text-sm focus:outline-none" style={{ ...pressed, color: NEU.text }}
-            />
-            <input
-              type="number" min="0" value={l.qte} onChange={e => majLigne(i, 'qte', e.target.value)}
-              className="w-16 px-2 py-2.5 rounded-xl text-sm text-center focus:outline-none" style={{ ...pressed, color: NEU.text }}
-            />
-            <input
-              type="number" min="0" value={l.prix} onChange={e => majLigne(i, 'prix', e.target.value)} placeholder="Prix"
-              className="w-24 px-2 py-2.5 rounded-xl text-sm text-right focus:outline-none" style={{ ...pressed, color: NEU.text }}
-            />
-            {lignes.length > 1 && (
-              <button onClick={() => supprimerLigne(i)} className="p-2 flex-shrink-0" style={{ color: NEU.sub }}>
-                <Trash2 className="w-4 h-4" />
-              </button>
-            )}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(10,10,15,0.5)' }}>
+      <div className="w-full max-w-lg rounded-2xl p-6" style={{ background: C.card }}>
+        {envoye ? (
+          <div className="flex flex-col items-center text-center gap-3 py-6">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: C.greenBg }}>
+              <CheckCircle2 className="w-7 h-7" style={{ color: C.green }} />
+            </div>
+            <p className="font-black text-lg" style={{ color: C.text }}>Devis envoyé ! (démo)</p>
+            <p className="text-sm max-w-sm" style={{ color: C.sub }}>
+              Dans la vraie application, {client || 'votre client'} recevrait ce devis par e-mail immédiatement, prêt à signer.
+            </p>
+            <button onClick={onClose} className="mt-2 text-sm font-bold px-5 py-2.5 rounded-xl" style={{ background: C.teal, color: '#0A0A0F' }}>
+              Fermer
+            </button>
           </div>
-        ))}
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-black text-lg" style={{ color: C.text }}>Nouveau devis</h2>
+              <button onClick={onClose}><X className="w-5 h-5" style={{ color: C.sub }} /></button>
+            </div>
+
+            <label className="block text-xs font-bold mb-1.5" style={{ color: C.sub }}>CLIENT</label>
+            <input value={client} onChange={e => setClient(e.target.value)} placeholder="Nom du client"
+              className="w-full px-4 py-2.5 rounded-xl text-sm mb-4 focus:outline-none"
+              style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
+
+            <label className="block text-xs font-bold mb-1.5" style={{ color: C.sub }}>LIGNES DU DEVIS</label>
+            <div className="space-y-2 mb-3">
+              {lignes.map((l, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <input value={l.desc} onChange={e => majLigne(i, 'desc', e.target.value)} placeholder="Description"
+                    className="flex-1 min-w-0 px-3 py-2 rounded-xl text-sm focus:outline-none" style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
+                  <input type="number" min="0" value={l.qte} onChange={e => majLigne(i, 'qte', e.target.value)}
+                    className="w-14 px-2 py-2 rounded-xl text-sm text-center focus:outline-none" style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
+                  <input type="number" min="0" value={l.prix} onChange={e => majLigne(i, 'prix', e.target.value)} placeholder="Prix"
+                    className="w-20 px-2 py-2 rounded-xl text-sm text-right focus:outline-none" style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
+                  {lignes.length > 1 && (
+                    <button onClick={() => setLignes(prev => prev.filter((_, idx) => idx !== i))} className="flex-shrink-0">
+                      <Trash2 className="w-4 h-4" style={{ color: C.sub }} />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setLignes(prev => [...prev, { desc: '', qte: 1, prix: 0 }])} className="text-xs font-bold flex items-center gap-1.5 mb-5" style={{ color: C.teal }}>
+              <Plus className="w-3.5 h-3.5" /> Ajouter une ligne
+            </button>
+
+            <div className="flex items-center justify-between rounded-xl px-4 py-3 mb-4" style={{ background: C.mainBg }}>
+              <span className="text-sm font-bold" style={{ color: C.sub }}>Total</span>
+              <span className="text-xl font-black" style={{ color: C.text }}>{chf(total)}</span>
+            </div>
+
+            <button onClick={() => setEnvoye(true)} className="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2" style={{ background: C.teal, color: '#0A0A0F' }}>
+              <Send className="w-4 h-4" /> Envoyer le devis
+            </button>
+          </>
+        )}
       </div>
-
-      <button onClick={ajouterLigne} className="text-xs font-semibold flex items-center gap-1.5 mb-6" style={{ color: NEU.accent }}>
-        <Plus className="w-3.5 h-3.5" /> Ajouter une ligne
-      </button>
-
-      <div className="flex items-center justify-between rounded-xl px-4 py-3 mb-5" style={pressed}>
-        <span className="text-sm font-semibold" style={{ color: NEU.sub }}>Total</span>
-        <span className="text-xl font-black" style={{ color: NEU.text }}>{total.toLocaleString('fr-CH')}.- CHF</span>
-      </div>
-
-      <button
-        onClick={() => setEnvoye(true)}
-        className="w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2"
-        style={{ background: NEU.accent, color: '#0A0A0F' }}
-      >
-        <Send className="w-4 h-4" /> Envoyer le devis
-      </button>
     </div>
   )
 }
 
-const NAV = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, actif: true },
-  { id: 'devis', label: 'Nouveau devis', icon: FileText, actif: true },
-  { id: 'employes', label: 'Employés', icon: Users, actif: false },
-  { id: 'chantiers', label: 'Chantiers', icon: Building2, actif: false },
-  { id: 'factures', label: 'Factures', icon: Wallet, actif: false },
-]
-
 export default function Demo() {
-  const [ecran, setEcran] = useState('dashboard')
+  const [modalOuvert, setModalOuvert] = useState(false)
 
   return (
-    <div className="min-h-screen" style={{ background: NEU.bg }}>
-      {/* Bandeau démo */}
-      <div className="sticky top-0 z-50 px-4 py-2.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs md:text-sm text-center" style={{ background: '#0A0A0F', color: '#fff' }}>
-        <span>🎬 Démonstration avec des données d'exemple — rien n'est enregistré</span>
-        <Link to="/tarifs" className="font-bold underline" style={{ color: NEU.accent }}>
-          Essayer gratuitement pendant 30 jours →
-        </Link>
-      </div>
+    <div className="min-h-screen flex" style={{ background: C.mainBg }}>
+      <Sidebar />
 
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="hidden md:flex flex-col w-56 flex-shrink-0 p-4 gap-1 min-h-[calc(100vh-40px)]" style={{ background: NEU.bg }}>
-          <Link to="/" className="flex items-center gap-2 px-2 py-3 mb-3">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0" style={{ background: '#0A0A0F', color: NEU.accent }}>N</div>
-            <span className="font-bold text-sm" style={{ color: NEU.text }}>Newrigen</span>
+      <div className="flex-1 min-w-0 flex flex-col">
+        <div className="px-4 md:px-8 py-2.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs md:text-sm text-center" style={{ background: C.sidebarBg, color: '#fff' }}>
+          <span>🎬 Démonstration avec des données d'exemple — rien n'est enregistré</span>
+          <Link to="/tarifs" className="font-bold underline" style={{ color: C.teal }}>
+            Essayer gratuitement pendant 30 jours →
           </Link>
-          {NAV.map(item => (
+        </div>
+
+        <main className="flex-1 p-4 md:p-8">
+          <div className="flex items-start justify-between gap-4 mb-1">
+            <div />
             <button
-              key={item.id}
-              onClick={() => item.actif && setEcran(item.id)}
-              disabled={!item.actif}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-left transition-all"
-              style={ecran === item.id ? pressed : {}}
+              onClick={() => setModalOuvert(true)}
+              className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm"
+              style={{ background: C.teal, color: '#0A0A0F' }}
             >
-              <item.icon className="w-4 h-4 flex-shrink-0" style={{ color: ecran === item.id ? NEU.accent : NEU.sub }} />
-              <span style={{ color: ecran === item.id ? NEU.text : NEU.sub }}>{item.label}</span>
-              {!item.actif && <span className="ml-auto text-[10px]" style={{ color: NEU.sub }}>bientôt</span>}
+              <Plus className="w-4 h-4" /> Nouveau devis
             </button>
-          ))}
-          <div className="mt-auto pt-4">
-            <Link to="/" className="flex items-center gap-2 px-3 py-2 text-xs font-medium" style={{ color: NEU.sub }}>
-              <ArrowLeft className="w-3.5 h-3.5" /> Retour au site
-            </Link>
           </div>
-        </aside>
-
-        {/* Contenu */}
-        <main className="flex-1 min-w-0 p-4 md:p-8">
-          {/* Onglets mobile */}
-          <div className="flex md:hidden gap-2 mb-5 overflow-x-auto">
-            {NAV.filter(n => n.actif).map(item => (
-              <button
-                key={item.id}
-                onClick={() => setEcran(item.id)}
-                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold"
-                style={ecran === item.id ? { ...pressed, color: NEU.text } : { ...raisedSm, color: NEU.sub }}
-              >
-                <item.icon className="w-3.5 h-3.5" /> {item.label}
-              </button>
-            ))}
-          </div>
-
-          <h1 className="text-xl font-black mb-5" style={{ color: NEU.text }}>
-            {ecran === 'dashboard' ? 'Vue d’ensemble' : 'Nouveau devis'}
-          </h1>
-
-          {ecran === 'dashboard' ? <EcranDashboard /> : <EcranNouveauDevis />}
+          <EcranDashboard />
         </main>
       </div>
+
+      <button
+        onClick={() => setModalOuvert(true)}
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-40"
+        style={{ background: C.teal, color: '#0A0A0F' }}
+        aria-label="Aide"
+      >
+        <HelpCircle className="w-5 h-5" />
+      </button>
+
+      {modalOuvert && <EcranNouveauDevis onClose={() => setModalOuvert(false)} />}
     </div>
   )
 }
