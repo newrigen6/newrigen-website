@@ -1,15 +1,16 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  LayoutDashboard, Calendar, FileText, Upload, HardHat, Package, ClipboardList,
-  Wrench, Calculator, Users, Boxes, Settings, ChevronDown, Search, SlidersHorizontal,
-  ChevronsUpDown, Plus, Trash2, X, Send, CheckCircle2, HelpCircle, ArrowLeft,
+  LayoutDashboard, Calendar, Upload, Package, ClipboardList, Wrench, Calculator,
+  Users, Boxes, Settings, ChevronDown, Search, SlidersHorizontal, ChevronsUpDown,
+  Plus, X, Send, CheckCircle2, HelpCircle, ArrowLeft, FileUp, UserPlus, Bell, Shield,
 } from 'lucide-react'
 
-// Reproduction fidèle du vrai visuel de l'application (capture d'écran du
-// Dashboard réel : sidebar sombre + contenu clair, cartes plates, vraie
-// table de données) — pas une réinterprétation "neumorphique" comme la
-// première version.
+// Reproduction fidele du vrai visuel de l'application (capture d'ecran du
+// Dashboard reel : sidebar sombre + contenu clair, cartes plates, vraie
+// table de donnees). Toute la navigation est cliquable, mais aucun champ
+// n'est modifiable nulle part : c'est une visite guidee, pas un vrai
+// formulaire — rien ne peut jamais etre saisi ni enregistre.
 const C = {
   sidebarBg: '#0A0A10',
   sidebarActive: '#1B1E27',
@@ -27,28 +28,26 @@ const C = {
 }
 
 const NAV = [
-  {
-    section: 'ACCUEIL', ouvert: true, items: [
-      { label: 'Dashboard', icon: LayoutDashboard, actif: true, id: 'dashboard' },
-      { label: 'Agenda', icon: Calendar, actif: false },
-    ],
-  },
-  { section: 'DEVIS', items: [{ label: 'Importer', icon: Upload, actif: false }] },
-  {
-    section: 'CHANTIERS', items: [
-      { label: 'Saisie Matériaux', icon: Package, actif: false },
-      { label: 'Bons de Régie', icon: ClipboardList, actif: false },
-      { label: "Bons d'intervention", icon: Wrench, actif: false },
-    ],
-  },
-  { section: 'COMPTABILITÉ', items: [{ label: 'Comptabilité', icon: Calculator, actif: false }] },
-  {
-    section: 'GESTION', items: [
-      { label: 'Team', icon: Users, actif: false },
-      { label: 'Produits', icon: Boxes, actif: false },
-      { label: 'Paramètres', icon: Settings, actif: false },
-    ],
-  },
+  { section: 'ACCUEIL', items: [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'agenda', label: 'Agenda', icon: Calendar },
+  ] },
+  { section: 'DEVIS', items: [
+    { id: 'importer', label: 'Importer', icon: Upload },
+  ] },
+  { section: 'CHANTIERS', items: [
+    { id: 'materiaux', label: 'Saisie Matériaux', icon: Package },
+    { id: 'regie', label: 'Bons de Régie', icon: ClipboardList },
+    { id: 'intervention', label: "Bons d'intervention", icon: Wrench },
+  ] },
+  { section: 'COMPTABILITÉ', items: [
+    { id: 'compta', label: 'Comptabilité', icon: Calculator },
+  ] },
+  { section: 'GESTION', items: [
+    { id: 'team', label: 'Team', icon: Users },
+    { id: 'produits', label: 'Produits', icon: Boxes },
+    { id: 'parametres', label: 'Paramètres', icon: Settings },
+  ] },
 ]
 
 const DEVIS_EXEMPLE = [
@@ -61,91 +60,81 @@ function chf(v) {
   return v.toLocaleString('fr-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' CHF'
 }
 
-function Sidebar() {
+// ── Petits blocs réutilisés par les écrans "aperçu" ─────────────────────────
+function Carte({ children, className = '' }) {
+  return <div className={`rounded-2xl p-5 ${className}`} style={{ background: C.card, border: `1px solid ${C.border}` }}>{children}</div>
+}
+function Entete({ eyebrow, titre }) {
   return (
-    <aside className="hidden lg:flex flex-col w-64 flex-shrink-0" style={{ background: C.sidebarBg }}>
-      <div className="flex items-center justify-between px-5 pt-5 pb-4">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded flex items-center justify-center font-black text-xs flex-shrink-0" style={{ background: C.teal, color: '#0A0A0F' }}>N</div>
-          <span className="font-black text-sm tracking-wide text-white">NEWRIGEN</span>
-        </Link>
-      </div>
-
-      <div className="mx-4 mb-4 flex items-center justify-between rounded-xl bg-white px-3 py-2.5">
-        <span className="font-bold text-sm" style={{ color: C.text }}>T&D</span>
-        <ChevronsUpDown className="w-3.5 h-3.5" style={{ color: C.sub }} />
-      </div>
-
-      <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-4">
-        {NAV.map(section => (
-          <div key={section.section}>
-            <div className="flex items-center justify-between px-2 py-1">
-              <span className="text-[11px] font-bold tracking-wider" style={{ color: section.ouvert ? C.teal : C.sidebarText }}>{section.section}</span>
-              <ChevronDown className="w-3 h-3" style={{ color: section.ouvert ? C.teal : C.sidebarText }} />
-            </div>
-            <div className="space-y-0.5 mt-0.5">
-              {section.items.map(item => (
-                <div
-                  key={item.label}
-                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium"
-                  style={item.actif ? { background: C.sidebarActive, color: '#fff' } : { color: C.sidebarText }}
-                >
-                  <item.icon className="w-4 h-4 flex-shrink-0" />
-                  {item.label}
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </nav>
-
-      <div className="p-4">
-        <Link to="/" className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium" style={{ color: C.sidebarText }}>
-          <ArrowLeft className="w-3.5 h-3.5" /> Retour au site
-        </Link>
-      </div>
-    </aside>
+    <>
+      <span className="text-xs font-semibold tracking-wider" style={{ color: C.sub }}>{eyebrow}</span>
+      <h1 className="text-3xl font-black mb-6" style={{ color: C.text }}>{titre}</h1>
+    </>
   )
 }
-
-function StatCard({ label, value, sub, alerte }) {
+function Ligne({ titre, sous, droite, badge }) {
   return (
-    <div className="rounded-2xl p-5" style={{ background: C.card, border: `1px solid ${C.border}` }}>
-      <div className="flex items-start justify-between mb-3">
-        <span className="text-xs" style={{ color: C.sub }}>{label}</span>
-        <span className="text-xs flex-shrink-0" style={{ color: C.sub }}>voir</span>
+    <div className="flex items-center justify-between gap-3 py-3" style={{ borderBottom: `1px solid ${C.border}` }}>
+      <div className="min-w-0">
+        <p className="text-sm font-bold truncate" style={{ color: C.text }}>{titre}</p>
+        {sous && <p className="text-xs" style={{ color: C.sub }}>{sous}</p>}
       </div>
-      <p className="text-2xl font-black" style={{ color: alerte ? C.red : C.text }}>{value}</p>
-      <p className="text-xs mt-1" style={{ color: C.sub }}>{sub}</p>
+      <div className="flex items-center gap-2 flex-shrink-0">
+        {badge && <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ background: C.mainBg, color: C.sub }}>{badge}</span>}
+        {droite && <span className="text-sm font-semibold" style={{ color: C.text }}>{droite}</span>}
+      </div>
     </div>
   )
 }
+function Bouton({ children, onClick, primaire }) {
+  return (
+    <button
+      onClick={onClick}
+      className="px-4 py-2.5 rounded-xl font-bold text-sm flex-shrink-0"
+      style={primaire ? { background: C.teal, color: '#0A0A0F' } : { background: C.card, color: C.text, border: `1px solid ${C.border}` }}
+    >
+      {children}
+    </button>
+  )
+}
 
-const COLONNES = ['Nature', 'Client', 'Adresse', 'Date', 'Montant', 'Matériaux', "Main d'œuvre", 'Coût total', 'Marge CHF', 'Marge %', 'Statut']
-
-function EcranDashboard() {
+// ── Écrans ───────────────────────────────────────────────────────────────
+function EcranDashboard({ onNouveauDevis }) {
   return (
     <>
-      <span className="text-xs font-semibold tracking-wider" style={{ color: C.sub }}>RENTABILITÉ</span>
-      <h1 className="text-3xl font-black mb-6" style={{ color: C.text }}>Tableau de bord</h1>
+      <div className="flex items-start justify-between gap-4">
+        <Entete eyebrow="RENTABILITÉ" titre="Tableau de bord" />
+        <Bouton primaire onClick={onNouveauDevis}><span className="flex items-center gap-2"><Plus className="w-4 h-4" /> Nouveau devis</span></Bouton>
+      </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard label="Chiffre d'affaires total" value="25 721,57 CHF" sub="Tous devis confondus" />
-        <StatCard label="Devis en cours (3)" value="25 721,57 CHF" sub="À facturer" />
-        <StatCard label="Marges réelles cumulées" value="22 002,69 CHF" sub="Mat. + main d'œuvre déduits" />
-        <StatCard label="Marges sous l'objectif (< 15 %)" value="1 devis" sub="À surveiller" alerte />
+        {[
+          { label: "Chiffre d'affaires total", value: '25 721,57 CHF', sub: 'Tous devis confondus' },
+          { label: 'Devis en cours (3)', value: '25 721,57 CHF', sub: 'À facturer' },
+          { label: 'Marges réelles cumulées', value: '22 002,69 CHF', sub: "Mat. + main d'œuvre déduits" },
+          { label: 'Marges sous l’objectif (< 15 %)', value: '1 devis', sub: 'À surveiller', alerte: true },
+        ].map(s => (
+          <Carte key={s.label}>
+            <div className="flex items-start justify-between mb-3">
+              <span className="text-xs" style={{ color: C.sub }}>{s.label}</span>
+              <button className="text-xs flex-shrink-0 hover:underline" style={{ color: C.sub }}>voir</button>
+            </div>
+            <p className="text-2xl font-black" style={{ color: s.alerte ? C.red : C.text }}>{s.value}</p>
+            <p className="text-xs mt-1" style={{ color: C.sub }}>{s.sub}</p>
+          </Carte>
+        ))}
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
-        <div className="flex-1 flex items-center gap-2 rounded-xl px-4 py-2.5" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+        <div className="flex-1 flex items-center gap-2 rounded-xl px-4 py-2.5 cursor-text" style={{ background: C.card, border: `1px solid ${C.border}` }}>
           <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sub }} />
           <span className="text-sm" style={{ color: C.sub }}>Rechercher un client…</span>
         </div>
-        <div className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: C.card, border: `1px solid ${C.border}` }}>
+        <button className="flex items-center gap-2 rounded-xl px-3 py-2.5" style={{ background: C.card, border: `1px solid ${C.border}` }}>
           <SlidersHorizontal className="w-4 h-4" style={{ color: C.sub }} />
-        </div>
-        <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm" style={{ background: C.card, border: `1px solid ${C.border}`, color: C.sub }}>Tous statuts</div>
-        <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm" style={{ background: C.card, border: `1px solid ${C.border}`, color: C.sub }}>Toutes marges</div>
+        </button>
+        <button className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm" style={{ background: C.card, border: `1px solid ${C.border}`, color: C.sub }}>Tous statuts</button>
+        <button className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm" style={{ background: C.card, border: `1px solid ${C.border}`, color: C.sub }}>Toutes marges</button>
       </div>
 
       <div className="rounded-2xl overflow-hidden mb-2" style={{ background: C.card, border: `1px solid ${C.border}` }}>
@@ -153,8 +142,8 @@ function EcranDashboard() {
           <table className="w-full text-sm">
             <thead>
               <tr style={{ borderBottom: `1px solid ${C.border}` }}>
-                {COLONNES.map(c => (
-                  <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sub }}>
+                {['Nature', 'Client', 'Adresse', 'Date', 'Montant', 'Matériaux', "Main d'œuvre", 'Coût total', 'Marge CHF', 'Marge %', 'Statut'].map(c => (
+                  <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap cursor-pointer select-none" style={{ color: C.sub }}>
                     <span className="inline-flex items-center gap-1">{c.toUpperCase()}<ChevronsUpDown className="w-3 h-3" /></span>
                   </th>
                 ))}
@@ -162,7 +151,7 @@ function EcranDashboard() {
             </thead>
             <tbody>
               {DEVIS_EXEMPLE.map((d, i) => (
-                <tr key={i} style={{ borderBottom: i < DEVIS_EXEMPLE.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+                <tr key={i} className="cursor-pointer hover:bg-black/[0.02]" style={{ borderBottom: i < DEVIS_EXEMPLE.length - 1 ? `1px solid ${C.border}` : 'none' }}>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full" style={{ background: C.mainBg, color: C.sub }}>
                       <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.sub }} />{d.nature}
@@ -197,15 +186,174 @@ function EcranDashboard() {
   )
 }
 
-function EcranNouveauDevis({ onClose }) {
-  const [client, setClient] = useState('')
-  const [lignes, setLignes] = useState([{ desc: '', qte: 1, prix: 0 }])
-  const [envoye, setEnvoye] = useState(false)
-  const total = useMemo(() => lignes.reduce((s, l) => s + (Number(l.qte) || 0) * (Number(l.prix) || 0), 0), [lignes])
+function EcranAgenda() {
+  const jours = ['Lun 3', 'Mar 4', 'Mer 5', 'Jeu 6', 'Ven 7']
+  const rdv = { 'Lun 3': ['08:00 Resort Spa — pose carrelage'], 'Mer 5': ['10:30 Hugo Clair — devis sur place'], 'Ven 7': ['14:00 Müller Sanitaire — visite chantier'] }
+  return (
+    <>
+      <Entete eyebrow="PLANNING" titre="Agenda" />
+      <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+        {jours.map(j => (
+          <Carte key={j} className="min-h-[140px]">
+            <p className="text-xs font-bold mb-3" style={{ color: C.sub }}>{j.toUpperCase()}</p>
+            <div className="space-y-2">
+              {(rdv[j] || []).map(r => (
+                <div key={r} className="text-xs font-medium px-2.5 py-2 rounded-lg cursor-pointer" style={{ background: `${C.teal}15`, color: C.text }}>{r}</div>
+              ))}
+            </div>
+          </Carte>
+        ))}
+      </div>
+    </>
+  )
+}
 
-  function majLigne(i, champ, valeur) {
-    setLignes(prev => prev.map((l, idx) => (idx === i ? { ...l, [champ]: valeur } : l)))
-  }
+function EcranImporter() {
+  return (
+    <>
+      <Entete eyebrow="DEVIS" titre="Importer" />
+      <Carte className="flex flex-col items-center justify-center text-center py-14 mb-6 cursor-pointer">
+        <FileUp className="w-8 h-8 mb-3" style={{ color: C.teal }} />
+        <p className="font-bold text-sm mb-1" style={{ color: C.text }}>Glissez vos devis existants ici</p>
+        <p className="text-xs" style={{ color: C.sub }}>Excel, PDF — l'IA extrait automatiquement les lignes</p>
+      </Carte>
+      <Carte>
+        <p className="text-sm font-bold mb-1" style={{ color: C.text }}>Récemment importés</p>
+        <Ligne titre="devis_favre_construction.pdf" sous="Importé le 29.07.2026" badge="Traité" />
+        <Ligne titre="catalogue_2026.xlsx" sous="Importé le 12.07.2026" badge="Traité" />
+      </Carte>
+    </>
+  )
+}
+
+function EcranMateriaux() {
+  return (
+    <>
+      <Entete eyebrow="CHANTIERS" titre="Saisie Matériaux" />
+      <Carte>
+        <Ligne titre="Carrelage grès cérame 60×60" sous="Resort Spa · 42 m²" droite="1 260.- CHF" />
+        <Ligne titre="Colle carrelage 25kg" sous="Resort Spa · 8 sacs" droite="184.- CHF" />
+        <Ligne titre="Robinetterie mitigeur" sous="Hugo Clair · 3 unités" droite="540.- CHF" />
+      </Carte>
+    </>
+  )
+}
+
+function EcranRegie() {
+  return (
+    <>
+      <Entete eyebrow="CHANTIERS" titre="Bons de Régie" />
+      <Carte>
+        <Ligne titre="Resort Spa" sous="4h30 · Signé par le client" badge="Clôturé" />
+        <Ligne titre="Hugo Clair" sous="2h15 · En attente de signature" badge="En cours" />
+      </Carte>
+    </>
+  )
+}
+
+function EcranIntervention() {
+  return (
+    <>
+      <Entete eyebrow="CHANTIERS" titre="Bons d'intervention" />
+      <Carte>
+        <Ligne titre="Fuite robinetterie — Hugo Clair" sous="Intervention urgente · 15.04.2026" badge="Terminé" />
+        <Ligne titre="Contrôle chaudière — Müller Sanitaire" sous="Planifiée · 08.08.2026" badge="À venir" />
+      </Carte>
+    </>
+  )
+}
+
+function EcranCompta() {
+  return (
+    <>
+      <Entete eyebrow="FINANCES" titre="Comptabilité" />
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <Carte><span className="text-xs" style={{ color: C.sub }}>CA facturé (2026)</span><p className="text-2xl font-black mt-2" style={{ color: C.text }}>184 320.- CHF</p></Carte>
+        <Carte><span className="text-xs" style={{ color: C.sub }}>TVA due</span><p className="text-2xl font-black mt-2" style={{ color: C.text }}>14 205.- CHF</p></Carte>
+        <Carte><span className="text-xs" style={{ color: C.sub }}>Factures impayées</span><p className="text-2xl font-black mt-2" style={{ color: C.red }}>3</p></Carte>
+      </div>
+      <Carte>
+        <Ligne titre="Facture #2026-041 — Resort Spa" sous="Échéance 15.08.2026" badge="Payée" droite="4 850.- CHF" />
+        <Ligne titre="Facture #2026-042 — Hugo Clair" sous="Échéance 22.08.2026" badge="En attente" droite="20 589.- CHF" />
+      </Carte>
+    </>
+  )
+}
+
+function EcranTeam() {
+  return (
+    <>
+      <div className="flex items-start justify-between gap-4">
+        <Entete eyebrow="GESTION" titre="Team" />
+        <Bouton><span className="flex items-center gap-2"><UserPlus className="w-4 h-4" /> Inviter</span></Bouton>
+      </div>
+      <Carte>
+        {[{ n: 'Tiago D.', r: 'Administrateur' }, { n: 'Sophie M.', r: 'Employée' }, { n: 'Pierre F.', r: 'Employé' }].map(p => (
+          <div key={p.n} className="flex items-center gap-3 py-3" style={{ borderBottom: `1px solid ${C.border}` }}>
+            <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: `${C.teal}20`, color: C.text }}>
+              {p.n.split(' ').map(x => x[0]).join('')}
+            </div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: C.text }}>{p.n}</p>
+              <p className="text-xs" style={{ color: C.sub }}>{p.r}</p>
+            </div>
+          </div>
+        ))}
+      </Carte>
+    </>
+  )
+}
+
+function EcranProduits() {
+  return (
+    <>
+      <Entete eyebrow="GESTION" titre="Produits" />
+      <Carte>
+        <Ligne titre="Carrelage grès cérame 60×60" sous="Matériau" droite="30.- CHF/m²" />
+        <Ligne titre="Mitigeur cuisine" sous="Robinetterie" droite="180.- CHF" />
+        <Ligne titre="Heure main d'œuvre" sous="Service" droite="85.- CHF/h" />
+      </Carte>
+    </>
+  )
+}
+
+function EcranParametres() {
+  return (
+    <>
+      <Entete eyebrow="GESTION" titre="Paramètres" />
+      <Carte className="mb-4">
+        <p className="text-sm font-bold mb-3" style={{ color: C.text }}>Notifications</p>
+        {[{ icon: Bell, label: 'Alerte marge sous objectif' }, { icon: Shield, label: 'Connexions suspectes' }].map(o => (
+          <div key={o.label} className="flex items-center justify-between py-2.5" style={{ borderBottom: `1px solid ${C.border}` }}>
+            <span className="flex items-center gap-2.5 text-sm" style={{ color: C.text }}><o.icon className="w-4 h-4" style={{ color: C.sub }} />{o.label}</span>
+            <div className="w-9 h-5 rounded-full flex items-center px-0.5 cursor-pointer" style={{ background: C.teal }}>
+              <div className="w-4 h-4 rounded-full bg-white ml-auto" />
+            </div>
+          </div>
+        ))}
+      </Carte>
+      <Carte>
+        <p className="text-sm font-bold mb-1" style={{ color: C.text }}>Signature électronique</p>
+        <p className="text-xs" style={{ color: C.sub }}>Utilisée automatiquement sur vos devis et bons de régie.</p>
+      </Carte>
+    </>
+  )
+}
+
+const ECRANS = {
+  dashboard: EcranDashboard, agenda: EcranAgenda, importer: EcranImporter, materiaux: EcranMateriaux,
+  regie: EcranRegie, intervention: EcranIntervention, compta: EcranCompta, team: EcranTeam,
+  produits: EcranProduits, parametres: EcranParametres,
+}
+
+// ── Aperçu "Nouveau devis" : lecture seule, rien n'est saisissable ──────────
+function ApercuNouveauDevis({ onClose }) {
+  const [envoye, setEnvoye] = useState(false)
+  const lignes = [
+    { desc: 'Carrelage grès cérame 60×60', qte: 42, prix: 30 },
+    { desc: "Pose et main d'œuvre", qte: 8, prix: 85 },
+  ]
+  const total = lignes.reduce((s, l) => s + l.qte * l.prix, 0)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(10,10,15,0.5)' }}>
@@ -217,54 +365,42 @@ function EcranNouveauDevis({ onClose }) {
             </div>
             <p className="font-black text-lg" style={{ color: C.text }}>Devis envoyé ! (démo)</p>
             <p className="text-sm max-w-sm" style={{ color: C.sub }}>
-              Dans la vraie application, {client || 'votre client'} recevrait ce devis par e-mail immédiatement, prêt à signer.
+              Dans la vraie application, le client recevrait ce devis par e-mail immédiatement, prêt à signer.
             </p>
-            <button onClick={onClose} className="mt-2 text-sm font-bold px-5 py-2.5 rounded-xl" style={{ background: C.teal, color: '#0A0A0F' }}>
-              Fermer
-            </button>
+            <Bouton primaire onClick={onClose}>Fermer</Bouton>
           </div>
         ) : (
           <>
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-1">
               <h2 className="font-black text-lg" style={{ color: C.text }}>Nouveau devis</h2>
               <button onClick={onClose}><X className="w-5 h-5" style={{ color: C.sub }} /></button>
             </div>
+            <p className="text-xs mb-5" style={{ color: C.sub }}>Aperçu — dans l'application, ce formulaire se remplit librement.</p>
 
             <label className="block text-xs font-bold mb-1.5" style={{ color: C.sub }}>CLIENT</label>
-            <input value={client} onChange={e => setClient(e.target.value)} placeholder="Nom du client"
-              className="w-full px-4 py-2.5 rounded-xl text-sm mb-4 focus:outline-none"
-              style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
+            <div className="w-full px-4 py-2.5 rounded-xl text-sm mb-4" style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }}>
+              Resort Spa
+            </div>
 
             <label className="block text-xs font-bold mb-1.5" style={{ color: C.sub }}>LIGNES DU DEVIS</label>
-            <div className="space-y-2 mb-3">
-              {lignes.map((l, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <input value={l.desc} onChange={e => majLigne(i, 'desc', e.target.value)} placeholder="Description"
-                    className="flex-1 min-w-0 px-3 py-2 rounded-xl text-sm focus:outline-none" style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
-                  <input type="number" min="0" value={l.qte} onChange={e => majLigne(i, 'qte', e.target.value)}
-                    className="w-14 px-2 py-2 rounded-xl text-sm text-center focus:outline-none" style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
-                  <input type="number" min="0" value={l.prix} onChange={e => majLigne(i, 'prix', e.target.value)} placeholder="Prix"
-                    className="w-20 px-2 py-2 rounded-xl text-sm text-right focus:outline-none" style={{ background: C.mainBg, border: `1px solid ${C.border}`, color: C.text }} />
-                  {lignes.length > 1 && (
-                    <button onClick={() => setLignes(prev => prev.filter((_, idx) => idx !== i))} className="flex-shrink-0">
-                      <Trash2 className="w-4 h-4" style={{ color: C.sub }} />
-                    </button>
-                  )}
+            <div className="space-y-2 mb-4">
+              {lignes.map(l => (
+                <div key={l.desc} className="flex items-center gap-2 text-sm px-3 py-2 rounded-xl" style={{ background: C.mainBg, border: `1px solid ${C.border}` }}>
+                  <span className="flex-1 truncate" style={{ color: C.text }}>{l.desc}</span>
+                  <span style={{ color: C.sub }}>{l.qte} ×</span>
+                  <span className="font-semibold" style={{ color: C.text }}>{l.prix}.-</span>
                 </div>
               ))}
             </div>
-            <button onClick={() => setLignes(prev => [...prev, { desc: '', qte: 1, prix: 0 }])} className="text-xs font-bold flex items-center gap-1.5 mb-5" style={{ color: C.teal }}>
-              <Plus className="w-3.5 h-3.5" /> Ajouter une ligne
-            </button>
 
-            <div className="flex items-center justify-between rounded-xl px-4 py-3 mb-4" style={{ background: C.mainBg }}>
+            <div className="flex items-center justify-between rounded-xl px-4 py-3 mb-5" style={{ background: C.mainBg }}>
               <span className="text-sm font-bold" style={{ color: C.sub }}>Total</span>
               <span className="text-xl font-black" style={{ color: C.text }}>{chf(total)}</span>
             </div>
 
-            <button onClick={() => setEnvoye(true)} className="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2" style={{ background: C.teal, color: '#0A0A0F' }}>
-              <Send className="w-4 h-4" /> Envoyer le devis
-            </button>
+            <Bouton primaire onClick={() => setEnvoye(true)}>
+              <span className="flex items-center justify-center gap-2 w-full"><Send className="w-4 h-4" /> Envoyer le devis</span>
+            </Bouton>
           </>
         )}
       </div>
@@ -273,32 +409,80 @@ function EcranNouveauDevis({ onClose }) {
 }
 
 export default function Demo() {
+  const [ecran, setEcran] = useState('dashboard')
   const [modalOuvert, setModalOuvert] = useState(false)
+  const Ecran = ECRANS[ecran]
 
   return (
     <div className="min-h-screen flex" style={{ background: C.mainBg }}>
-      <Sidebar />
+      <aside className="hidden lg:flex flex-col w-64 flex-shrink-0" style={{ background: C.sidebarBg }}>
+        <div className="flex items-center justify-between px-5 pt-5 pb-4">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded flex items-center justify-center font-black text-xs flex-shrink-0" style={{ background: C.teal, color: '#0A0A0F' }}>N</div>
+            <span className="font-black text-sm tracking-wide text-white">NEWRIGEN</span>
+          </Link>
+        </div>
+
+        <div className="mx-4 mb-4 flex items-center justify-between rounded-xl bg-white px-3 py-2.5 cursor-pointer">
+          <span className="font-bold text-sm" style={{ color: C.text }}>T&D</span>
+          <ChevronsUpDown className="w-3.5 h-3.5" style={{ color: C.sub }} />
+        </div>
+
+        <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-4">
+          {NAV.map(section => (
+            <div key={section.section}>
+              <div className="flex items-center justify-between px-2 py-1">
+                <span className="text-[11px] font-bold tracking-wider" style={{ color: section.items.some(i => i.id === ecran) ? C.teal : C.sidebarText }}>{section.section}</span>
+                <ChevronDown className="w-3 h-3" style={{ color: section.items.some(i => i.id === ecran) ? C.teal : C.sidebarText }} />
+              </div>
+              <div className="space-y-0.5 mt-0.5">
+                {section.items.map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => setEcran(item.id)}
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium text-left transition-colors"
+                    style={ecran === item.id ? { background: C.sidebarActive, color: '#fff' } : { color: C.sidebarText }}
+                  >
+                    <item.icon className="w-4 h-4 flex-shrink-0" />
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        <div className="p-4">
+          <Link to="/" className="flex items-center gap-2 px-2.5 py-2 text-xs font-medium" style={{ color: C.sidebarText }}>
+            <ArrowLeft className="w-3.5 h-3.5" /> Retour au site
+          </Link>
+        </div>
+      </aside>
 
       <div className="flex-1 min-w-0 flex flex-col">
         <div className="px-4 md:px-8 py-2.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs md:text-sm text-center" style={{ background: C.sidebarBg, color: '#fff' }}>
-          <span>🎬 Démonstration avec des données d'exemple — rien n'est enregistré</span>
+          <span>🎬 Démonstration avec des données d'exemple — tout est cliquable, rien ne peut être saisi ni enregistré</span>
           <Link to="/tarifs" className="font-bold underline" style={{ color: C.teal }}>
             Essayer gratuitement pendant 30 jours →
           </Link>
         </div>
 
-        <main className="flex-1 p-4 md:p-8">
-          <div className="flex items-start justify-between gap-4 mb-1">
-            <div />
+        {/* Onglets mobile (la sidebar est cachée sous lg) */}
+        <div className="flex lg:hidden gap-2 px-4 pt-4 overflow-x-auto">
+          {NAV.flatMap(s => s.items).map(item => (
             <button
-              onClick={() => setModalOuvert(true)}
-              className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm"
-              style={{ background: C.teal, color: '#0A0A0F' }}
+              key={item.id}
+              onClick={() => setEcran(item.id)}
+              className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold"
+              style={ecran === item.id ? { background: C.sidebarBg, color: '#fff' } : { background: C.card, color: C.sub, border: `1px solid ${C.border}` }}
             >
-              <Plus className="w-4 h-4" /> Nouveau devis
+              <item.icon className="w-3.5 h-3.5" /> {item.label}
             </button>
-          </div>
-          <EcranDashboard />
+          ))}
+        </div>
+
+        <main className="flex-1 p-4 md:p-8">
+          <Ecran onNouveauDevis={() => setModalOuvert(true)} />
         </main>
       </div>
 
@@ -311,7 +495,7 @@ export default function Demo() {
         <HelpCircle className="w-5 h-5" />
       </button>
 
-      {modalOuvert && <EcranNouveauDevis onClose={() => setModalOuvert(false)} />}
+      {modalOuvert && <ApercuNouveauDevis onClose={() => setModalOuvert(false)} />}
     </div>
   )
 }
