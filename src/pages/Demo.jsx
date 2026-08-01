@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import {
   LayoutDashboard, Calendar, Upload, Package, ClipboardList, Wrench, Calculator,
   Users, Boxes, Settings, ChevronDown, ChevronsUpDown, Search, SlidersHorizontal,
-  Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, TrendingUp,
+  Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, Building2, Mail, CreditCard,
 } from 'lucide-react'
 
 /**
@@ -647,129 +647,246 @@ function EcranProduits() {
   )
 }
 
-// Paramètres : colonne étroite centrée (max-w-2xl) et cartes empilées,
-// comme la page réelle.
-function EcranParametres() {
+// Paramètres : quatre onglets (Entreprise, Documents, Emails, Abonnement),
+// un en-tête de section à icône, puis une carte dont chaque ligne porte son
+// propre bouton « Enregistrer » — comme la page réelle.
+const ONGLETS_PARAM = [
+  { id: 'entreprise', label: 'Entreprise', icon: Building2 },
+  { id: 'documents', label: 'Documents', icon: FileText },
+  { id: 'emails', label: 'Emails', icon: Mail },
+  { id: 'abonnement', label: 'Abonnement', icon: CreditCard },
+]
+
+function EnTeteSection({ icon: Icon, titre, sous }) {
   return (
-    <div className="max-w-2xl mx-auto w-full space-y-6">
-      <div>
-        <h1 className="text-2xl md:text-3xl font-black" style={{ color: C.texte }}>Paramètres</h1>
-        <p className="text-sm mt-1" style={{ color: C.sousTexte }}>Configurez votre compte et vos préférences</p>
+    <div className="flex items-start gap-3 mb-4">
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: C.navBg }}>
+        <Icon className="w-5 h-5 text-white" />
+      </div>
+      <div className="min-w-0 pt-0.5">
+        <p className="font-bold" style={{ color: C.texte }}>{titre}</p>
+        <p className="text-sm mt-0.5" style={{ color: C.sousTexte }}>{sous}</p>
+      </div>
+    </div>
+  )
+}
+
+// Faux champ : l'apparence d'une zone de saisie, sans en être une.
+function FauxChamp({ valeur, placeholder, etroit }) {
+  return (
+    <div
+      className={`px-4 py-2.5 rounded-lg text-sm ${etroit ? 'w-24' : 'flex-1'}`}
+      style={{
+        background: '#F8FAFC',
+        border: `1px solid ${C.bord}`,
+        color: valeur ? C.texte : '#B9C0CC',
+        fontFamily: placeholder ? 'ui-monospace, monospace' : 'inherit',
+      }}
+    >
+      {valeur || placeholder}
+    </div>
+  )
+}
+
+function BoutonEnregistrer({ inactif }) {
+  return (
+    <span
+      className="px-5 py-2.5 rounded-lg text-sm font-bold flex-shrink-0"
+      style={inactif
+        ? { background: '#CBD5E1', color: '#F8FAFC' }
+        : { background: C.navBg, color: '#fff' }}
+    >
+      Enregistrer
+    </span>
+  )
+}
+
+function LigneParam({ label, description, children }) {
+  return (
+    <div className="px-6 py-5" style={{ borderTop: `1px solid ${C.bord}` }}>
+      <p className="text-[11px] font-bold tracking-wider mb-1" style={{ color: C.sousTexte }}>{label}</p>
+      {description && <p className="text-sm mb-3 leading-relaxed" style={{ color: '#9CA3AF' }}>{description}</p>}
+      <div className={description ? '' : 'mt-2'}>{children}</div>
+    </div>
+  )
+}
+
+function EcranParametres() {
+  const [onglet, setOnglet] = useState('entreprise')
+
+  return (
+    <div className="max-w-2xl mx-auto w-full">
+      <h1 className="text-3xl font-black" style={{ color: C.texte }}>Paramètres</h1>
+      <p className="text-sm mt-1 mb-6" style={{ color: C.sousTexte }}>Configurez votre compte et vos préférences</p>
+
+      {/* Onglets */}
+      <div className="flex items-center gap-1 p-1.5 rounded-xl mb-6 overflow-x-auto" style={{ background: '#EEF1F5' }}>
+        {ONGLETS_PARAM.map(o => {
+          const actif = onglet === o.id
+          return (
+            <button
+              key={o.id}
+              onClick={() => setOnglet(o.id)}
+              className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-colors"
+              style={actif
+                ? { background: '#fff', color: C.texte, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }
+                : { color: C.sousTexte }}
+            >
+              <o.icon className="w-4 h-4 flex-shrink-0" />
+              {o.label}
+            </button>
+          )
+        })}
       </div>
 
-      <Carte className="p-5 space-y-4">
-        <Champ label="NOM DE L'ENTREPRISE" valeur="Sanitaire & Chauffage Démo Sàrl" />
-        <div>
-          <p className="text-[11px] font-bold mb-1.5" style={{ color: C.sousTexte }}>MARGE CIBLE</p>
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-2 rounded-full" style={{ background: C.fond }}>
-              <div className="h-2 rounded-full" style={{ width: '30%', background: C.teal }} />
+      {onglet === 'entreprise' && (
+        <>
+          <EnTeteSection icon={Building2} titre="Mon entreprise"
+            sous="Informations de base affichées dans l'application et sur vos documents" />
+          <Carte className="overflow-hidden">
+            <LigneParam label="NOM DE L'ENTREPRISE">
+              <div className="flex items-center gap-3">
+                <FauxChamp valeur="Sanitaire & Chauffage Démo Sàrl" />
+                <BoutonEnregistrer />
+              </div>
+            </LigneParam>
+            <LigneParam
+              label="MARGE CIBLE"
+              description="Votre objectif de marge. C'est le seul chiffre utilisé : il colore les marges partout dans l'application — dashboard, devis, saisie et suivi de chantier. Vert dès que l'objectif est atteint, orange en dessous, rouge si le chantier perd de l'argent. Ajustable chantier par chantier."
+            >
+              <div className="flex items-center gap-3">
+                <FauxChamp valeur="30" etroit />
+                <span className="text-sm" style={{ color: C.sousTexte }}>%</span>
+                <BoutonEnregistrer />
+              </div>
+            </LigneParam>
+            <LigneParam label="IBAN" description="Affiché sur les factures PDF avec le QR de paiement">
+              <div className="flex items-center gap-3">
+                <FauxChamp valeur="CH93 0076 2011 6238 5295 7" />
+                <BoutonEnregistrer />
+              </div>
+            </LigneParam>
+            <LigneParam label="COULEUR PRINCIPALE" description="Utilisée sur vos devis et factures PDF">
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-lg flex-shrink-0" style={{ background: '#1F2937', border: `1px solid ${C.bord}` }} />
+                <FauxChamp valeur="#1F2937" />
+                <span className="text-sm font-medium flex-shrink-0" style={{ color: C.sousTexte }}>Défaut</span>
+              </div>
+            </LigneParam>
+          </Carte>
+        </>
+      )}
+
+      {onglet === 'documents' && (
+        <>
+          <EnTeteSection icon={FileText} titre="Signature et timbre"
+            sous="Appliqués automatiquement sur vos devis, factures et bons de régie" />
+          <Carte className="overflow-hidden">
+            <LigneParam label="SIGNATURE" description="Utilisez la souris ou le doigt pour signer">
+              <div className="rounded-lg px-4 py-8 text-center mb-3" style={{ background: '#F8FAFC', border: `1px dashed ${C.bord}` }}>
+                <span className="text-2xl italic" style={{ color: C.sousTexte, fontFamily: 'cursive' }}>Thomas Dubois</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <BoutonFactice petit>Dessiner</BoutonFactice>
+                <BoutonFactice petit>Importer une image</BoutonFactice>
+                <span className="text-xs self-center" style={{ color: C.vert }}>Signature enregistrée</span>
+              </div>
+            </LigneParam>
+            <LigneParam label="TIMBRE DE L'ENTREPRISE" description="PNG, JPG ou SVG — fond transparent recommandé">
+              <div className="rounded-lg px-4 py-8 text-center mb-3" style={{ background: '#F8FAFC', border: `1px dashed ${C.bord}` }}>
+                <span className="text-sm" style={{ color: C.sousTexte }}>Timbre enregistré</span>
+              </div>
+              <BoutonFactice petit>Changer l'image</BoutonFactice>
+            </LigneParam>
+            <LigneParam label="ANNEXE AUX DEVIS" description="PDF joint automatiquement à chaque envoi de devis">
+              <div className="flex items-center gap-3">
+                <FauxChamp valeur="conditions_generales.pdf" />
+                <BoutonFactice petit>Remplacer</BoutonFactice>
+              </div>
+            </LigneParam>
+          </Carte>
+        </>
+      )}
+
+      {onglet === 'emails' && (
+        <>
+          <EnTeteSection icon={Mail} titre="Messages et alertes"
+            sous="Textes envoyés à vos clients et adresses qui reçoivent les alertes" />
+          <Carte className="overflow-hidden">
+            <LigneParam label="MESSAGE — ENVOI DE DEVIS" description="Texte inclus dans chaque email d'envoi de devis">
+              <div className="flex items-start gap-3">
+                <FauxChamp valeur="Bonjour, veuillez trouver ci-joint notre devis. Nous restons à disposition pour toute question. Cordialement." />
+                <BoutonEnregistrer />
+              </div>
+            </LigneParam>
+            <LigneParam label="MESSAGE — ENVOI DE FACTURES" description="Texte inclus dans chaque email d'envoi de facture">
+              <div className="flex items-start gap-3">
+                <FauxChamp valeur="Bonjour, veuillez trouver ci-joint votre facture. Cordialement." />
+                <BoutonEnregistrer />
+              </div>
+            </LigneParam>
+            <LigneParam label="EMAIL RAPPELS DE PAIEMENT" description="Adresse qui reçoit les relances de factures impayées">
+              <div className="flex items-center gap-3">
+                <FauxChamp valeur="contact@demo.ch" />
+                <BoutonEnregistrer />
+              </div>
+            </LigneParam>
+            <LigneParam label="EMAIL ALERTE MARGE FAIBLE" description="Prévenu dès qu'un chantier passe sous l'objectif de marge">
+              <div className="flex items-center gap-3">
+                <FauxChamp valeur="contact@demo.ch" />
+                <BoutonEnregistrer />
+              </div>
+            </LigneParam>
+          </Carte>
+        </>
+      )}
+
+      {onglet === 'abonnement' && (
+        <>
+          <EnTeteSection icon={CreditCard} titre="Mon abonnement"
+            sous="Offre, sièges employés et consommation" />
+          <Carte className="overflow-hidden">
+            <div className="grid grid-cols-3 gap-3 p-6">
+              {[['Offre', 'Premium'], ['Facturation', 'Annuelle'], ['Expiration', '02.12.2026']].map(([l, v]) => (
+                <div key={l} className="rounded-xl px-3 py-3 text-center" style={{ background: '#F8FAFC' }}>
+                  <p className="text-[11px]" style={{ color: C.sousTexte }}>{l}</p>
+                  <p className="text-sm font-bold mt-1" style={{ color: C.texte }}>{v}</p>
+                </div>
+              ))}
             </div>
-            <span className="text-base font-black" style={{ color: C.texte }}>30 %</span>
-          </div>
-        </div>
-        <div>
-          <Champ label="IBAN" valeur="CH93 0076 2011 6238 5295 7" />
-          <p className="text-xs mt-1.5" style={{ color: C.sousTexte }}>Affiché sur les factures PDF avec le QR de paiement</p>
-        </div>
-        <div>
-          <p className="text-[11px] font-bold mb-1.5" style={{ color: C.sousTexte }}>COULEUR PRINCIPALE</p>
-          <div className="flex items-center gap-3">
-            <span className="w-9 h-9 rounded-lg flex-shrink-0" style={{ background: '#1F2937', border: `1px solid ${C.bord}` }} />
-            <span className="text-sm" style={{ color: C.texte }}>#1F2937</span>
-            <span className="text-xs ml-auto" style={{ color: C.sousTexte }}>Défaut</span>
-          </div>
-        </div>
-      </Carte>
-
-      <Carte className="p-5 space-y-4">
-        <div>
-          <Champ label="MESSAGE — ENVOI DE DEVIS" valeur="Bonjour, veuillez trouver ci-joint notre devis. Cordialement." />
-          <p className="text-xs mt-1.5" style={{ color: C.sousTexte }}>Texte inclus dans chaque email d'envoi de devis</p>
-        </div>
-        <Champ label="MESSAGE — ENVOI DE FACTURES" valeur="Bonjour, veuillez trouver ci-joint votre facture. Cordialement." />
-        <div className="grid sm:grid-cols-2 gap-4">
-          <Champ label="EMAIL RAPPELS DE PAIEMENT" valeur="contact@demo.ch" />
-          <Champ label="EMAIL ALERTE MARGE FAIBLE" valeur="contact@demo.ch" />
-        </div>
-      </Carte>
-
-      <Carte className="p-5">
-        <div className="grid grid-cols-3 gap-3 mb-4">
-          {[['Offre', 'Premium'], ['Facturation', 'Annuelle'], ['Expiration', '02.12.2026']].map(([l, v]) => (
-            <div key={l} className="rounded-xl px-3 py-3 text-center" style={{ background: C.fond }}>
-              <p className="text-[11px]" style={{ color: C.sousTexte }}>{l}</p>
-              <p className="text-sm font-bold mt-1" style={{ color: C.texte }}>{v}</p>
-            </div>
-          ))}
-        </div>
-        <div className="flex items-center justify-between py-2.5" style={{ borderTop: `1px solid ${C.bord}` }}>
-          <span className="text-sm" style={{ color: C.texte }}>Sièges employés</span>
-          <span className="flex items-center gap-3">
-            <span className="text-sm font-bold" style={{ color: C.texte }}>3 / 5</span>
-            <span className="text-xs font-bold" style={{ color: C.teal }}>Modifier</span>
-          </span>
-        </div>
-        <div className="flex items-center justify-between py-2.5" style={{ borderTop: `1px solid ${C.bord}` }}>
-          <span className="text-sm" style={{ color: C.texte }}>Devis Vocal IA</span>
-          <Pastille texte="Activé" couleur={C.vert} fond={C.vertFond} />
-        </div>
-      </Carte>
-
-      <Carte className="p-5">
-        <p className="text-sm font-bold mb-3" style={{ color: C.texte }}>Signature enregistrée</p>
-        <div className="rounded-xl px-4 py-7 text-center mb-3" style={{ background: C.fond, border: `1px dashed ${C.bord}` }}>
-          <span className="text-xl italic" style={{ color: C.sousTexte, fontFamily: 'cursive' }}>Thomas Dubois</span>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <BoutonFactice petit>Dessiner</BoutonFactice>
-          <BoutonFactice petit>Importer une image</BoutonFactice>
-        </div>
-      </Carte>
-
-      <Carte className="p-5">
-        <p className="text-sm font-bold mb-1" style={{ color: C.texte }}>Timbre de l'entreprise</p>
-        <p className="text-xs mb-3" style={{ color: C.sousTexte }}>PNG, JPG ou SVG — fond transparent recommandé</p>
-        <div className="rounded-xl px-4 py-7 text-center" style={{ background: C.fond, border: `1px dashed ${C.bord}` }}>
-          <p className="text-sm" style={{ color: C.sousTexte }}>Timbre enregistré</p>
-        </div>
-      </Carte>
-
-      <Carte className="p-5">
-        <p className="text-sm font-bold mb-3" style={{ color: C.texte }}>Crédits IA</p>
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs" style={{ color: C.sousTexte }}>Crédits utilisés ce mois</span>
-          <span className="text-sm font-bold" style={{ color: C.texte }}>4,20 / 15,00 CHF</span>
-        </div>
-        <div className="h-2 rounded-full" style={{ background: C.fond }}>
-          <div className="h-2 rounded-full" style={{ width: '28%', background: C.teal }} />
-        </div>
-      </Carte>
-
-      <Carte className="overflow-hidden">
-        <div className="p-5 pb-3">
-          <p className="text-sm font-bold" style={{ color: C.texte }}>Courriers postaux</p>
-          <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>Devis et factures envoyés par la poste</p>
-        </div>
-        <div className="grid grid-cols-3 gap-3 px-5 pb-4">
-          {[['Ce mois', '2'], ['Coût du mois', '4,40 CHF'], ['Total cumulé', '38,60 CHF']].map(([l, v]) => (
-            <div key={l} className="rounded-xl px-3 py-3 text-center" style={{ background: C.fond }}>
-              <p className="text-[11px]" style={{ color: C.sousTexte }}>{l}</p>
-              <p className="text-sm font-bold mt-1" style={{ color: C.texte }}>{v}</p>
-            </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-4 px-5 py-2.5 text-[11px] font-bold tracking-wider" style={{ background: C.fond, color: C.sousTexte }}>
-          <span>DATE</span><span className="col-span-2">DOCUMENT</span><span className="text-right">COÛT</span>
-        </div>
-        {[['24.07.2026', 'Facture 2026-0033 · Hôtel du Cervin', '2,20 CHF'], ['11.07.2026', 'Devis 2026-013 · Hôtel du Cervin', '2,20 CHF']].map(([d, doc, c]) => (
-          <div key={d} className="grid grid-cols-4 px-5 py-3 text-xs items-center" style={{ borderTop: `1px solid ${C.bord}` }}>
-            <span style={{ color: C.sousTexte }}>{d}</span>
-            <span className="col-span-2 truncate font-medium" style={{ color: C.texte }}>{doc}</span>
-            <span className="text-right font-semibold" style={{ color: C.texte }}>{c}</span>
-          </div>
-        ))}
-      </Carte>
+            <LigneParam label="SIÈGES EMPLOYÉS" description="Employés inclus dans votre offre">
+              <div className="flex items-center gap-3">
+                <FauxChamp valeur="3 employés sur 5 inclus" />
+                <BoutonFactice petit>Modifier</BoutonFactice>
+              </div>
+            </LigneParam>
+            <LigneParam label="DEVIS VOCAL IA">
+              <div className="flex items-center justify-between">
+                <span className="text-sm" style={{ color: C.texte }}>Dictez vos devis, l'IA les structure</span>
+                <Pastille texte="Activé" couleur={C.vert} fond={C.vertFond} />
+              </div>
+            </LigneParam>
+            <LigneParam label="CRÉDITS IA" description="Crédits utilisés ce mois">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="flex-1 h-2 rounded-full" style={{ background: '#F8FAFC' }}>
+                  <div className="h-2 rounded-full" style={{ width: '28%', background: C.teal }} />
+                </div>
+                <span className="text-sm font-bold flex-shrink-0" style={{ color: C.texte }}>4,20 / 15,00 CHF</span>
+              </div>
+            </LigneParam>
+            <LigneParam label="COURRIERS POSTAUX" description="Devis et factures envoyés par la poste">
+              <div className="grid grid-cols-3 gap-3">
+                {[['Ce mois', '2'], ['Coût du mois', '4,40 CHF'], ['Total cumulé', '38,60 CHF']].map(([l, v]) => (
+                  <div key={l} className="rounded-xl px-3 py-3 text-center" style={{ background: '#F8FAFC' }}>
+                    <p className="text-[11px]" style={{ color: C.sousTexte }}>{l}</p>
+                    <p className="text-sm font-bold mt-1" style={{ color: C.texte }}>{v}</p>
+                  </div>
+                ))}
+              </div>
+            </LigneParam>
+          </Carte>
+        </>
+      )}
     </div>
   )
 }
