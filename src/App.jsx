@@ -215,21 +215,20 @@ function Hero() {
           <Link to="/tarifs" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             {t('accueil.hero.cta')}
           </Link>
-          <Link to="/demo" className="px-8 py-4 rounded-xl font-semibold text-sm border text-slate-300 hover:text-white hover:border-white/30 transition-all duration-200" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
-            {t('accueil.hero.demo')}
-          </Link>
+          {/* Le bouton « Voir la démo » vivait ici. La visite guidée (/demo)
+              n'est pas encore prête : elle reste en place mais sans lien
+              depuis le site. Remettre ce bouton, et le lien sur la capture
+              ci-dessous, le jour où elle est validée. */}
         </div>
-        {/* La capture mène à la visite guidée : c'est l'élément que le visiteur
-            cherche à agrandir en cliquant dessus. */}
-        <Link to="/demo" data-anim="up" data-delay="400" className="relative mt-16 block group">
+        <div data-anim="up" data-delay="400" className="relative mt-16">
           <div className="absolute inset-x-0 top-4 h-2/3 blur-3xl pointer-events-none" style={{ background: `${TEAL}25` }} />
           <img
             src={dashboardScreenshot}
             alt="Interface de l'application Newrigen — tableau de bord"
-            className="relative w-full max-w-2xl mx-auto rounded-xl border shadow-2xl transition-transform duration-300 group-hover:scale-[1.01]"
+            className="relative w-full max-w-2xl mx-auto rounded-xl border shadow-2xl"
             style={{ borderColor: `${TEAL}30` }}
           />
-        </Link>
+        </div>
       </div>
     </section>
   )
@@ -591,6 +590,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tarifs" element={<Tarifs />} />
+          {/* Visite guidée de l'application. Volontairement sans lien depuis
+              le site tant qu'elle n'est pas validée : elle reste accessible en
+              tapant l'adresse, pour la relire et la corriger. Ne pas supprimer
+              en la prenant pour du code mort. */}
           <Route path="/demo" element={<Demo />} />
           <Route path="/merci" element={<Merci />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
