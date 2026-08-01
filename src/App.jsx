@@ -130,7 +130,6 @@ function PacksComparatif() {
 }
 import Tarifs from './pages/Tarifs'
 import Merci from './pages/Merci'
-import Demo from './pages/Demo'
 import ConsentGate from './components/ConsentGate'
 import { MentionsLegales, Confidentialite, CGV } from './pages/Legal'
 
@@ -215,19 +214,16 @@ function Hero() {
           <Link to="/tarifs" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             {t('accueil.hero.cta')}
           </Link>
-          <Link to="/demo" className="px-8 py-4 rounded-xl font-semibold text-sm border transition-all duration-200 text-slate-300 hover:text-white hover:border-white/30" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
-            {t('accueil.hero.demo')}
-          </Link>
         </div>
-        <Link to="/demo" data-anim="up" data-delay="400" className="relative mt-16 block group">
+        <div data-anim="up" data-delay="400" className="relative mt-16">
           <div className="absolute inset-x-0 top-4 h-2/3 blur-3xl pointer-events-none" style={{ background: `${TEAL}25` }} />
           <img
             src={dashboardScreenshot}
             alt="Interface de l'application Newrigen — tableau de bord"
-            className="relative w-full max-w-2xl mx-auto rounded-xl border shadow-2xl transition-transform duration-300 group-hover:scale-[1.01]"
+            className="relative w-full max-w-2xl mx-auto rounded-xl border shadow-2xl"
             style={{ borderColor: `${TEAL}30` }}
           />
-        </Link>
+        </div>
       </div>
     </section>
   )
@@ -589,7 +585,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tarifs" element={<Tarifs />} />
-          <Route path="/demo" element={<Demo />} />
           <Route path="/merci" element={<Merci />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
           <Route path="/confidentialite" element={<Confidentialite />} />
