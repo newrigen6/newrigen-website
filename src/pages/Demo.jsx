@@ -224,36 +224,119 @@ function EcranDashboard() {
   )
 }
 
+// Agenda : grille mensuelle avec colonne de numéro de semaine, en-têtes
+// Lun→Dim, et le panneau « Prochains RDVs » — comme la page réelle.
+const JOURS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
+
 function EcranAgenda() {
-  const jours = ['Lundi 3', 'Mardi 4', 'Mercredi 5', 'Jeudi 6', 'Vendredi 7']
-  const rdv = {
-    'Lundi 3': [{ h: '08:00', t: 'Résidence Les Mélèzes', d: 'Pose chaudière' }],
-    'Mercredi 5': [{ h: '10:30', t: 'Villa Cheseaux', d: 'Métré salle de bain' }],
-    'Jeudi 6': [{ h: '14:00', t: 'Hôtel du Cervin', d: 'Contrôle PAC' }],
-    'Vendredi 7': [{ h: '09:00', t: 'Mme Berger', d: 'Dépannage' }],
+  const aujourdhui = new Date()
+  const annee = aujourdhui.getFullYear()
+  const mois = aujourdhui.getMonth()
+  const premier = new Date(annee, mois, 1)
+  const decalage = (premier.getDay() + 6) % 7 // Lundi = 0
+  const nbJours = new Date(annee, mois + 1, 0).getDate()
+  const nomMois = premier.toLocaleDateString('fr-CH', { month: 'long', year: 'numeric' })
+
+  // Rendez-vous d'exemple, posés sur des jours fixes du mois affiché
+  const RDV = {
+    4: [{ h: '08:00', t: 'Les Mélèzes — pose chaudière', c: C.teal }],
+    9: [{ h: '10:30', t: 'Villa Cheseaux — métré', c: '#6366F1' }],
+    12: [{ h: '14:00', t: 'Hôtel du Cervin — contrôle PAC', c: C.teal }],
+    18: [{ h: '09:00', t: 'Mme Berger — dépannage', c: '#F59E0B' }, { h: '15:30', t: 'Garage Praz — devis', c: '#6366F1' }],
+    23: [{ h: '11:00', t: 'Boulangerie Delacroix — SAV', c: C.teal }],
   }
+
+  const cellules = []
+  for (let i = 0; i < decalage; i++) cellules.push(null)
+  for (let j = 1; j <= nbJours; j++) cellules.push(j)
+  while (cellules.length % 7 !== 0) cellules.push(null)
+  const semaines = []
+  for (let i = 0; i < cellules.length; i += 7) semaines.push(cellules.slice(i, i + 7))
+
+  const numeroSemaine = (indexSemaine) => {
+    const ref = new Date(annee, mois, 1 + indexSemaine * 7)
+    const debut = new Date(annee, 0, 1)
+    return Math.ceil(((ref - debut) / 86400000 + debut.getDay() + 1) / 7)
+  }
+
+  const prochains = [
+    { d: '18', m: nomMois.slice(0, 3), h: '09:00', t: 'Mme Berger — dépannage', l: 'Rue de Lausanne 9, Sion' },
+    { d: '18', m: nomMois.slice(0, 3), h: '15:30', t: 'Garage Praz SA — devis', l: 'Zone Industrielle 3, Vétroz' },
+    { d: '23', m: nomMois.slice(0, 3), h: '11:00', t: 'Boulangerie Delacroix — SAV', l: 'Grand-Rue 18, Martigny' },
+  ]
+
   return (
     <>
       <Titre titre="Agenda" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Nouveau RDV</BoutonFactice>} />
-      <div className="flex items-center gap-2 mb-4">
+
+      <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.texte, color: '#fff' }}>Mois</span>
         <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.sousTexte, border: `1px solid ${C.bord}` }}>Année</span>
+        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.texte, border: `1px solid ${C.bord}` }}>Aujourd'hui</span>
+        <span className="text-sm font-bold capitalize ml-1" style={{ color: C.texte }}>{nomMois}</span>
         <span className="ml-auto text-xs" style={{ color: C.sousTexte }}>Connecter Google Calendar</span>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {jours.map(j => (
-          <Carte key={j} className="p-4 min-h-[150px]">
-            <p className="text-[11px] font-bold mb-3 tracking-wide" style={{ color: C.sousTexte }}>{j.toUpperCase()}</p>
-            <div className="space-y-2">
-              {(rdv[j] || []).map(r => (
-                <div key={r.h} className="rounded-lg px-3 py-2" style={{ background: `${C.teal}1A`, borderLeft: `3px solid ${C.teal}` }}>
-                  <p className="text-xs font-bold" style={{ color: C.texte }}>{r.h} · {r.t}</p>
-                  <p className="text-[11px] mt-0.5" style={{ color: C.sousTexte }}>{r.d}</p>
+
+      <div className="grid lg:grid-cols-3 gap-5">
+        <Carte className="lg:col-span-2 p-4">
+          {/* En-têtes : colonne « Sem » puis Lun→Dim */}
+          <div className="grid mb-1" style={{ gridTemplateColumns: '34px repeat(7, minmax(0,1fr))' }}>
+            <div className="text-center text-[10px] font-semibold py-2 uppercase tracking-wide" style={{ color: C.sousTexte }} title="Numéro de semaine">Sem</div>
+            {JOURS.map(j => (
+              <div key={j} className="text-center text-[11px] font-semibold py-2 uppercase tracking-wide" style={{ color: C.sousTexte }}>{j}</div>
+            ))}
+          </div>
+
+          {semaines.map((semaine, i) => (
+            <div key={i} className="grid gap-1 mb-1" style={{ gridTemplateColumns: '34px repeat(7, minmax(0,1fr))' }}>
+              <div className="flex items-center justify-center text-[10px] font-semibold" style={{ color: C.sousTexte }}>{numeroSemaine(i)}</div>
+              {semaine.map((jour, k) => (
+                <div
+                  key={k}
+                  className="rounded-lg p-1.5 min-h-[74px]"
+                  style={{
+                    background: jour ? C.carte : 'transparent',
+                    border: `1px solid ${jour ? C.bord : 'transparent'}`,
+                  }}
+                >
+                  {jour && (
+                    <>
+                      <div className="text-[11px] font-semibold mb-1" style={{ color: C.sousTexte }}>{jour}</div>
+                      <div className="space-y-1">
+                        {(RDV[jour] || []).map(r => (
+                          <div key={r.h} className="rounded px-1.5 py-1 text-[10px] font-medium leading-tight truncate"
+                            style={{ background: `${r.c}22`, color: C.texte, borderLeft: `2px solid ${r.c}` }}
+                            title={`${r.h} ${r.t}`}>
+                            {r.h} {r.t}
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>
-          </Carte>
-        ))}
+          ))}
+          <p className="text-[11px] mt-2" style={{ color: C.sousTexte }}>
+            Double-cliquez sur un jour pour ajouter un rendez-vous
+          </p>
+        </Carte>
+
+        <Carte className="overflow-hidden self-start">
+          <p className="px-5 py-3.5 text-sm font-bold" style={{ color: C.texte }}>Prochains RDVs</p>
+          {prochains.map((r, i) => (
+            <div key={i} className="flex items-start gap-3 px-5 py-3" style={{ borderTop: `1px solid ${C.bord}` }}>
+              <div className="text-center flex-shrink-0 w-9">
+                <p className="text-base font-black leading-none" style={{ color: C.texte }}>{r.d}</p>
+                <p className="text-[10px] uppercase" style={{ color: C.sousTexte }}>{r.m}</p>
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-bold truncate" style={{ color: C.texte }}>{r.h} · {r.t}</p>
+                <p className="text-[11px] mt-0.5 truncate" style={{ color: C.sousTexte }}>{r.l}</p>
+              </div>
+            </div>
+          ))}
+        </Carte>
       </div>
     </>
   )
@@ -285,17 +368,33 @@ function EcranSaisie() {
   ]
   return (
     <>
-      <Titre eyebrow="CHANTIER" titre="Saisie des matériaux" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Ajouter</BoutonFactice>} />
+      <Titre eyebrow="CHANTIER" titre="Saisie des matériaux" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Ajouter un matériau</BoutonFactice>} />
+
       <Carte className="p-5 mb-5">
-        <div className="grid sm:grid-cols-2 gap-4">
-          <Champ label="CHANTIER / DEVIS" valeur="Résidence Les Mélèzes — 2026-014" />
-          <Champ label="EMPLOYÉ" valeur="Marc Fournier" />
+        <Champ label="CHANTIER / DEVIS" valeur="Résidence Les Mélèzes — 2026-014" />
+      </Carte>
+
+      {/* Bandeau de rentabilité du chantier, comme dans l'application */}
+      <Carte className="p-5 mb-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            ['Prix devis :', chf(18400), C.texte],
+            ['Matériaux :', chf(12216), C.texte],
+            ["Main d'œuvre", chf(1009), C.texte],
+            ['Marge réelle :', '5 175,00 CHF · 28.1%', C.rouge],
+          ].map(([l, v, couleur]) => (
+            <div key={l}>
+              <p className="text-xs" style={{ color: C.sousTexte }}>{l}</p>
+              <p className="text-base font-black mt-1" style={{ color: couleur }}>{v}</p>
+            </div>
+          ))}
         </div>
       </Carte>
+
       <Carte className="overflow-hidden">
-        <p className="px-5 py-3.5 text-sm font-bold" style={{ color: C.texte }}>Matériaux saisis sur ce chantier</p>
+        <p className="px-5 py-3.5 text-sm font-bold" style={{ color: C.texte }}>Matériaux utilisés</p>
         {lignes.map(l => (
-          <LigneListe key={l.nom} titre={l.nom} sous={`${l.qte} ${l.unite} × ${l.prix.toFixed(2)} · saisi par ${l.par}`} droite={chf(l.qte * l.prix)} />
+          <LigneListe key={l.nom} titre={l.nom} sous={`${l.qte} ${l.unite} × ${l.prix.toFixed(2)} TTC · ${l.par}`} droite={chf(l.qte * l.prix)} />
         ))}
         <div className="flex items-center justify-between px-5 py-3.5" style={{ borderTop: `2px solid ${C.bord}`, background: C.fond }}>
           <span className="text-sm font-bold" style={{ color: C.sousTexte }}>Total matériaux</span>
@@ -306,31 +405,78 @@ function EcranSaisie() {
   )
 }
 
-function EcranRegie() {
+// Les deux écrans de bons partagent la même ossature dans l'application :
+// onglet « Vue d'ensemble », trio de compteurs, puis la liste des bons.
+function EcranBons({ titre, bons, total, confirmes, enCours }) {
   return (
     <>
-      <Titre eyebrow="CHANTIERS" titre="Bons de Régie" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Nouveau bon</BoutonFactice>} />
+      <Titre titre={titre} action={<BoutonFactice principal><Plus className="w-4 h-4" /> Nouveau bon</BoutonFactice>} />
+
+      <div className="flex items-center gap-2 mb-4">
+        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.texte, color: '#fff' }}>Vue d'ensemble</span>
+        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.sousTexte, border: `1px solid ${C.bord}` }}>Créer un bon</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 mb-5">
+        {[['Total bons', total], ['Confirmés', confirmes], ['En cours', enCours]].map(([l, v]) => (
+          <Carte key={l} className="p-5">
+            <span className="text-xs" style={{ color: C.sousTexte }}>{l}</span>
+            <p className="text-2xl font-black mt-2 leading-none" style={{ color: C.texte }}>{v}</p>
+          </Carte>
+        ))}
+      </div>
+
       <Carte className="overflow-hidden">
-        <LigneListe titre="Résidence Les Mélèzes" sous="Marc Fournier · 8.0 h · 22.07.2026" droite={chf(544)} pastille={<Pastille texte="Signé" couleur={C.vert} fond={C.vertFond} />} />
-        <LigneListe titre="Villa Cheseaux" sous="Marc Fournier · 6.0 h · 28.07.2026" droite={chf(408)} pastille={<Pastille texte="En attente de signature" />} />
-        <LigneListe titre="Mme Berger — dépannage" sous="Julien Rossier · 2.5 h · 29.07.2026" droite={chf(155)} pastille={<Pastille texte="Signé" couleur={C.vert} fond={C.vertFond} />} />
+        {bons.map(b => (
+          <div key={b.titre} className="px-5 py-4" style={{ borderTop: `1px solid ${C.bord}` }}>
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <div className="min-w-0">
+                <p className="text-sm font-bold truncate" style={{ color: C.texte }}>{b.titre}</p>
+                <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>{b.sous}</p>
+              </div>
+              {b.confirme
+                ? <Pastille texte="Confirmé" couleur={C.vert} fond={C.vertFond} />
+                : <Pastille texte="En cours" />}
+            </div>
+            <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs">
+              <span style={{ color: C.sousTexte }}>
+                {b.heures} h main d'œuvre · <span className="font-semibold" style={{ color: C.texte }}>{chf(b.coutMo)}</span>
+              </span>
+              <span style={{ color: C.sousTexte }}>
+                {b.nbMateriaux} matériaux · <span className="font-semibold" style={{ color: C.texte }}>{chf(b.coutMat)}</span>
+              </span>
+            </div>
+          </div>
+        ))}
       </Carte>
-      <p className="text-xs mt-3" style={{ color: C.sousTexte }}>
-        Le client signe directement sur le téléphone ou la tablette, à la fin de l'intervention.
-      </p>
     </>
+  )
+}
+
+function EcranRegie() {
+  return (
+    <EcranBons
+      titre="Bons de Régie"
+      total="3" confirmes="2" enCours="1"
+      bons={[
+        { titre: 'Résidence Les Mélèzes', sous: 'Marc Fournier · 22.07.2026', heures: '8.0', coutMo: 544, nbMateriaux: 1, coutMat: 84, confirme: true },
+        { titre: 'Villa Cheseaux', sous: 'Marc Fournier · 28.07.2026', heures: '6.0', coutMo: 408, nbMateriaux: 0, coutMat: 0, confirme: false },
+        { titre: 'Mme Berger — dépannage', sous: 'Julien Rossier · 29.07.2026', heures: '2.5', coutMo: 155, nbMateriaux: 1, coutMat: 62, confirme: true },
+      ]}
+    />
   )
 }
 
 function EcranIntervention() {
   return (
-    <>
-      <Titre eyebrow="CHANTIERS" titre="Bons d'intervention" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Nouveau bon</BoutonFactice>} />
-      <Carte className="overflow-hidden">
-        <LigneListe titre="Fuite chasse d'eau — Mme Berger" sous="Rue de Lausanne 9, 1950 Sion · 29.07.2026" pastille={<Pastille texte="Terminé" couleur={C.vert} fond={C.vertFond} />} />
-        <LigneListe titre="Contrôle annuel chaudière — Garage Praz SA" sous="Zone Industrielle 3, 1963 Vétroz · 08.08.2026" pastille={<Pastille texte="Planifié" couleur={C.teal} />} />
-      </Carte>
-    </>
+    <EcranBons
+      titre="Bons d'intervention"
+      total="2" confirmes="1" enCours="1"
+      bons={[
+        { titre: "Fuite chasse d'eau — Mme Berger", sous: 'Rue de Lausanne 9, 1950 Sion · 29.07.2026', heures: '2.5', coutMo: 155, nbMateriaux: 1, coutMat: 62, confirme: true },
+        { titre: 'Contrôle chaudière — Garage Praz SA', sous: 'Zone Industrielle 3, 1963 Vétroz · 08.08.2026', heures: '1.5', coutMo: 93, nbMateriaux: 0, coutMat: 0, confirme: false },
+      ]}
+    />
   )
 }
 
@@ -338,8 +484,9 @@ function EcranComptabilite() {
   return (
     <>
       <Titre eyebrow="FINANCES" titre="Comptabilité" />
-      <div className="rounded-xl px-4 py-3 mb-5 text-sm font-semibold" style={{ background: C.rougeFond, color: C.rouge }}>
-        1 facture en retard — 2 890,00 CHF à recouvrer
+      <div className="rounded-xl px-4 py-3 mb-5" style={{ background: C.rougeFond }}>
+        <p className="text-sm font-semibold" style={{ color: C.rouge }}>1 facture en retard — 2 890,00 CHF à recouvrer</p>
+        <p className="text-xs mt-0.5" style={{ color: C.rouge, opacity: 0.8 }}>Cliquez pour les voir et relancer vos clients</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         {[
@@ -366,32 +513,73 @@ function EcranComptabilite() {
 
 function EcranTeam() {
   const gens = [
-    { n: 'Thomas Dubois', r: 'Patron', t: '95.00', h: '—' },
-    { n: 'Marc Fournier', r: 'Employé', t: '68.00', h: '31.0 h' },
-    { n: 'Julien Rossier', r: 'Employé', t: '62.00', h: '18.0 h' },
+    { n: 'Marc Fournier', c: 'marc@demo.ch · 079 000 00 01', t: '68.00', actif: true },
+    { n: 'Julien Rossier', c: 'julien@demo.ch · 079 000 00 02', t: '62.00', actif: true },
+    { n: 'Thomas Dubois', c: 'demo@newrigen.ch', t: '95.00', actif: true, soi: true },
   ]
   return (
     <>
-      <Titre eyebrow="GESTION" titre="Team" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Ajouter un employé</BoutonFactice>} />
-      <Carte className="overflow-hidden">
-        <div className="flex items-center gap-3 px-5 py-3" style={{ background: C.fond }}>
-          <span className="text-[11px] font-bold tracking-wider flex-1" style={{ color: C.sousTexte }}>NOM</span>
-          <span className="text-[11px] font-bold tracking-wider w-24" style={{ color: C.sousTexte }}>TAUX/H</span>
-          <span className="text-[11px] font-bold tracking-wider w-24 text-right" style={{ color: C.sousTexte }}>CE MOIS</span>
-        </div>
-        {gens.map(p => (
-          <div key={p.n} className="flex items-center gap-3 px-5 py-3.5" style={{ borderTop: `1px solid ${C.bord}` }}>
-            <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: `${C.teal}25`, color: C.texte }}>
-              {p.n.split(' ').map(x => x[0]).join('')}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold truncate" style={{ color: C.texte }}>{p.n}</p>
-              <p className="text-xs" style={{ color: C.sousTexte }}>{p.r}</p>
-            </div>
-            <span className="text-sm w-24" style={{ color: C.texte }}>{p.t}</span>
-            <span className="text-sm w-24 text-right font-semibold" style={{ color: C.texte }}>{p.h}</span>
-          </div>
+      <Titre titre="Team" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Ajouter un employé</BoutonFactice>} />
+
+      <div className="flex items-center gap-2 mb-4">
+        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.texte, color: '#fff' }}>Vue d'ensemble</span>
+        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.sousTexte, border: `1px solid ${C.bord}` }}>Détail par chantier</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 mb-5">
+        {[['Heures', '49.0', 'heures travaillées'], ['Rapports', '6', 'ce mois'], ['Chantiers', '4', 'en cours']].map(([l, v, s]) => (
+          <Carte key={l} className="p-5">
+            <span className="text-xs" style={{ color: C.sousTexte }}>{l}</span>
+            <p className="text-2xl font-black mt-2 leading-none" style={{ color: C.texte }}>{v}</p>
+            <p className="text-xs mt-2" style={{ color: C.sousTexte }}>{s}</p>
+          </Carte>
         ))}
+      </div>
+
+      <Carte className="overflow-hidden mb-5">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr style={{ background: C.fond }}>
+                {['Employé', 'Contact', 'Taux/h', 'Statut', 'Actions'].map(c => (
+                  <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sousTexte }}>{c.toUpperCase()}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {gens.map(p => (
+                <tr key={p.n} style={{ borderTop: `1px solid ${C.bord}` }}>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0" style={{ background: `${C.teal}25`, color: C.texte }}>
+                        {p.n.split(' ').map(x => x[0]).join('')}
+                      </span>
+                      <span className="font-bold whitespace-nowrap" style={{ color: C.texte }}>
+                        {p.n}
+                        {p.soi && <span className="ml-2 text-[10px] font-medium" style={{ color: C.sousTexte }}>Mon compte terrain</span>}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.sousTexte }}>{p.c}</td>
+                  <td className="px-4 py-3 whitespace-nowrap font-semibold" style={{ color: C.texte }}>{p.t}</td>
+                  <td className="px-4 py-3"><Pastille texte="Actif" couleur={C.vert} fond={C.vertFond} /></td>
+                  <td className="px-4 py-3 whitespace-nowrap text-xs" style={{ color: C.sousTexte }}>Modifier · Réinitialiser</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Carte>
+
+      <Carte className="overflow-hidden">
+        <div className="flex items-start justify-between gap-3 p-5 pb-3">
+          <div>
+            <p className="text-sm font-bold" style={{ color: C.texte }}>Comptables / Fiduciaires</p>
+            <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>Accès lecture seule aux documents financiers</p>
+          </div>
+          <BoutonFactice petit>Ajouter un comptable</BoutonFactice>
+        </div>
+        <LigneListe titre="Fiduciaire Valais SA" sous="compta@fiduciaire-vs.ch" pastille={<Pastille texte="Comptable" />} />
       </Carte>
     </>
   )
@@ -409,25 +597,41 @@ function EcranProduits() {
   ]
   return (
     <>
-      <Titre eyebrow="GESTION" titre="Produits" action={<BoutonFactice principal><Upload className="w-4 h-4" /> Importer un catalogue</BoutonFactice>} />
+      <Titre
+        titre="Catalogue de produits"
+        action={<span className="flex flex-wrap gap-2 justify-end">
+          <BoutonFactice petit><Upload className="w-3.5 h-3.5" /> Importer un catalogue</BoutonFactice>
+          <BoutonFactice petit principal><Plus className="w-3.5 h-3.5" /> Ajouter un produit</BoutonFactice>
+        </span>}
+      />
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <div className="flex-1 min-w-[12rem] flex items-center gap-2 rounded-xl px-4 py-2.5" style={{ background: C.carte, border: `1px solid ${C.bord}` }}>
+          <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
+          <span className="text-sm" style={{ color: C.sousTexte }}>Rechercher un produit…</span>
+        </div>
+        <BoutonFactice petit>Auto-catégoriser</BoutonFactice>
+        <span className="text-xs" style={{ color: C.sousTexte }}>{produits.length} produits</span>
+      </div>
       <Carte className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr style={{ background: C.fond }}>
-                {['Produit', 'Catégorie', 'Unité', 'Prix achat', 'Prix vente', 'Marge'].map(c => (
+                {['Produit', 'Catégorie', 'Unité', 'Prix', 'Marge'].map(c => (
                   <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sousTexte }}>{c.toUpperCase()}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {produits.map((p, i) => (
+              {produits.map(p => (
                 <tr key={p.n} style={{ borderTop: `1px solid ${C.bord}` }}>
                   <td className="px-4 py-3 font-semibold whitespace-nowrap" style={{ color: C.texte }}>{p.n}</td>
-                  <td className="px-4 py-3 whitespace-nowrap"><Pastille texte={p.c} /></td>
+                  <td className="px-4 py-3 whitespace-nowrap" title="Cliquer la catégorie pour la changer"><Pastille texte={p.c} /></td>
                   <td className="px-4 py-3" style={{ color: C.sousTexte }}>{p.u}</td>
-                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.sousTexte }}>{p.a.toFixed(2)}</td>
-                  <td className="px-4 py-3 whitespace-nowrap font-semibold" style={{ color: C.texte }}>{p.v.toFixed(2)}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className="font-semibold" style={{ color: C.texte }}>{p.v.toFixed(2)} CHF</span>
+                    <span className="text-xs ml-2" style={{ color: C.sousTexte }}>achat {p.a.toFixed(2)}</span>
+                  </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ color: C.vert, background: C.vertFond }}>
                       {(((p.v - p.a) / p.v) * 100).toFixed(0)}%
@@ -443,42 +647,130 @@ function EcranProduits() {
   )
 }
 
+// Paramètres : colonne étroite centrée (max-w-2xl) et cartes empilées,
+// comme la page réelle.
 function EcranParametres() {
   return (
-    <>
-      <Titre eyebrow="GESTION" titre="Paramètres" />
-      <div className="grid lg:grid-cols-2 gap-5">
-        <Carte className="p-5">
-          <p className="text-sm font-bold mb-4" style={{ color: C.texte }}>Entreprise</p>
-          <div className="space-y-3">
-            <Champ label="RAISON SOCIALE" valeur="Sanitaire & Chauffage Démo Sàrl" />
-            <Champ label="ADRESSE" valeur="Rue du Scex 12, 1950 Sion" />
-            <Champ label="IBAN (QR-facture)" valeur="CH93 0076 2011 6238 5295 7" />
-          </div>
-        </Carte>
-        <div className="space-y-5">
-          <Carte className="p-5">
-            <p className="text-sm font-bold mb-1" style={{ color: C.texte }}>Marge cible</p>
-            <p className="text-xs mb-4" style={{ color: C.sousTexte }}>
-              Sous ce seuil, le devis passe en rouge sur le tableau de bord et une alerte est envoyée.
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-2 rounded-full" style={{ background: C.fond }}>
-                <div className="h-2 rounded-full" style={{ width: '30%', background: C.teal }} />
-              </div>
-              <span className="text-lg font-black" style={{ color: C.texte }}>30 %</span>
-            </div>
-          </Carte>
-          <Carte className="p-5">
-            <p className="text-sm font-bold mb-3" style={{ color: C.texte }}>Signature électronique</p>
-            <div className="rounded-xl px-4 py-6 text-center" style={{ background: C.fond, border: `1px dashed ${C.bord}` }}>
-              <p className="text-sm italic" style={{ color: C.sousTexte }}>Signature enregistrée</p>
-            </div>
-            <p className="text-xs mt-3" style={{ color: C.sousTexte }}>Appliquée automatiquement sur les devis, factures et bons de régie.</p>
-          </Carte>
-        </div>
+    <div className="max-w-2xl mx-auto w-full space-y-6">
+      <div>
+        <h1 className="text-2xl md:text-3xl font-black" style={{ color: C.texte }}>Paramètres</h1>
+        <p className="text-sm mt-1" style={{ color: C.sousTexte }}>Configurez votre compte et vos préférences</p>
       </div>
-    </>
+
+      <Carte className="p-5 space-y-4">
+        <Champ label="NOM DE L'ENTREPRISE" valeur="Sanitaire & Chauffage Démo Sàrl" />
+        <div>
+          <p className="text-[11px] font-bold mb-1.5" style={{ color: C.sousTexte }}>MARGE CIBLE</p>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-2 rounded-full" style={{ background: C.fond }}>
+              <div className="h-2 rounded-full" style={{ width: '30%', background: C.teal }} />
+            </div>
+            <span className="text-base font-black" style={{ color: C.texte }}>30 %</span>
+          </div>
+        </div>
+        <div>
+          <Champ label="IBAN" valeur="CH93 0076 2011 6238 5295 7" />
+          <p className="text-xs mt-1.5" style={{ color: C.sousTexte }}>Affiché sur les factures PDF avec le QR de paiement</p>
+        </div>
+        <div>
+          <p className="text-[11px] font-bold mb-1.5" style={{ color: C.sousTexte }}>COULEUR PRINCIPALE</p>
+          <div className="flex items-center gap-3">
+            <span className="w-9 h-9 rounded-lg flex-shrink-0" style={{ background: '#1F2937', border: `1px solid ${C.bord}` }} />
+            <span className="text-sm" style={{ color: C.texte }}>#1F2937</span>
+            <span className="text-xs ml-auto" style={{ color: C.sousTexte }}>Défaut</span>
+          </div>
+        </div>
+      </Carte>
+
+      <Carte className="p-5 space-y-4">
+        <div>
+          <Champ label="MESSAGE — ENVOI DE DEVIS" valeur="Bonjour, veuillez trouver ci-joint notre devis. Cordialement." />
+          <p className="text-xs mt-1.5" style={{ color: C.sousTexte }}>Texte inclus dans chaque email d'envoi de devis</p>
+        </div>
+        <Champ label="MESSAGE — ENVOI DE FACTURES" valeur="Bonjour, veuillez trouver ci-joint votre facture. Cordialement." />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Champ label="EMAIL RAPPELS DE PAIEMENT" valeur="contact@demo.ch" />
+          <Champ label="EMAIL ALERTE MARGE FAIBLE" valeur="contact@demo.ch" />
+        </div>
+      </Carte>
+
+      <Carte className="p-5">
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          {[['Offre', 'Premium'], ['Facturation', 'Annuelle'], ['Expiration', '02.12.2026']].map(([l, v]) => (
+            <div key={l} className="rounded-xl px-3 py-3 text-center" style={{ background: C.fond }}>
+              <p className="text-[11px]" style={{ color: C.sousTexte }}>{l}</p>
+              <p className="text-sm font-bold mt-1" style={{ color: C.texte }}>{v}</p>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center justify-between py-2.5" style={{ borderTop: `1px solid ${C.bord}` }}>
+          <span className="text-sm" style={{ color: C.texte }}>Sièges employés</span>
+          <span className="flex items-center gap-3">
+            <span className="text-sm font-bold" style={{ color: C.texte }}>3 / 5</span>
+            <span className="text-xs font-bold" style={{ color: C.teal }}>Modifier</span>
+          </span>
+        </div>
+        <div className="flex items-center justify-between py-2.5" style={{ borderTop: `1px solid ${C.bord}` }}>
+          <span className="text-sm" style={{ color: C.texte }}>Devis Vocal IA</span>
+          <Pastille texte="Activé" couleur={C.vert} fond={C.vertFond} />
+        </div>
+      </Carte>
+
+      <Carte className="p-5">
+        <p className="text-sm font-bold mb-3" style={{ color: C.texte }}>Signature enregistrée</p>
+        <div className="rounded-xl px-4 py-7 text-center mb-3" style={{ background: C.fond, border: `1px dashed ${C.bord}` }}>
+          <span className="text-xl italic" style={{ color: C.sousTexte, fontFamily: 'cursive' }}>Thomas Dubois</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <BoutonFactice petit>Dessiner</BoutonFactice>
+          <BoutonFactice petit>Importer une image</BoutonFactice>
+        </div>
+      </Carte>
+
+      <Carte className="p-5">
+        <p className="text-sm font-bold mb-1" style={{ color: C.texte }}>Timbre de l'entreprise</p>
+        <p className="text-xs mb-3" style={{ color: C.sousTexte }}>PNG, JPG ou SVG — fond transparent recommandé</p>
+        <div className="rounded-xl px-4 py-7 text-center" style={{ background: C.fond, border: `1px dashed ${C.bord}` }}>
+          <p className="text-sm" style={{ color: C.sousTexte }}>Timbre enregistré</p>
+        </div>
+      </Carte>
+
+      <Carte className="p-5">
+        <p className="text-sm font-bold mb-3" style={{ color: C.texte }}>Crédits IA</p>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs" style={{ color: C.sousTexte }}>Crédits utilisés ce mois</span>
+          <span className="text-sm font-bold" style={{ color: C.texte }}>4,20 / 15,00 CHF</span>
+        </div>
+        <div className="h-2 rounded-full" style={{ background: C.fond }}>
+          <div className="h-2 rounded-full" style={{ width: '28%', background: C.teal }} />
+        </div>
+      </Carte>
+
+      <Carte className="overflow-hidden">
+        <div className="p-5 pb-3">
+          <p className="text-sm font-bold" style={{ color: C.texte }}>Courriers postaux</p>
+          <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>Devis et factures envoyés par la poste</p>
+        </div>
+        <div className="grid grid-cols-3 gap-3 px-5 pb-4">
+          {[['Ce mois', '2'], ['Coût du mois', '4,40 CHF'], ['Total cumulé', '38,60 CHF']].map(([l, v]) => (
+            <div key={l} className="rounded-xl px-3 py-3 text-center" style={{ background: C.fond }}>
+              <p className="text-[11px]" style={{ color: C.sousTexte }}>{l}</p>
+              <p className="text-sm font-bold mt-1" style={{ color: C.texte }}>{v}</p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-4 px-5 py-2.5 text-[11px] font-bold tracking-wider" style={{ background: C.fond, color: C.sousTexte }}>
+          <span>DATE</span><span className="col-span-2">DOCUMENT</span><span className="text-right">COÛT</span>
+        </div>
+        {[['24.07.2026', 'Facture 2026-0033 · Hôtel du Cervin', '2,20 CHF'], ['11.07.2026', 'Devis 2026-013 · Hôtel du Cervin', '2,20 CHF']].map(([d, doc, c]) => (
+          <div key={d} className="grid grid-cols-4 px-5 py-3 text-xs items-center" style={{ borderTop: `1px solid ${C.bord}` }}>
+            <span style={{ color: C.sousTexte }}>{d}</span>
+            <span className="col-span-2 truncate font-medium" style={{ color: C.texte }}>{doc}</span>
+            <span className="text-right font-semibold" style={{ color: C.texte }}>{c}</span>
+          </div>
+        ))}
+      </Carte>
+    </div>
   )
 }
 
