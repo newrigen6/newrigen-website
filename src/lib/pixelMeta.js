@@ -11,11 +11,13 @@
 //  2. Sans identifiant configure, tout est neutralise. Le site tourne
 //     exactement comme avant, aucune erreur.
 //
-// L'identifiant se met dans la variable d'environnement VITE_META_PIXEL_ID
-// (Vercel → Settings → Environment Variables). Ce n'est pas un secret : il est
-// visible dans la page de toute facon.
+// L'identifiant du pixel n'est pas un secret : il est lisible dans la page par
+// n'importe quel visiteur. Il est donc ecrit ici, ce qui evite de dependre
+// d'une variable d'environnement Vercel qu'on oublierait lors d'un futur
+// deploiement. VITE_META_PIXEL_ID reste prioritaire si on veut un pixel
+// different (un environnement de test, par exemple).
 
-const ID = import.meta.env.VITE_META_PIXEL_ID
+const ID = import.meta.env.VITE_META_PIXEL_ID || '927052893023516'
 
 let charge = false
 
