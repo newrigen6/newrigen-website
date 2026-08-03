@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Check, X, Loader2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { track } from '@vercel/analytics'
+import { pixel } from '../lib/pixelMeta'
 import { useSiteContent } from '../content/SiteContent'
 import { useT, useLangue } from '../i18n'
 import SelecteurLangue from '../components/SelecteurLangue'
@@ -55,6 +56,14 @@ function CheckoutModal({ plan, interval, onClose }) {
         setError(data.error)
       } else if (data?.url) {
         track('checkout_stripe', { pack: plan.id, interval })
+        // InitiateCheckout : le signal principal donne a Meta. Il arrive assez
+        // souvent pour que l'algorithme apprenne, contrairement a l'abonnement
+        // conclu qui reste rare au debut.
+        pixel('InitiateCheckout', {
+          content_name: plan.id, content_category: interval,
+          value: interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel,
+          currency: 'CHF',
+        })
         window.location.href = data.url
       } else {
         setError(t('checkout.erreur.inattendue'))
@@ -324,7 +333,11 @@ export default function Tarifs() {
                 </ul>
 
                 <button
-                  onClick={() => { track('pack_choisi', { pack: plan.id, interval }); setSelected(plan) }}
+                  onClick={() => {
+                    track('pack_choisi', { pack: plan.id, interval })
+                    pixel('ViewContent', { content_name: plan.id, content_category: interval })
+                    setSelected(plan)
+                  }}
                   className="w-full py-4 rounded-xl font-bold text-sm transition-all"
                   style={plan.highlight
                     ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F', boxShadow: `0 0 20px ${TEAL}40` }

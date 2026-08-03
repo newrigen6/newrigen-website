@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Shield, X, ChevronDown } from 'lucide-react'
 import { useT } from '../i18n'
+import { demarrerPixel, arreterPixel } from '../lib/pixelMeta'
 
 const TEAL = '#4DD9D9'
 const STORAGE_KEY = 'newrigen-consent-v1'
@@ -58,6 +59,8 @@ export default function ConsentGate({ children }) {
     try {
       const val = localStorage.getItem(STORAGE_KEY)
       setAccepted(val === 'true')
+      // Le visiteur avait deja accepte lors d'une visite precedente.
+      if (val === 'true') demarrerPixel()
     } catch {
       setAccepted(false)
     }
@@ -71,11 +74,14 @@ export default function ConsentGate({ children }) {
   function accept() {
     try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
     setAccepted(true)
+    // Le suivi publicitaire ne demarre qu'ici, jamais avant.
+    demarrerPixel()
   }
 
   function refuse() {
     try { localStorage.removeItem(STORAGE_KEY) } catch {}
     setAccepted(false)
+    arreterPixel()
   }
 
   if (accepted === null) return null

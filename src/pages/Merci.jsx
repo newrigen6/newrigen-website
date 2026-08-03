@@ -1,11 +1,24 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Check } from 'lucide-react'
 import { useT } from '../i18n'
+import { pixel } from '../lib/pixelMeta'
 
 const TEAL = '#4DD9D9'
 
 export default function Merci() {
   const t = useT()
+  const signale = useRef(false)
+
+  // L'abonnement est conclu : c'est LE resultat que la campagne doit produire.
+  // Le garde-fou evite de le compter deux fois si React remonte le composant
+  // (mode strict en developpement, retour arriere du navigateur).
+  useEffect(() => {
+    if (signale.current) return
+    signale.current = true
+    pixel('Purchase', { currency: 'CHF', value: 49 })
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white flex flex-col items-center justify-center px-6">
       <div className="max-w-lg w-full text-center">
