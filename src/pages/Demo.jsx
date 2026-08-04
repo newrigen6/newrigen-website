@@ -5,6 +5,7 @@ import {
   Users, Boxes, Settings, ChevronDown, ChevronsUpDown, Search, SlidersHorizontal,
   Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, Building2, Mail, CreditCard,
   Sparkles, XCircle, Tag, Pencil, ChevronRight, Phone, UserPlus, KeyRound, Trash2, SquarePen, ToggleRight,
+  TrendingUp, TrendingDown, Wallet, Landmark, Clock, ArrowDownCircle, Banknote, BarChart3, ShoppingCart,
 } from 'lucide-react'
 
 /**
@@ -481,33 +482,177 @@ function EcranIntervention() {
   )
 }
 
-function EcranComptabilite() {
+// Comptabilité : onglets soulignés, sélecteur de période, huit indicateurs
+// sur fond coloré puis l'évolution sur douze mois — comme la page réelle.
+const ONGLETS_COMPTA = [
+  { id: 'vue', label: "Vue d'ensemble", icon: BarChart3 },
+  { id: 'clients', label: 'Factures clients', icon: Banknote },
+  { id: 'fournisseurs', label: 'Factures fournisseurs', icon: ShoppingCart },
+  { id: 'heures', label: "Rapport d'heures", icon: Clock },
+  { id: 'extraits', label: 'Extraits bancaires', icon: Landmark },
+]
+
+// Cohérent avec les factures du jeu de démonstration : 41 920.- envoyés
+// (Cervin, Delacroix, Garage Praz), dont 6 280.- encaissés, et 5 470,50.-
+// de factures fournisseurs dont 4 508.- payées.
+const INDICATEURS = [
+  { label: 'CA facturé', valeur: '41 920,00 CHF', sous: 'Toutes envoyées', icon: TrendingUp, teinte: '#4F46E5', fond: '#EEF2FF' },
+  { label: 'CA encaissé', valeur: '6 280,00 CHF', sous: 'Factures payées', icon: Wallet, teinte: '#059669', fond: '#ECFDF5' },
+  { label: 'Charges', valeur: '4 508,00 CHF', sous: 'Fournisseurs payés', icon: TrendingDown, teinte: '#DC2626', fond: '#FEF2F2' },
+  { label: 'Bénéfice net', valeur: '1 772,00 CHF', sous: 'Encaissé – Charges', icon: Landmark, teinte: '#0D9488', fond: '#F0FDFA' },
+  { label: 'À encaisser', valeur: '35 640,00 CHF', sous: 'Factures impayées', icon: Clock, teinte: '#CA8A04', fond: '#FEFCE8' },
+  { label: 'À payer', valeur: '962,50 CHF', sous: 'Factures reçues', icon: ArrowDownCircle, teinte: '#EA580C', fond: '#FFF7ED' },
+  { label: 'TVA collectée', valeur: '3 044,73 CHF', sous: 'Sur envoyées', icon: Banknote, teinte: '#2563EB', fond: '#EFF6FF' },
+  { label: 'Solde TVA', valeur: '2 647,33 CHF', sous: 'À reverser', icon: Banknote, teinte: '#EA580C', fond: '#FFF7ED' },
+]
+
+const MOIS_12 = [
+  { m: 'sept.', revenus: 0, charges: 0 },
+  { m: 'oct.', revenus: 0, charges: 0 },
+  { m: 'nov.', revenus: 0, charges: 0 },
+  { m: 'déc.', revenus: 0, charges: 0 },
+  { m: 'janv.', revenus: 0, charges: 0 },
+  { m: 'févr.', revenus: 0, charges: 0 },
+  { m: 'mars', revenus: 0, charges: 0 },
+  { m: 'avr.', revenus: 0, charges: 0 },
+  { m: 'mai', revenus: 0, charges: 4508 },
+  { m: 'juin', revenus: 0, charges: 0 },
+  { m: 'juil.', revenus: 6280, charges: 962.5 },
+  { m: 'août', revenus: 0, charges: 0 },
+]
+
+const INDIGO = '#6366F1'
+const ROUGE_GRAPH = '#F87171'
+
+function GraphiqueDouzeMois() {
+  const max = Math.max(...MOIS_12.flatMap(m => [m.revenus, m.charges]), 1)
+  const H = 150
   return (
-    <>
-      <Titre eyebrow="FINANCES" titre="Comptabilité" />
-      <div className="rounded-xl px-4 py-3 mb-5" style={{ background: C.rougeFond }}>
-        <p className="text-sm font-semibold" style={{ color: C.rouge }}>1 facture en retard — 2 890,00 CHF à recouvrer</p>
-        <p className="text-xs mt-0.5" style={{ color: C.rouge, opacity: 0.8 }}>Cliquez pour les voir et relancer vos clients</p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        {[
-          { l: 'Encaissé (2026)', v: '6 280,00 CHF', s: '1 facture payée' },
-          { l: 'En attente', v: '35 640,00 CHF', s: '2 factures ouvertes' },
-          { l: 'Dépenses fournisseurs', v: '5 470,50 CHF', s: '2 factures reçues' },
-        ].map(k => (
-          <Carte key={k.l} className="p-5">
-            <span className="text-xs" style={{ color: C.sousTexte }}>{k.l}</span>
-            <p className="text-2xl font-black mt-2 leading-none" style={{ color: C.texte }}>{k.v}</p>
-            <p className="text-xs mt-2" style={{ color: C.sousTexte }}>{k.s}</p>
-          </Carte>
+    <Carte className="p-6">
+      <p className="text-base font-bold mb-6" style={{ color: C.texte }}>Évolution sur 12 mois</p>
+      <div className="flex items-end gap-2 overflow-x-auto" style={{ height: H + 30 }}>
+        {MOIS_12.map(mois => (
+          <div key={mois.m} className="flex-1 min-w-[34px] flex flex-col items-center justify-end gap-1" style={{ height: H + 30 }}>
+            <div className="flex items-end gap-1" style={{ height: H }}>
+              <div
+                className="w-2.5 rounded-t"
+                style={{ height: Math.max(mois.revenus ? 3 : 0, (mois.revenus / max) * H), background: INDIGO }}
+                title={`Revenus encaissés : ${chf(mois.revenus)}`}
+              />
+              <div
+                className="w-2.5 rounded-t"
+                style={{ height: Math.max(mois.charges ? 3 : 0, (mois.charges / max) * H), background: ROUGE_GRAPH }}
+                title={`Charges payées : ${chf(mois.charges)}`}
+              />
+            </div>
+            <span className="text-[10px] whitespace-nowrap" style={{ color: C.sousTexte }}>{mois.m}</span>
+          </div>
         ))}
       </div>
-      <Carte className="overflow-hidden">
-        <p className="px-5 py-3.5 text-sm font-bold" style={{ color: C.texte }}>Factures émises</p>
-        <LigneListe titre="2026-0033 · Hôtel du Cervin" sous="Échéance 16.08.2026" droite={chf(32750)} pastille={<Pastille texte="Impayée" />} />
-        <LigneListe titre="2026-0031 · Boulangerie Delacroix" sous="Payée le 26.07.2026" droite={chf(6280)} pastille={<Pastille texte="Payée" couleur={C.vert} fond={C.vertFond} />} />
-        <LigneListe titre="2026-0028 · Garage Praz SA" sous="En retard de 18 jours · 1 rappel envoyé" droite={chf(2890)} pastille={<Pastille texte="En retard" couleur={C.rouge} fond={C.rougeFond} />} />
-      </Carte>
+      <div className="flex flex-wrap items-center gap-5 mt-4">
+        <span className="inline-flex items-center gap-2 text-sm" style={{ color: C.texte }}>
+          <span className="w-3 h-3 rounded-sm" style={{ background: INDIGO }} /> Revenus encaissés
+        </span>
+        <span className="inline-flex items-center gap-2 text-sm" style={{ color: C.texte }}>
+          <span className="w-3 h-3 rounded-sm" style={{ background: ROUGE_GRAPH }} /> Charges payées
+        </span>
+      </div>
+    </Carte>
+  )
+}
+
+function EcranComptabilite() {
+  const [onglet, setOnglet] = useState('vue')
+  const [periode, setPeriode] = useState('Année')
+
+  return (
+    <>
+      <span className="text-[11px] font-bold tracking-widest" style={{ color: C.sousTexte }}>FINANCES</span>
+      <h1 className="text-2xl md:text-3xl font-black mb-6" style={{ color: C.texte }}>Comptabilité</h1>
+
+      {/* Onglets soulignés */}
+      <div className="flex items-center gap-7 overflow-x-auto mb-6" style={{ borderBottom: `1px solid ${C.bord}` }}>
+        {ONGLETS_COMPTA.map(o => {
+          const actif = onglet === o.id
+          return (
+            <button
+              key={o.id}
+              onClick={() => setOnglet(o.id)}
+              className="flex items-center gap-2 pb-3 text-[15px] font-semibold whitespace-nowrap flex-shrink-0"
+              style={{
+                color: actif ? C.texte : C.sousTexte,
+                borderBottom: `2px solid ${actif ? C.texte : 'transparent'}`,
+                marginBottom: '-1px',
+              }}
+            >
+              <o.icon className="w-4 h-4" />{o.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {onglet === 'vue' ? (
+        <>
+          {/* Période */}
+          <Carte className="p-4 mb-5">
+            <div className="flex flex-wrap items-center gap-2">
+              {['Mois', 'Trimestre', 'Année', 'Personnalisée'].map(p => (
+                <button
+                  key={p}
+                  onClick={() => setPeriode(p)}
+                  className="px-4 py-2 rounded-lg text-sm font-semibold"
+                  style={periode === p
+                    ? { background: C.navBg, color: '#fff' }
+                    : { background: '#F3F4F6', color: C.texte }}
+                >
+                  {p}
+                </button>
+              ))}
+              <span className="ml-auto text-sm" style={{ color: C.sousTexte }}>Année 2026</span>
+            </div>
+          </Carte>
+
+          {/* Indicateurs */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
+            {INDICATEURS.map(k => (
+              <div key={k.label} className="rounded-2xl p-5" style={{ background: k.fond, border: `1px solid ${k.teinte}22` }}>
+                <span className="flex items-center gap-2 text-sm font-semibold" style={{ color: k.teinte }}>
+                  <k.icon className="w-4 h-4 flex-shrink-0" />{k.label}
+                </span>
+                <p className="text-2xl font-black mt-2 leading-none" style={{ color: k.teinte }}>{k.valeur}</p>
+                <p className="text-xs mt-2" style={{ color: C.sousTexte }}>{k.sous}</p>
+              </div>
+            ))}
+          </div>
+
+          <GraphiqueDouzeMois />
+        </>
+      ) : (
+        <Carte className="overflow-hidden">
+          {onglet === 'clients' && (
+            <>
+              <LigneListe titre="2026-0033 · Hôtel du Cervin" sous="Échéance 16.08.2026" droite={chf(32750)} pastille={<Pastille texte="Impayée" />} />
+              <LigneListe titre="2026-0031 · Boulangerie Delacroix" sous="Payée le 26.07.2026" droite={chf(6280)} pastille={<Pastille texte="Payée" couleur={C.vert} fond={C.vertFond} />} />
+              <LigneListe titre="2026-0028 · Garage Praz SA" sous="En retard de 18 jours · 1 rappel envoyé" droite={chf(2890)} pastille={<Pastille texte="En retard" couleur={C.rouge} fond={C.rougeFond} />} />
+            </>
+          )}
+          {onglet === 'fournisseurs' && (
+            <>
+              <LigneListe titre="SF-88214 · Sanitas Trösch SA" sous="Fournitures · payée le 20.07.2026" droite={chf(4508)} pastille={<Pastille texte="Payée" couleur={C.vert} fond={C.vertFond} />} />
+              <LigneListe titre="TL-4417 · Tobler Systèmes" sous="Fournitures · échéance 19.08.2026" droite={chf(962.5)} pastille={<Pastille texte="À payer" />} />
+            </>
+          )}
+          {onglet === 'heures' && (
+            <>
+              <LigneListe titre="Marc Fournier" sous="Juillet 2026 · 31.0 h" droite={chf(2108)} />
+              <LigneListe titre="Julien Rossier" sous="Juillet 2026 · 18.0 h" droite={chf(1116)} />
+            </>
+          )}
+          {onglet === 'extraits' && (
+            <LigneListe titre="Relevé BCVs · juillet 2026" sous="Importé le 01.08.2026 · 14 écritures" pastille={<Pastille texte="Rapproché" couleur={C.vert} fond={C.vertFond} />} />
+          )}
+        </Carte>
+      )}
     </>
   )
 }
