@@ -215,12 +215,10 @@ function Hero() {
           <Link to="/tarifs" className="px-8 py-4 rounded-xl font-bold text-[#0A0A0F] text-sm transition-all duration-200" style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, boxShadow: `0 0 30px ${TEAL}40` }}>
             {t('accueil.hero.cta')}
           </Link>
-          <Link to="/demo" className="px-8 py-4 rounded-xl font-semibold text-sm border text-slate-300 hover:text-white hover:border-white/30 transition-all duration-200" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
-            {t('accueil.hero.demo')}
-          </Link>
         </div>
         {/* La capture mène à la visite guidée : c'est l'élément que le visiteur
-            cherche à agrandir en cliquant dessus. */}
+            cherche à agrandir en cliquant dessus. Le lien explicite est juste
+            en dessous, pour ceux qui ne devinent pas qu'elle est cliquable. */}
         <Link to="/demo" data-anim="up" data-delay="400" className="relative mt-16 block group">
           <div className="absolute inset-x-0 top-4 h-2/3 blur-3xl pointer-events-none" style={{ background: `${TEAL}25` }} />
           <img
@@ -230,6 +228,11 @@ function Hero() {
             style={{ borderColor: `${TEAL}30` }}
           />
         </Link>
+        <div data-anim="up" data-delay="500" className="mt-6 flex justify-center">
+          <Link to="/demo" className="px-8 py-4 rounded-xl font-semibold text-sm border text-slate-300 hover:text-white hover:border-white/30 transition-all duration-200" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
+            {t('accueil.hero.demo')}
+          </Link>
+        </div>
       </div>
     </section>
   )
