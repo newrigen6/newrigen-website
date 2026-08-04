@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Calendar, Upload, Package, ClipboardList, Wrench, Calculator,
   Users, Boxes, Settings, ChevronDown, ChevronsUpDown, Search, SlidersHorizontal,
   Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, Building2, Mail, CreditCard,
-  Sparkles, XCircle, Tag, Pencil, ChevronRight,
+  Sparkles, XCircle, Tag, Pencil, ChevronRight, Phone, UserPlus, KeyRound, Trash2, SquarePen, ToggleRight,
 } from 'lucide-react'
 
 /**
@@ -512,76 +512,125 @@ function EcranComptabilite() {
   )
 }
 
+// Team : titre « Vue d'ensemble », deux onglets pleine largeur (Employés /
+// Comptable · Fiduciaire), une barre d'outils, puis le tableau avec sa
+// colonne d'actions — comme la page réelle.
+const EMPLOYES_DEMO = [
+  { initiales: 'MF', nom: 'Marc Fournier', email: 'marc@demo.ch', tel: '079 000 00 01', taux: '68,00 CHF' },
+  { initiales: 'JR', nom: 'Julien Rossier', email: 'julien@demo.ch', tel: '079 000 00 02', taux: '62,00 CHF' },
+  { initiales: 'TD', nom: 'Thomas Dubois', email: 'demo@newrigen.ch', tel: null, taux: '95,00 CHF' },
+]
+
+const COMPTABLES_DEMO = [
+  { initiales: 'FV', nom: 'Fiduciaire Valais SA', email: 'compta@fiduciaire-vs.ch', tel: '027 000 99 99', taux: '—' },
+]
+
+function TableauPersonnes({ gens }) {
+  return (
+    <Carte className="overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr style={{ borderBottom: `1px solid ${C.bord}` }}>
+              {['Employé', 'Contact', 'Taux/h', 'Statut', 'Actions'].map(c => (
+                <th key={c} className="text-left px-5 py-3.5 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sousTexte }}>
+                  {c.toUpperCase()}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {gens.map((p, i) => (
+              <tr key={p.nom} style={{ borderTop: i === 0 ? 'none' : `1px solid ${C.bord}` }}>
+                <td className="px-5 py-4">
+                  <span className="flex items-center gap-2.5">
+                    <span className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: C.navBg, color: '#fff' }}>
+                      {p.initiales[0]}
+                    </span>
+                    <span className="font-semibold whitespace-nowrap" style={{ color: C.texte }}>{p.initiales}</span>
+                    <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
+                  </span>
+                </td>
+                <td className="px-5 py-4">
+                  <span className="flex items-center gap-2 whitespace-nowrap" style={{ color: C.texte }}>
+                    <Mail className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />{p.email}
+                  </span>
+                  <span className="flex items-center gap-2 mt-1 whitespace-nowrap" style={{ color: C.sousTexte }}>
+                    <Phone className="w-4 h-4 flex-shrink-0" />{p.tel || '—'}
+                  </span>
+                </td>
+                <td className="px-5 py-4 font-bold whitespace-nowrap" style={{ color: C.texte }}>{p.taux}</td>
+                <td className="px-5 py-4">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap" style={{ background: C.vertFond, color: C.vert }}>
+                    <ToggleRight className="w-3.5 h-3.5" /> Actif
+                  </span>
+                </td>
+                <td className="px-5 py-4">
+                  <span className="flex items-center gap-3" style={{ color: C.sousTexte }}>
+                    <SquarePen className="w-4 h-4" />
+                    <KeyRound className="w-4 h-4" />
+                    <Trash2 className="w-4 h-4" />
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Carte>
+  )
+}
+
 function EcranTeam() {
-  const gens = [
-    { n: 'Marc Fournier', c: 'marc@demo.ch · 079 000 00 01', t: '68.00', actif: true },
-    { n: 'Julien Rossier', c: 'julien@demo.ch · 079 000 00 02', t: '62.00', actif: true },
-    { n: 'Thomas Dubois', c: 'demo@newrigen.ch', t: '95.00', actif: true, soi: true },
-  ]
+  const [onglet, setOnglet] = useState('employes')
+  const gens = onglet === 'employes' ? EMPLOYES_DEMO : COMPTABLES_DEMO
+
   return (
     <>
-      <Titre titre="Team" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Ajouter un employé</BoutonFactice>} />
+      <h1 className="text-2xl md:text-3xl font-black mb-6" style={{ color: C.texte }}>Vue d'ensemble</h1>
 
-      <div className="flex items-center gap-2 mb-4">
-        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.texte, color: '#fff' }}>Vue d'ensemble</span>
-        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.sousTexte, border: `1px solid ${C.bord}` }}>Détail par chantier</span>
+      {/* Onglets pleine largeur */}
+      <div className="flex items-center gap-1 p-1.5 rounded-xl mb-5" style={{ background: '#EEF1F5' }}>
+        {[
+          { id: 'employes', label: 'Employés', icon: Users },
+          { id: 'comptables', label: 'Comptable / Fiduciaire', icon: Calculator },
+        ].map(o => {
+          const actif = onglet === o.id
+          return (
+            <button
+              key={o.id}
+              onClick={() => setOnglet(o.id)}
+              className="flex items-center justify-center gap-2 flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-colors"
+              style={actif
+                ? { background: '#fff', color: C.texte, boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }
+                : { color: C.sousTexte }}
+            >
+              <o.icon className="w-4 h-4 flex-shrink-0" />
+              {o.label}
+            </button>
+          )
+        })}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-5">
-        {[['Heures', '49.0', 'heures travaillées'], ['Rapports', '6', 'ce mois'], ['Chantiers', '4', 'en cours']].map(([l, v, s]) => (
-          <Carte key={l} className="p-5">
-            <span className="text-xs" style={{ color: C.sousTexte }}>{l}</span>
-            <p className="text-2xl font-black mt-2 leading-none" style={{ color: C.texte }}>{v}</p>
-            <p className="text-xs mt-2" style={{ color: C.sousTexte }}>{s}</p>
-          </Carte>
-        ))}
+      {/* Barre d'outils */}
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        <div className="flex items-center gap-2 rounded-xl px-4 py-2.5 flex-1 min-w-[10rem]" style={{ background: C.carte, border: `1px solid ${C.bord}` }}>
+          <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
+        </div>
+        <span className="text-sm font-medium px-3 py-2 rounded-lg flex-shrink-0" style={{ background: '#EEF1F5', color: C.sousTexte }}>
+          {gens.length} {onglet === 'employes' ? (gens.length > 1 ? 'employés' : 'employé') : (gens.length > 1 ? 'comptables' : 'comptable')}
+        </span>
+        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold flex-shrink-0" style={{ background: C.navBg, color: '#fff' }}>
+          <UserPlus className="w-4 h-4" /> {onglet === 'employes' ? 'Ajouter un employé' : 'Ajouter un comptable'}
+        </span>
+        {onglet === 'employes' && (
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold flex-shrink-0" style={{ background: '#EEF2FF', color: '#4F46E5' }}>
+            <UserPlus className="w-4 h-4" /> Mon compte terrain
+          </span>
+        )}
       </div>
 
-      <Carte className="overflow-hidden mb-5">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ background: C.fond }}>
-                {['Employé', 'Contact', 'Taux/h', 'Statut', 'Actions'].map(c => (
-                  <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sousTexte }}>{c.toUpperCase()}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {gens.map(p => (
-                <tr key={p.n} style={{ borderTop: `1px solid ${C.bord}` }}>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0" style={{ background: `${C.teal}25`, color: C.texte }}>
-                        {p.n.split(' ').map(x => x[0]).join('')}
-                      </span>
-                      <span className="font-bold whitespace-nowrap" style={{ color: C.texte }}>
-                        {p.n}
-                        {p.soi && <span className="ml-2 text-[10px] font-medium" style={{ color: C.sousTexte }}>Mon compte terrain</span>}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap" style={{ color: C.sousTexte }}>{p.c}</td>
-                  <td className="px-4 py-3 whitespace-nowrap font-semibold" style={{ color: C.texte }}>{p.t}</td>
-                  <td className="px-4 py-3"><Pastille texte="Actif" couleur={C.vert} fond={C.vertFond} /></td>
-                  <td className="px-4 py-3 whitespace-nowrap text-xs" style={{ color: C.sousTexte }}>Modifier · Réinitialiser</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Carte>
-
-      <Carte className="overflow-hidden">
-        <div className="flex items-start justify-between gap-3 p-5 pb-3">
-          <div>
-            <p className="text-sm font-bold" style={{ color: C.texte }}>Comptables / Fiduciaires</p>
-            <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>Accès lecture seule aux documents financiers</p>
-          </div>
-          <BoutonFactice petit>Ajouter un comptable</BoutonFactice>
-        </div>
-        <LigneListe titre="Fiduciaire Valais SA" sous="compta@fiduciaire-vs.ch" pastille={<Pastille texte="Comptable" />} />
-      </Carte>
+      <TableauPersonnes gens={gens} />
     </>
   )
 }
