@@ -155,7 +155,8 @@ function LigneListe({ titre, sous, droite, pastille }) {
 
 // ── Écrans ─────────────────────────────────────────────────────────────────
 function EcranDashboard() {
-  const COLONNES = ['Nature', 'Client', 'Adresse', 'Date', 'Montant', 'Matériaux', "Main d'œuvre", 'Coût total', 'Marge CHF', 'Marge %', 'Statut']
+  // La table se trie par date à l'ouverture : ce chevron-là est marqué.
+  const COLONNES = ['Nature', 'Client', 'Adresse', 'Date', 'Montant', 'Matériaux', "Main d'œuvre", 'Coût total', 'Marge CHF', 'Marge %', 'Statut', 'Actions']
   return (
     <>
       <Titre eyebrow="RENTABILITÉ" titre="Tableau de bord" />
@@ -178,18 +179,18 @@ function EcranDashboard() {
         ))}
       </div>
 
-      <Carte className="p-3 mb-4">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex-1 flex items-center gap-2 rounded-xl px-4 py-2.5" style={{ background: C.fond }}>
+      <Carte className="p-4 mb-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="flex-1 flex items-center gap-2.5 rounded-xl px-4 py-3 min-w-0" style={{ border: `1px solid ${C.bord}` }}>
             <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
-            <span className="text-sm" style={{ color: C.sousTexte }}>Rechercher un client…</span>
+            <span className="text-[15px] truncate" style={{ color: '#B9C0CC' }}>Rechercher un client…</span>
           </div>
-          <span className="flex items-center justify-center rounded-xl px-3 py-2.5" style={{ background: C.fond }}>
-            <SlidersHorizontal className="w-4 h-4" style={{ color: C.sousTexte }} />
+          <span className="flex items-center justify-center px-1 flex-shrink-0">
+            <SlidersHorizontal className="w-5 h-5" style={{ color: C.sousTexte }} />
           </span>
           {['Tous statuts', 'Toutes marges'].map(f => (
-            <span key={f} className="flex items-center justify-between gap-2 rounded-xl px-4 py-2.5 text-sm min-w-[9rem]" style={{ background: C.fond, color: C.texte }}>
-              {f}<ChevronDown className="w-3.5 h-3.5" style={{ color: C.sousTexte }} />
+            <span key={f} className="flex items-center justify-between gap-3 rounded-xl px-4 py-3 text-[15px] flex-shrink-0 sm:min-w-[10rem]" style={{ border: `1px solid ${C.bord}`, color: C.texte }}>
+              {f}<ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
             </span>
           ))}
         </div>
@@ -202,7 +203,14 @@ function EcranDashboard() {
               <tr style={{ borderBottom: `1px solid ${C.bord}` }}>
                 {COLONNES.map(c => (
                   <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sousTexte }}>
-                    <span className="inline-flex items-center gap-1">{c.toUpperCase()}<ChevronsUpDown className="w-3 h-3 opacity-60" /></span>
+                    <span className="inline-flex items-center gap-1">
+                      {c.toUpperCase()}
+                      {c === 'Actions'
+                        ? null
+                        : c === 'Date'
+                          ? <ChevronDown className="w-3 h-3" style={{ color: C.texte }} />
+                          : <ChevronsUpDown className="w-3 h-3 opacity-60" />}
+                    </span>
                   </th>
                 ))}
               </tr>
@@ -226,6 +234,9 @@ function EcranDashboard() {
                     }}>{d.margePct.toFixed(1)}%</span>
                   </td>
                   <td className="px-4 py-3"><Pastille texte={d.statut} couleur={C.teal} /></td>
+                  <td className="px-4 py-3">
+                    <Eye className="w-4 h-4" style={{ color: C.sousTexte }} />
+                  </td>
                 </tr>
               ))}
             </tbody>
