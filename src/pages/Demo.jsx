@@ -77,7 +77,7 @@ const chf = (v) => v.toLocaleString('fr-CH', { minimumFractionDigits: 2, maximum
 // l'application calcule réellement à partir des matériaux et des heures.
 const DEVIS = [
   { client: 'Villa Cheseaux', adresse: 'Chemin des Vignes 7, 1958 Uvrier', date: '26.07.2026', montant: 4150, materiaux: 2620, mo: 408, cout: 3028, margeChf: 1122, margePct: 27.0, statut: 'En cours' },
-  { client: 'Résidence Les Mélèzes', adresse: 'Route de Sierre 42, 1950 Sion', date: '20.07.2026', montant: 18400, materiaux: 12216, mo: 1009, cout: 13225, margeChf: 5175, margePct: 28.1, statut: 'En cours', sousObjectif: true },
+  { client: 'Résidence Les Mélèzes', adresse: 'Route de Sierre 42, 1950 Sion', date: '20.07.2026', montant: 18400, materiaux: 12216, mo: 1009, cout: 13225, margeChf: 5175, margePct: 28.1, statut: 'En cours' },
   { client: 'Hôtel du Cervin', adresse: 'Bahnhofstrasse 4, 3920 Zermatt', date: '06.07.2026', montant: 32750, materiaux: 16142.5, mo: 1108, cout: 17250.5, margeChf: 15499.5, margePct: 47.3, statut: 'Accepté' },
   { client: 'Boulangerie Delacroix', adresse: 'Grand-Rue 18, 1920 Martigny', date: '24.06.2026', montant: 6280, materiaux: 2500, mo: 0, cout: 2500, margeChf: 3780, margePct: 60.2, statut: 'Accepté' },
   { client: 'Garage Praz SA', adresse: 'Zone Industrielle 3, 1963 Vétroz', date: '08.06.2026', montant: 2890, materiaux: 576, mo: 0, cout: 576, margeChf: 2314, margePct: 80.1, statut: 'Terminé' },
@@ -166,7 +166,7 @@ function EcranDashboard() {
           { label: "Chiffre d'affaires total", valeur: '64 470,00 CHF', sous: 'Tous devis confondus' },
           { label: 'Devis en cours (2)', valeur: '22 550,00 CHF', sous: 'À facturer' },
           { label: 'Marges réelles cumulées', valeur: '27 890,50 CHF', sous: "Mat. + main d'œuvre déduits" },
-          { label: "Marges sous l'objectif (< 30 %)", valeur: '1 devis', sous: 'À surveiller', alerte: true },
+          { label: "Marges sous l'objectif (< 15 %)", valeur: '0 devis', sous: 'À surveiller' },
         ].map(s => (
           <Carte key={s.label} className="p-5">
             <div className="flex items-start justify-between gap-2 mb-3">
@@ -502,7 +502,7 @@ function EcranSaisie() {
             ['Prix devis :', chf(18400), C.texte],
             ['Matériaux :', chf(12216), C.texte],
             ["Main d'œuvre", chf(1009), C.texte],
-            ['Marge réelle :', '5 175,00 CHF · 28.1%', C.rouge],
+            ['Marge réelle :', '5 175,00 CHF · 28.1%', C.vert],
           ].map(([l, v, couleur]) => (
             <div key={l}>
               <p className="text-xs" style={{ color: C.sousTexte }}>{l}</p>
@@ -1121,7 +1121,7 @@ function EcranParametres() {
               description="Votre objectif de marge. C'est le seul chiffre utilisé : il colore les marges partout dans l'application — dashboard, devis, saisie et suivi de chantier. Vert dès que l'objectif est atteint, orange en dessous, rouge si le chantier perd de l'argent. Ajustable chantier par chantier."
             >
               <div className="flex items-center gap-3">
-                <FauxChamp valeur="30" etroit />
+                <FauxChamp valeur="15" etroit />
                 <span className="text-sm" style={{ color: C.sousTexte }}>%</span>
                 <BoutonEnregistrer />
               </div>
