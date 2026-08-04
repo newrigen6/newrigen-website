@@ -355,19 +355,51 @@ function EcranAgenda() {
   )
 }
 
+// Champ de formulaire de la page d'import : l'apparence d'une zone de saisie,
+// sans en être une. Les champs sont montrés vides, comme à l'ouverture.
+function ChampImport({ label, obligatoire, valeur, icone: Icone }) {
+  return (
+    <div>
+      <p className="text-[15px] mb-2" style={{ color: C.texte }}>
+        {label}{obligatoire && <span style={{ color: C.rouge }}> *</span>}
+      </p>
+      <div className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl" style={{ border: `1px solid ${C.bord}`, background: C.carte, minHeight: '3rem' }}>
+        <span className="text-[15px] truncate" style={{ color: C.texte }}>{valeur || ' '}</span>
+        {Icone && <Icone className="w-5 h-5 flex-shrink-0" style={{ color: C.sousTexte }} />}
+      </div>
+    </div>
+  )
+}
+
 function EcranImporter() {
   return (
     <>
-      <Titre eyebrow="DEVIS" titre="Importer" />
-      <Carte className="p-10 flex flex-col items-center justify-center text-center mb-6" style={{ borderStyle: 'dashed', borderWidth: 2, borderColor: C.bord, background: C.carte }}>
-        <Upload className="w-7 h-7 mb-3" style={{ color: C.sousTexte }} />
-        <p className="font-bold text-sm mb-1" style={{ color: C.texte }}>Glisser un fichier ici ou cliquer</p>
-        <p className="text-xs" style={{ color: C.sousTexte }}>PDF, Excel ou CSV — l'IA lit le document et en extrait les lignes</p>
+      <div className="flex items-center gap-4 mb-6">
+        <ArrowLeft className="w-6 h-6 flex-shrink-0" style={{ color: C.texte }} />
+        <h1 className="text-2xl md:text-3xl font-black" style={{ color: C.texte }}>Importer Devis</h1>
+      </div>
+
+      <Carte className="p-6 mb-6">
+        <p className="text-[15px] font-semibold mb-4" style={{ color: C.texte }}>Fichier devis (optionnel)</p>
+        <div className="rounded-xl px-6 py-12 flex flex-col items-center justify-center text-center" style={{ border: `2px dashed ${C.bord}` }}>
+          <Upload className="w-10 h-10 mb-4" style={{ color: C.sousTexte }} />
+          <p className="text-lg font-semibold" style={{ color: C.texte }}>Glisser un fichier ici</p>
+          <p className="text-[15px] mt-1" style={{ color: C.sousTexte }}>ou cliquer pour parcourir</p>
+          <p className="text-sm mt-3" style={{ color: '#B9C0CC' }}>Formats acceptés : .xlsx, .xls, .pdf</p>
+        </div>
       </Carte>
-      <Carte className="overflow-hidden">
-        <p className="px-5 py-3.5 text-sm font-bold" style={{ color: C.texte }}>Derniers imports</p>
-        <LigneListe titre="devis_meleze_chauffage.pdf" sous="12 lignes extraites · 20.07.2026" pastille={<Pastille texte="Traité" couleur={C.vert} fond={C.vertFond} />} />
-        <LigneListe titre="catalogue_sanitas_2026.xlsx" sous="486 produits · 02.07.2026" pastille={<Pastille texte="Traité" couleur={C.vert} fond={C.vertFond} />} />
+
+      <Carte className="p-6">
+        <p className="text-[15px] font-semibold mb-5" style={{ color: C.texte }}>Informations du devis</p>
+        <div className="space-y-5">
+          <ChampImport label="Nom du client" obligatoire />
+          <ChampImport label="Adresse du chantier" />
+          <ChampImport label="Email du client" />
+          <div className="grid sm:grid-cols-2 gap-5">
+            <ChampImport label="Prix total convenu (CHF)" obligatoire />
+            <ChampImport label="Date du devis" valeur="04.08.2026" icone={Calendar} />
+          </div>
+        </div>
       </Carte>
     </>
   )
