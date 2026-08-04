@@ -5,7 +5,7 @@ import {
   Users, Boxes, Settings, ChevronDown, ChevronsUpDown, Search, SlidersHorizontal,
   Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, Building2, Mail, CreditCard,
   Sparkles, XCircle, Tag, Pencil, ChevronRight, Phone, UserPlus, KeyRound, Trash2, SquarePen, ToggleRight,
-  LayoutGrid, FilePlus,
+  LayoutGrid, FilePlus, Bell, ChevronLeft,
   TrendingUp, TrendingDown, Wallet, Landmark, Clock, ArrowDownCircle, Banknote, BarChart3, ShoppingCart,
 } from 'lucide-react'
 
@@ -237,118 +237,175 @@ function EcranDashboard() {
   )
 }
 
-// Agenda : grille mensuelle avec colonne de numéro de semaine, en-têtes
-// Lun→Dim, et le panneau « Prochains RDVs » — comme la page réelle.
+// Agenda : barre d'outils en haut, calendrier mensuel avec colonne de numéro
+// de semaine à gauche, et panneau « Jour sélectionné » à droite — comme la
+// page réelle. Cliquer un jour change le panneau.
 const JOURS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
+
+function numeroSemaineISO(d) {
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
+  const jour = (date.getUTCDay() + 6) % 7
+  date.setUTCDate(date.getUTCDate() - jour + 3)
+  const premierJeudi = new Date(Date.UTC(date.getUTCFullYear(), 0, 4))
+  const decalage = (premierJeudi.getUTCDay() + 6) % 7
+  premierJeudi.setUTCDate(premierJeudi.getUTCDate() - decalage + 3)
+  return 1 + Math.round((date - premierJeudi) / (7 * 86400000))
+}
+
+const capitaliser = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
 function EcranAgenda() {
   const aujourdhui = new Date()
   const annee = aujourdhui.getFullYear()
   const mois = aujourdhui.getMonth()
-  const premier = new Date(annee, mois, 1)
-  const decalage = (premier.getDay() + 6) % 7 // Lundi = 0
-  const nbJours = new Date(annee, mois + 1, 0).getDate()
-  const nomMois = premier.toLocaleDateString('fr-CH', { month: 'long', year: 'numeric' })
+  const [jourChoisi, setJourChoisi] = useState(aujourdhui.getDate())
 
-  // Rendez-vous d'exemple, posés sur des jours fixes du mois affiché
+  // Rendez-vous d'exemple, posés sur des jours fixes du mois affiché.
   const RDV = {
     4: [{ h: '08:00', t: 'Les Mélèzes — pose chaudière', c: C.teal }],
-    9: [{ h: '10:30', t: 'Villa Cheseaux — métré', c: '#6366F1' }],
-    12: [{ h: '14:00', t: 'Hôtel du Cervin — contrôle PAC', c: C.teal }],
-    18: [{ h: '09:00', t: 'Mme Berger — dépannage', c: '#F59E0B' }, { h: '15:30', t: 'Garage Praz — devis', c: '#6366F1' }],
-    23: [{ h: '11:00', t: 'Boulangerie Delacroix — SAV', c: C.teal }],
+    12: [
+      { h: '09:30', t: 'Villa Cheseaux — métré', c: '#6366F1' },
+      { h: '14:00', t: 'Hôtel du Cervin — contrôle PAC', c: C.teal },
+    ],
+    18: [{ h: '10:00', t: 'Mme Berger — dépannage', c: '#F59E0B' }],
+    25: [{ h: '11:00', t: 'Boulangerie Delacroix — SAV', c: C.teal }],
   }
 
+  const premier = new Date(annee, mois, 1)
+  const decalage = (premier.getDay() + 6) % 7
+  const nbJours = new Date(annee, mois + 1, 0).getDate()
+  const nbJoursPrec = new Date(annee, mois, 0).getDate()
+
+  // Grille complète : jours du mois précédent, du mois, puis du suivant.
   const cellules = []
-  for (let i = 0; i < decalage; i++) cellules.push(null)
-  for (let j = 1; j <= nbJours; j++) cellules.push(j)
-  while (cellules.length % 7 !== 0) cellules.push(null)
+  for (let i = decalage - 1; i >= 0; i--) cellules.push({ n: nbJoursPrec - i, hors: true })
+  for (let j = 1; j <= nbJours; j++) cellules.push({ n: j, hors: false })
+  let suivant = 1
+  while (cellules.length % 7 !== 0) cellules.push({ n: suivant++, hors: true })
+
   const semaines = []
   for (let i = 0; i < cellules.length; i += 7) semaines.push(cellules.slice(i, i + 7))
 
-  const numeroSemaine = (indexSemaine) => {
-    const ref = new Date(annee, mois, 1 + indexSemaine * 7)
-    const debut = new Date(annee, 0, 1)
-    return Math.ceil(((ref - debut) / 86400000 + debut.getDay() + 1) / 7)
-  }
-
-  const prochains = [
-    { d: '18', m: nomMois.slice(0, 3), h: '09:00', t: 'Mme Berger — dépannage', l: 'Rue de Lausanne 9, Sion' },
-    { d: '18', m: nomMois.slice(0, 3), h: '15:30', t: 'Garage Praz SA — devis', l: 'Zone Industrielle 3, Vétroz' },
-    { d: '23', m: nomMois.slice(0, 3), h: '11:00', t: 'Boulangerie Delacroix — SAV', l: 'Grand-Rue 18, Martigny' },
-  ]
+  const dateChoisie = new Date(annee, mois, jourChoisi)
+  const libelleJour = capitaliser(dateChoisie.toLocaleDateString('fr-CH', { weekday: 'long' }))
+  const libelleMois = capitaliser(dateChoisie.toLocaleDateString('fr-CH', { month: 'long' }))
+  const rdvDuJour = RDV[jourChoisi] || []
 
   return (
     <>
-      <Titre titre="Agenda" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Nouveau RDV</BoutonFactice>} />
-
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.texte, color: '#fff' }}>Mois</span>
-        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.sousTexte, border: `1px solid ${C.bord}` }}>Année</span>
-        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.texte, border: `1px solid ${C.bord}` }}>Aujourd'hui</span>
-        <span className="text-sm font-bold capitalize ml-1" style={{ color: C.texte }}>{nomMois}</span>
-        <span className="ml-auto text-xs" style={{ color: C.sousTexte }}>Connecter Google Calendar</span>
+      {/* Barre d'outils */}
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        <span className="flex items-center gap-2.5 flex-shrink-0">
+          <Calendar className="w-6 h-6" style={{ color: C.texte }} />
+          <span className="text-xl font-black" style={{ color: C.texte }}>Agenda</span>
+        </span>
+        <span className="flex items-center gap-1 p-1 rounded-xl flex-shrink-0" style={{ background: '#EEF1F5' }}>
+          <span className="px-4 py-1.5 rounded-lg text-sm font-semibold" style={{ background: '#fff', color: C.texte }}>Mois</span>
+          <span className="px-4 py-1.5 rounded-lg text-sm font-semibold" style={{ color: C.sousTexte }}>Année</span>
+        </span>
+        <span className="flex-1" />
+        <span className="flex items-center gap-2 rounded-xl px-4 py-2.5 flex-shrink-0 min-w-[9rem]" style={{ background: C.carte, border: `1px solid ${C.bord}` }}>
+          <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
+          <span className="text-sm truncate" style={{ color: '#B9C0CC' }}>Recherche…</span>
+        </span>
+        <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold flex-shrink-0" style={{ background: C.carte, border: `1px solid ${C.bord}`, color: C.texte }}>
+          <Bell className="w-4 h-4" /> Activer les rappels
+        </span>
+        <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold flex-shrink-0" style={{ background: C.carte, border: `1px solid ${C.bord}`, color: C.texte }}>
+          <span className="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-black" style={{ background: '#fff', border: `1px solid ${C.bord}`, color: '#4285F4' }}>G</span>
+          Connecter Google Calendar
+        </span>
+        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold flex-shrink-0" style={{ background: C.navBg, color: '#fff' }}>
+          <Plus className="w-4 h-4" /> Nouveau RDV
+        </span>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-5">
-        <Carte className="lg:col-span-2 p-4">
-          {/* En-têtes : colonne « Sem » puis Lun→Dim */}
-          <div className="grid mb-1" style={{ gridTemplateColumns: '34px repeat(7, minmax(0,1fr))' }}>
-            <div className="text-center text-[10px] font-semibold py-2 uppercase tracking-wide" style={{ color: C.sousTexte }} title="Numéro de semaine">Sem</div>
+      <div className="flex flex-col lg:flex-row gap-5">
+        {/* Calendrier */}
+        <Carte className="flex-1 p-5 min-w-0">
+          <div className="flex items-center justify-between mb-5">
+            <ChevronLeft className="w-5 h-5" style={{ color: C.sousTexte }} />
+            <span className="text-lg font-black" style={{ color: C.texte }}>{libelleMois} {annee}</span>
+            <ChevronRight className="w-5 h-5" style={{ color: C.sousTexte }} />
+          </div>
+
+          <div className="grid mb-2" style={{ gridTemplateColumns: '36px repeat(7, minmax(0,1fr))' }}>
+            <div className="text-center text-[10px] font-bold tracking-wider" style={{ color: C.sousTexte }} title="Numéro de semaine">SEM</div>
             {JOURS.map(j => (
-              <div key={j} className="text-center text-[11px] font-semibold py-2 uppercase tracking-wide" style={{ color: C.sousTexte }}>{j}</div>
+              <div key={j} className="text-center text-[11px] font-bold tracking-wider" style={{ color: C.sousTexte }}>{j.toUpperCase()}</div>
             ))}
           </div>
 
-          {semaines.map((semaine, i) => (
-            <div key={i} className="grid gap-1 mb-1" style={{ gridTemplateColumns: '34px repeat(7, minmax(0,1fr))' }}>
-              <div className="flex items-center justify-center text-[10px] font-semibold" style={{ color: C.sousTexte }}>{numeroSemaine(i)}</div>
-              {semaine.map((jour, k) => (
-                <div
-                  key={k}
-                  className="rounded-lg p-1.5 min-h-[74px]"
-                  style={{
-                    background: jour ? C.carte : 'transparent',
-                    border: `1px solid ${jour ? C.bord : 'transparent'}`,
-                  }}
-                >
-                  {jour && (
-                    <>
-                      <div className="text-[11px] font-semibold mb-1" style={{ color: C.sousTexte }}>{jour}</div>
-                      <div className="space-y-1">
-                        {(RDV[jour] || []).map(r => (
-                          <div key={r.h} className="rounded px-1.5 py-1 text-[10px] font-medium leading-tight truncate"
+          {semaines.map((semaine, i) => {
+            const refJour = semaine.find(c => !c.hors) || semaine[0]
+            const noSemaine = numeroSemaineISO(new Date(annee, mois, refJour.hors ? 1 : refJour.n))
+            return (
+              <div key={i} className="grid" style={{ gridTemplateColumns: '36px repeat(7, minmax(0,1fr))' }}>
+                <div className="flex items-start justify-center pt-3 text-[11px]" style={{ color: '#C7CDD8' }}>{noSemaine}</div>
+                {semaine.map((cel, k) => {
+                  const choisi = !cel.hors && cel.n === jourChoisi
+                  const rdv = cel.hors ? [] : (RDV[cel.n] || [])
+                  return (
+                    <button
+                      key={k}
+                      onClick={() => !cel.hors && setJourChoisi(cel.n)}
+                      className="text-left p-2 min-h-[76px] rounded-xl transition-colors"
+                      style={choisi
+                        ? { background: '#EFF6FF', border: `2px solid ${C.navBg}` }
+                        : { border: '2px solid transparent' }}
+                    >
+                      <span
+                        className="inline-flex items-center justify-center w-6 h-6 rounded-full text-sm font-semibold"
+                        style={choisi
+                          ? { background: C.navBg, color: '#fff' }
+                          : { color: cel.hors ? '#C7CDD8' : C.texte }}
+                      >
+                        {cel.n}
+                      </span>
+                      <span className="block space-y-1 mt-1">
+                        {rdv.map(r => (
+                          <span key={r.h} className="block rounded px-1.5 py-0.5 text-[10px] font-medium truncate"
                             style={{ background: `${r.c}22`, color: C.texte, borderLeft: `2px solid ${r.c}` }}
                             title={`${r.h} ${r.t}`}>
                             {r.h} {r.t}
-                          </div>
+                          </span>
                         ))}
-                      </div>
-                    </>
-                  )}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            )
+          })}
+        </Carte>
+
+        {/* Panneau du jour sélectionné */}
+        <Carte className="w-full lg:w-80 flex-shrink-0 p-5 self-start">
+          <p className="text-[11px] font-bold tracking-wider" style={{ color: C.sousTexte }}>
+            JOUR SÉLECTIONNÉ · SEMAINE {numeroSemaineISO(dateChoisie)}
+          </p>
+          <p className="text-lg font-black mt-1 mb-4" style={{ color: C.texte }}>
+            {libelleJour}, {jourChoisi} {libelleMois} {annee}
+          </p>
+          <span className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold mb-5" style={{ background: C.navBg, color: '#fff' }}>
+            <Plus className="w-4 h-4" /> Ajouter un RDV
+          </span>
+
+          {rdvDuJour.length === 0 ? (
+            <div className="flex flex-col items-center text-center py-8">
+              <Calendar className="w-9 h-9 mb-3" style={{ color: '#DDE2EA' }} />
+              <p className="text-sm" style={{ color: C.sousTexte }}>Aucun rendez-vous ce jour.</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {rdvDuJour.map(r => (
+                <div key={r.h} className="rounded-xl px-3 py-2.5" style={{ background: `${r.c}12`, borderLeft: `3px solid ${r.c}` }}>
+                  <p className="text-sm font-bold" style={{ color: C.texte }}>{r.h}</p>
+                  <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>{r.t}</p>
                 </div>
               ))}
             </div>
-          ))}
-          <p className="text-[11px] mt-2" style={{ color: C.sousTexte }}>
-            Double-cliquez sur un jour pour ajouter un rendez-vous
-          </p>
-        </Carte>
-
-        <Carte className="overflow-hidden self-start">
-          <p className="px-5 py-3.5 text-sm font-bold" style={{ color: C.texte }}>Prochains RDVs</p>
-          {prochains.map((r, i) => (
-            <div key={i} className="flex items-start gap-3 px-5 py-3" style={{ borderTop: `1px solid ${C.bord}` }}>
-              <div className="text-center flex-shrink-0 w-9">
-                <p className="text-base font-black leading-none" style={{ color: C.texte }}>{r.d}</p>
-                <p className="text-[10px] uppercase" style={{ color: C.sousTexte }}>{r.m}</p>
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-bold truncate" style={{ color: C.texte }}>{r.h} · {r.t}</p>
-                <p className="text-[11px] mt-0.5 truncate" style={{ color: C.sousTexte }}>{r.l}</p>
-              </div>
-            </div>
-          ))}
+          )}
         </Carte>
       </div>
     </>
