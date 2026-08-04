@@ -381,13 +381,21 @@ function EcranSaisie() {
   ]
   return (
     <>
-      <Titre eyebrow="CHANTIER" titre="Saisie des matériaux" action={<BoutonFactice principal><Plus className="w-4 h-4" /> Ajouter un matériau</BoutonFactice>} />
+      <span className="text-[11px] font-bold tracking-widest" style={{ color: C.sousTexte }}>CHANTIER</span>
+      <h1 className="text-2xl md:text-3xl font-black mb-6" style={{ color: C.texte }}>Saisie des matériaux</h1>
 
-      <Carte className="p-5 mb-5">
-        <Champ label="CHANTIER / DEVIS" valeur="Résidence Les Mélèzes — 2026-014" />
+      {/* Tant qu'aucun chantier n'est choisi, la page réelle n'affiche que ce
+          sélecteur. La démonstration part d'un chantier déjà sélectionné,
+          sinon il n'y aurait rien à montrer. */}
+      <Carte className="p-6 mb-5">
+        <p className="text-[15px] mb-3" style={{ color: C.texte }}>Chantier / Devis</p>
+        <div className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl" style={{ border: `1px solid ${C.bord}` }}>
+          <span className="text-[15px] truncate" style={{ color: C.texte }}>Résidence Les Mélèzes — 2026-014</span>
+          <ChevronDown className="w-5 h-5 flex-shrink-0" style={{ color: C.sousTexte }} />
+        </div>
       </Carte>
 
-      {/* Bandeau de rentabilité du chantier, comme dans l'application */}
+      {/* Rentabilité du chantier, recalculée à chaque matériau saisi */}
       <Carte className="p-5 mb-5">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
@@ -405,7 +413,12 @@ function EcranSaisie() {
       </Carte>
 
       <Carte className="overflow-hidden">
-        <p className="px-5 py-3.5 text-sm font-bold" style={{ color: C.texte }}>Matériaux utilisés</p>
+        <div className="flex items-center justify-between gap-3 px-5 py-3.5">
+          <p className="text-sm font-bold" style={{ color: C.texte }}>Matériaux utilisés</p>
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold flex-shrink-0" style={{ background: C.navBg, color: '#fff' }}>
+            <Plus className="w-3.5 h-3.5" /> Ajouter un matériau
+          </span>
+        </div>
         {lignes.map(l => (
           <LigneListe key={l.nom} titre={l.nom} sous={`${l.qte} ${l.unite} × ${l.prix.toFixed(2)} TTC · ${l.par}`} droite={chf(l.qte * l.prix)} />
         ))}
