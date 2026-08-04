@@ -1,9 +1,4 @@
 User-agent: *
 Allow: /
 
-# Visite guidée pas encore validée : elle n'est liée nulle part sur le site et
-# reste hors des moteurs de recherche en attendant. Retirer cette ligne le jour
-# où elle est mise en avant.
-Disallow: /demo
-
 Sitemap: https://newrigen.ch/sitemap.xml
