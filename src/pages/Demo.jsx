@@ -4,6 +4,7 @@ import {
   LayoutDashboard, Calendar, Upload, Package, ClipboardList, Wrench, Calculator,
   Users, Boxes, Settings, ChevronDown, ChevronsUpDown, Search, SlidersHorizontal,
   Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, Building2, Mail, CreditCard,
+  Sparkles, XCircle, Tag, Pencil,
 } from 'lucide-react'
 
 /**
@@ -585,62 +586,94 @@ function EcranTeam() {
   )
 }
 
+// Catalogue de produits : carte d'import en haut (choix du fichier,
+// auto-catégorisation, déchargement, ajout manuel), puis la liste défilante
+// avec son compteur — comme la page réelle. Ce n'est pas un tableau.
+const PRODUITS_DEMO = [
+  { n: 'Carottage de dalle au moyen de foreuse mécanique avec mèche circulaire 100mm', u: 'Prestation', prix: 172.96 },
+  { n: 'Carottage de dalle au moyen de foreuse mécanique avec mèche circulaire 120mm', u: 'Prestation', prix: 172.96 },
+  { n: 'Carottage de dalle au moyen de foreuse mécanique avec mèche circulaire 150mm', u: 'Prestation', prix: 216.20 },
+  { n: "M123 – CHAUFFAGE – DANFOSS RA-N Vanne 3/4 '' à thermostat", u: 'pcs', prix: 48.00, achat: 27.00 },
+  { n: 'Chaudière à pellets 24 kW — rendement 94%', u: 'pcs', prix: 8900.00, achat: 6230.00 },
+  { n: 'Pompe à chaleur air/eau 16 kW', u: 'pcs', prix: 6450.00, achat: 4515.00 },
+  { n: 'Ballon tampon 800 L avec isolation', u: 'pcs', prix: 2180.00, achat: 1526.00 },
+  { n: 'Radiateur acier 600×1200 — blanc RAL 9010', u: 'pcs', prix: 285.00, achat: 178.00 },
+  { n: 'Chauffe-eau 300 L classe énergétique B', u: 'pcs', prix: 1840.00, achat: 1288.00 },
+  { n: 'Colonne de douche encastrée thermostatique', u: 'pcs', prix: 890.00, achat: 534.00 },
+  { n: 'Tube multicouche 20 mm — couronne 50 m', u: 'm', prix: 7.40, achat: 4.10 },
+  { n: 'Pose et raccordement sanitaire', u: 'Prestation', prix: 95.00 },
+]
+
+function BoutonCatalogue({ icon: Icon, children, couleur }) {
+  return (
+    <span
+      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold flex-shrink-0"
+      style={{ background: '#fff', border: `1px solid ${couleur ? `${couleur}55` : C.bord}`, color: couleur || C.texte }}
+    >
+      <Icon className="w-4 h-4" />{children}
+    </span>
+  )
+}
+
 function EcranProduits() {
-  const produits = [
-    { n: 'Chaudière à pellets 24 kW', u: 'pcs', a: 6230, v: 8900, c: 'Chauffage' },
-    { n: 'Pompe à chaleur air/eau 16 kW', u: 'pcs', a: 4515, v: 6450, c: 'Chauffage' },
-    { n: 'Radiateur acier 600×1200', u: 'pcs', a: 178, v: 285, c: 'Chauffage' },
-    { n: 'Chauffe-eau 300 L', u: 'pcs', a: 1288, v: 1840, c: 'Sanitaire' },
-    { n: 'Colonne de douche encastrée', u: 'pcs', a: 534, v: 890, c: 'Sanitaire' },
-    { n: 'Tube multicouche 20 mm', u: 'm', a: 4.10, v: 7.40, c: 'Tuyauterie' },
-    { n: 'Vanne thermostatique', u: 'pcs', a: 27, v: 48, c: 'Tuyauterie' },
-  ]
   return (
     <>
-      <Titre
-        titre="Catalogue de produits"
-        action={<span className="flex flex-wrap gap-2 justify-end">
-          <BoutonFactice petit><Upload className="w-3.5 h-3.5" /> Importer un catalogue</BoutonFactice>
-          <BoutonFactice petit principal><Plus className="w-3.5 h-3.5" /> Ajouter un produit</BoutonFactice>
-        </span>}
-      />
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <div className="flex-1 min-w-[12rem] flex items-center gap-2 rounded-xl px-4 py-2.5" style={{ background: C.carte, border: `1px solid ${C.bord}` }}>
-          <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
-          <span className="text-sm" style={{ color: C.sousTexte }}>Rechercher un produit…</span>
-        </div>
-        <BoutonFactice petit>Auto-catégoriser</BoutonFactice>
-        <span className="text-xs" style={{ color: C.sousTexte }}>{produits.length} produits</span>
+      <div className="flex items-center gap-3 mb-6">
+        <Package className="w-7 h-7 flex-shrink-0" style={{ color: C.texte }} />
+        <h1 className="text-2xl md:text-3xl font-black" style={{ color: C.texte }}>Catalogue de produits</h1>
       </div>
+
+      {/* Import du catalogue */}
+      <Carte className="p-6 mb-5">
+        <p className="text-[11px] font-bold tracking-wider mb-3" style={{ color: C.sousTexte }}>IMPORTER UN CATALOGUE</p>
+        <BoutonCatalogue icon={Upload}>Choisir un fichier</BoutonCatalogue>
+        <p className="text-sm mt-3" style={{ color: C.sousTexte }}>
+          CSV, Excel (.xlsx/.xls), ODS, TXT — colonnes : Produit, Unité, Prix HT, TVA, Prix TTC
+        </p>
+        <div className="flex flex-wrap gap-3 pt-4 mt-4" style={{ borderTop: `1px solid ${C.bord}` }}>
+          <BoutonCatalogue icon={Sparkles} couleur="#6366F1">Auto-catégoriser</BoutonCatalogue>
+          <BoutonCatalogue icon={XCircle} couleur={C.rouge}>Décharger</BoutonCatalogue>
+        </div>
+        <div className="pt-4 mt-4" style={{ borderTop: `1px solid ${C.bord}` }}>
+          <BoutonCatalogue icon={Plus} couleur={C.vert}>Ajouter un produit</BoutonCatalogue>
+        </div>
+      </Carte>
+
+      {/* Liste des produits */}
       <Carte className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr style={{ background: C.fond }}>
-                {['Produit', 'Catégorie', 'Unité', 'Prix', 'Marge'].map(c => (
-                  <th key={c} className="text-left px-4 py-3 text-[11px] font-bold tracking-wider whitespace-nowrap" style={{ color: C.sousTexte }}>{c.toUpperCase()}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {produits.map(p => (
-                <tr key={p.n} style={{ borderTop: `1px solid ${C.bord}` }}>
-                  <td className="px-4 py-3 font-semibold whitespace-nowrap" style={{ color: C.texte }}>{p.n}</td>
-                  <td className="px-4 py-3 whitespace-nowrap" title="Cliquer la catégorie pour la changer"><Pastille texte={p.c} /></td>
-                  <td className="px-4 py-3" style={{ color: C.sousTexte }}>{p.u}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <span className="font-semibold" style={{ color: C.texte }}>{p.v.toFixed(2)} CHF</span>
-                    <span className="text-xs ml-2" style={{ color: C.sousTexte }}>achat {p.a.toFixed(2)}</span>
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ color: C.vert, background: C.vertFond }}>
-                      {(((p.v - p.a) / p.v) * 100).toFixed(0)}%
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3" style={{ background: '#F9FAFB', borderBottom: `1px solid ${C.bord}` }}>
+          <span className="text-sm font-bold tracking-wide" style={{ color: C.texte }}>{PRODUITS_DEMO.length} PRODUITS</span>
+          <span className="inline-flex items-center gap-1.5 text-sm" style={{ color: C.sousTexte }}>
+            <Tag className="w-4 h-4" /> Cliquer la catégorie pour la changer
+          </span>
+        </div>
+
+        <div className="p-4 pb-2">
+          <div className="flex items-center gap-2 rounded-lg px-4 py-2.5" style={{ background: '#F8FAFC', border: `1px solid ${C.bord}` }}>
+            <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
+            <span className="text-sm" style={{ color: '#B9C0CC' }}>Rechercher un produit…</span>
+          </div>
+        </div>
+
+        <div className="max-h-[26rem] overflow-y-auto">
+          {PRODUITS_DEMO.map((p, i) => (
+            <div key={p.n} className="flex items-start justify-between gap-4 px-5 py-4" style={{ borderTop: i === 0 ? 'none' : `1px solid ${C.bord}` }}>
+              <div className="min-w-0">
+                <p className="text-[15px] leading-snug" style={{ color: C.texte }}>{p.n}</p>
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  <span className="text-sm" style={{ color: C.sousTexte }}>Unité</span>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-md" style={{ background: '#EDE9FE', color: '#7C3AED' }}>{p.u}</span>
+                  <span className="text-xs px-2.5 py-1 rounded-md" style={{ background: '#fff', border: `1px solid ${C.bord}`, color: C.sousTexte }}>
+                    {p.achat != null ? `achat ${p.achat.toFixed(2)}` : 'achat —'}
+                  </span>
+                </div>
+              </div>
+              <span className="flex items-center gap-2 flex-shrink-0 pt-0.5">
+                <span className="text-[15px] font-bold whitespace-nowrap" style={{ color: C.texte }}>{p.prix.toFixed(2)} CHF</span>
+                <Pencil className="w-4 h-4" style={{ color: C.sousTexte }} />
+              </span>
+            </div>
+          ))}
         </div>
       </Carte>
     </>
