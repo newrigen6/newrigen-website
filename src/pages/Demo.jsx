@@ -5,6 +5,7 @@ import {
   Users, Boxes, Settings, ChevronDown, ChevronsUpDown, Search, SlidersHorizontal,
   Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, Building2, Mail, CreditCard,
   Sparkles, XCircle, Tag, Pencil, ChevronRight, Phone, UserPlus, KeyRound, Trash2, SquarePen, ToggleRight,
+  LayoutGrid, FilePlus,
   TrendingUp, TrendingDown, Wallet, Landmark, Clock, ArrowDownCircle, Banknote, BarChart3, ShoppingCart,
 } from 'lucide-react'
 
@@ -37,28 +38,38 @@ const C = {
   rougeFond: '#FEE2E2',
 }
 
+// Menu de la barre latérale. Les entrées portent toutes la même icône de
+// document, comme dans l'application ; seuls les intitulés de section ont une
+// icône propre. « Bons de Régie » et « Bons d'intervention » sont regroupés
+// dans un sous-groupe « BONS », lui aussi repliable.
 const MENU = [
-  { section: 'ACCUEIL', items: [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'agenda', label: 'Agenda', icon: Calendar },
+  { section: 'ACCUEIL', icon: LayoutGrid, items: [
+    { id: 'dashboard', label: 'Dashboard' },
+    { id: 'agenda', label: 'Agenda' },
   ] },
-  { section: 'DEVIS', items: [
-    { id: 'importer', label: 'Importer', icon: Upload },
+  { section: 'DEVIS', icon: FilePlus, items: [
+    { id: 'importer', label: 'Importer' },
   ] },
-  { section: 'CHANTIERS', items: [
-    { id: 'saisie', label: 'Saisie Matériaux', icon: Package },
-    { id: 'regie', label: 'Bons de Régie', icon: ClipboardList },
-    { id: 'intervention', label: "Bons d'intervention", icon: Wrench },
+  { section: 'CHANTIERS', icon: ClipboardList, items: [
+    { id: 'saisie', label: 'Saisie Matériaux' },
+    { sousSection: 'BONS', icon: SquarePen, items: [
+      { id: 'regie', label: 'Bons de Régie' },
+      { id: 'intervention', label: "Bons d'intervention" },
+    ] },
   ] },
-  { section: 'COMPTABILITÉ', items: [
-    { id: 'comptabilite', label: 'Comptabilité', icon: Calculator },
+  { section: 'COMPTABILITÉ', icon: Calculator, items: [
+    { id: 'comptabilite', label: 'Comptabilité' },
   ] },
-  { section: 'GESTION', items: [
-    { id: 'team', label: 'Team', icon: Users },
-    { id: 'produits', label: 'Produits', icon: Boxes },
-    { id: 'parametres', label: 'Paramètres', icon: Settings },
+  { section: 'GESTION', icon: Settings, items: [
+    { id: 'team', label: 'Team' },
+    { id: 'produits', label: 'Produits' },
+    { id: 'parametres', label: 'Paramètres' },
   ] },
 ]
+
+// Tous les identifiants d'écran d'une section, sous-groupes compris.
+const idsDeSection = (items) =>
+  items.flatMap(i => (i.sousSection ? i.items.map(s => s.id) : [i.id]))
 
 const chf = (v) => v.toLocaleString('fr-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' CHF'
 
@@ -409,48 +420,63 @@ function EcranSaisie() {
 
 // Les deux écrans de bons partagent la même ossature dans l'application :
 // onglet « Vue d'ensemble », trio de compteurs, puis la liste des bons.
-function EcranBons({ titre, bons, total, confirmes, enCours }) {
+function EcranBons({ titre, icon: Icone, bons }) {
   return (
     <>
-      <Titre titre={titre} action={<BoutonFactice principal><Plus className="w-4 h-4" /> Nouveau bon</BoutonFactice>} />
-
-      <div className="flex items-center gap-2 mb-4">
-        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.texte, color: '#fff' }}>Vue d'ensemble</span>
-        <span className="px-3 py-1.5 rounded-lg text-xs font-bold" style={{ background: C.carte, color: C.sousTexte, border: `1px solid ${C.bord}` }}>Créer un bon</span>
+      <div className="flex items-center gap-3 mb-5">
+        <Icone className="w-7 h-7 flex-shrink-0" style={{ color: C.texte }} />
+        <h1 className="text-2xl md:text-3xl font-black" style={{ color: C.texte }}>{titre}</h1>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-5">
-        {[['Total bons', total], ['Confirmés', confirmes], ['En cours', enCours]].map(([l, v]) => (
-          <Carte key={l} className="p-5">
-            <span className="text-xs" style={{ color: C.sousTexte }}>{l}</span>
-            <p className="text-2xl font-black mt-2 leading-none" style={{ color: C.texte }}>{v}</p>
-          </Carte>
-        ))}
+      {/* Bascule vue d'ensemble / création, avec le compteur de bons */}
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        <span className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-bold" style={{ background: C.navBg, color: '#fff' }}>
+          Vue d'ensemble
+          <span className="px-2 py-0.5 rounded-md text-xs" style={{ background: 'rgba(255,255,255,0.15)' }}>{bons.length}</span>
+        </span>
+        <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold" style={{ background: '#EEF1F5', color: C.texte }}>
+          <Plus className="w-4 h-4" /> Nouveau bon
+        </span>
       </div>
 
-      <Carte className="overflow-hidden">
-        {bons.map(b => (
-          <div key={b.titre} className="px-5 py-4" style={{ borderTop: `1px solid ${C.bord}` }}>
-            <div className="flex items-start justify-between gap-3 mb-2">
-              <div className="min-w-0">
-                <p className="text-sm font-bold truncate" style={{ color: C.texte }}>{b.titre}</p>
-                <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>{b.sous}</p>
+      <div className="flex items-center gap-2 rounded-xl px-4 py-3 mb-5" style={{ background: C.carte, border: `1px solid ${C.bord}` }}>
+        <Search className="w-4 h-4 flex-shrink-0" style={{ color: C.sousTexte }} />
+        <span className="text-sm" style={{ color: '#B9C0CC' }}>Rechercher par client, employé, description…</span>
+      </div>
+
+      {bons.length === 0 ? (
+        <div className="rounded-2xl px-6 py-16 flex flex-col items-center text-center" style={{ border: `1px dashed ${C.bord}` }}>
+          <Icone className="w-10 h-10 mb-4" style={{ color: '#CBD5E1' }} />
+          <p className="text-base mb-5" style={{ color: C.sousTexte }}>Aucun bon créé pour l'instant.</p>
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold" style={{ background: '#374151', color: '#fff' }}>
+            <Plus className="w-4 h-4" /> Créer un bon
+          </span>
+        </div>
+      ) : (
+        <Carte className="overflow-hidden">
+          {bons.map((b, i) => (
+            <div key={b.titre} className="px-5 py-4" style={{ borderTop: i === 0 ? 'none' : `1px solid ${C.bord}` }}>
+              <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="min-w-0">
+                  <p className="text-sm font-bold truncate" style={{ color: C.texte }}>{b.titre}</p>
+                  <p className="text-xs mt-0.5" style={{ color: C.sousTexte }}>{b.sous}</p>
+                </div>
+                {b.confirme
+                  ? <Pastille texte="Confirmé" couleur={C.vert} fond={C.vertFond} />
+                  : <Pastille texte="En cours" />}
               </div>
-              {b.confirme
-                ? <Pastille texte="Confirmé" couleur={C.vert} fond={C.vertFond} />
-                : <Pastille texte="En cours" />}
+              <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs">
+                <span style={{ color: C.sousTexte }}>
+                  {b.heures} h main d'œuvre · <span className="font-semibold" style={{ color: C.texte }}>{chf(b.coutMo)}</span>
+                </span>
+                <span style={{ color: C.sousTexte }}>
+                  {b.nbMateriaux} matériaux · <span className="font-semibold" style={{ color: C.texte }}>{chf(b.coutMat)}</span>
+                </span>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs">
-              <span style={{ color: C.sousTexte }}>
-                {b.heures} h main d'œuvre · <span className="font-semibold" style={{ color: C.texte }}>{chf(b.coutMo)}</span>
-              </span>
-              <span style={{ color: C.sousTexte }}>
-                {b.nbMateriaux} matériaux · <span className="font-semibold" style={{ color: C.texte }}>{chf(b.coutMat)}</span>
-              </span>
-            </div>
-          </div>
-        ))}
-      </Carte>
+          ))}
+        </Carte>
+      )}
     </>
   )
 }
@@ -459,7 +485,7 @@ function EcranRegie() {
   return (
     <EcranBons
       titre="Bons de Régie"
-      total="3" confirmes="2" enCours="1"
+      icon={ClipboardList}
       bons={[
         { titre: 'Résidence Les Mélèzes', sous: 'Marc Fournier · 22.07.2026', heures: '8.0', coutMo: 544, nbMateriaux: 1, coutMat: 84, confirme: true },
         { titre: 'Villa Cheseaux', sous: 'Marc Fournier · 28.07.2026', heures: '6.0', coutMo: 408, nbMateriaux: 0, coutMat: 0, confirme: false },
@@ -473,7 +499,7 @@ function EcranIntervention() {
   return (
     <EcranBons
       titre="Bons d'intervention"
-      total="2" confirmes="1" enCours="1"
+      icon={Wrench}
       bons={[
         { titre: "Fuite chasse d'eau — Mme Berger", sous: 'Rue de Lausanne 9, 1950 Sion · 29.07.2026', heures: '2.5', coutMo: 155, nbMateriaux: 1, coutMat: 62, confirme: true },
         { titre: 'Contrôle chaudière — Garage Praz SA', sous: 'Zone Industrielle 3, 1963 Vétroz · 08.08.2026', heures: '1.5', coutMo: 93, nbMateriaux: 0, coutMat: 0, confirme: false },
@@ -1144,38 +1170,76 @@ export default function Demo() {
   const basculerSection = (nom) =>
     setRepliees(prec => ({ ...prec, [nom]: !prec[nom] }))
 
+  // Une entrée de menu : toujours la même icône de document, comme dans
+  // l'application. `decale` sert aux entrées d'un sous-groupe.
+  const entree = (item, decale) => (
+    <button
+      key={item.id}
+      onClick={() => { setEcran(item.id); setMenuOuvert(false) }}
+      className={`w-full flex items-center gap-2.5 py-2 rounded-lg text-sm font-medium text-left transition-colors ${decale ? 'pl-6 pr-2.5' : 'px-2.5'}`}
+      style={ecran === item.id ? { background: C.navActif, color: '#fff' } : { color: C.navTexte }}
+    >
+      <FileText className="w-4 h-4 flex-shrink-0" />
+      {item.label}
+    </button>
+  )
+
+  const chevron = (ouvert, couleur) => (
+    /* Deux icônes plutôt qu'une rotation CSS : la feuille de style du site
+       force `transform: none !important` sur ses éléments animés, ce qui
+       neutralisait la rotation du chevron. */
+    ouvert
+      ? <ChevronDown className="w-3 h-3 flex-shrink-0" style={{ color: couleur }} />
+      : <ChevronRight className="w-3 h-3 flex-shrink-0" style={{ color: couleur }} />
+  )
+
   const navigation = (
     <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-4">
       {MENU.map(section => {
-        const actif = section.items.some(i => i.id === ecran)
+        const actif = idsDeSection(section.items).includes(ecran)
         const ouverte = replieees[section.section] !== true
+        const couleur = actif ? C.teal : C.navTexte
         return (
           <div key={section.section}>
             <button
               onClick={() => basculerSection(section.section)}
-              className="w-full flex items-center justify-between px-2 py-1"
+              className="w-full flex items-center justify-between gap-2 px-2 py-1"
             >
-              <span className="text-[11px] font-bold tracking-wider" style={{ color: actif ? C.teal : C.navTexte }}>{section.section}</span>
-              {/* Deux icônes plutôt qu'une rotation CSS : la feuille de style
-                  du site force `transform: none !important` sur ses éléments
-                  animés, ce qui neutralisait la rotation du chevron. */}
-              {ouverte
-                ? <ChevronDown className="w-3 h-3" style={{ color: actif ? C.teal : C.navTexte }} />
-                : <ChevronRight className="w-3 h-3" style={{ color: actif ? C.teal : C.navTexte }} />}
+              <span className="flex items-center gap-2 min-w-0">
+                <section.icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: couleur }} />
+                <span className="text-[11px] font-bold tracking-wider truncate" style={{ color: couleur }}>{section.section}</span>
+              </span>
+              {chevron(ouverte, couleur)}
             </button>
+
             {ouverte && (
               <div className="space-y-0.5 mt-0.5">
-                {section.items.map(item => (
-                  <button
-                    key={item.id}
-                    onClick={() => { setEcran(item.id); setMenuOuvert(false) }}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium text-left transition-colors"
-                    style={ecran === item.id ? { background: C.navActif, color: '#fff' } : { color: C.navTexte }}
-                  >
-                    <item.icon className="w-4 h-4 flex-shrink-0" />
-                    {item.label}
-                  </button>
-                ))}
+                {section.items.map(item => {
+                  if (!item.sousSection) return entree(item, false)
+
+                  const sousActif = item.items.some(s => s.id === ecran)
+                  const sousOuvert = replieees[item.sousSection] !== true
+                  const sousCouleur = sousActif ? C.teal : C.navTexte
+                  return (
+                    <div key={item.sousSection}>
+                      <button
+                        onClick={() => basculerSection(item.sousSection)}
+                        className="w-full flex items-center justify-between gap-2 px-2.5 py-2"
+                      >
+                        <span className="flex items-center gap-2 min-w-0">
+                          <item.icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: sousCouleur }} />
+                          <span className="text-[11px] font-bold tracking-wider truncate" style={{ color: sousCouleur }}>{item.sousSection}</span>
+                        </span>
+                        {chevron(sousOuvert, sousCouleur)}
+                      </button>
+                      {sousOuvert && (
+                        <div className="space-y-0.5">
+                          {item.items.map(s => entree(s, true))}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             )}
           </div>
