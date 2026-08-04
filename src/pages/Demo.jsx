@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Calendar, Upload, Package, ClipboardList, Wrench, Calculator,
   Users, Boxes, Settings, ChevronDown, ChevronsUpDown, Search, SlidersHorizontal,
   Plus, HelpCircle, ArrowLeft, Eye, X, Sun, PanelLeftClose, FileText, Building2, Mail, CreditCard,
-  Sparkles, XCircle, Tag, Pencil,
+  Sparkles, XCircle, Tag, Pencil, ChevronRight,
 } from 'lucide-react'
 
 /**
@@ -942,31 +942,48 @@ export default function Demo() {
   const [ecran, setEcran] = useState('dashboard')
   const [menuOuvert, setMenuOuvert] = useState(false)
   const [bandeauReduit, setBandeauReduit] = useState(false)
+  // Sections repliables de la barre latérale. On mémorise celles qui sont
+  // fermées : par défaut tout est ouvert, comme à la première connexion.
+  const [replieees, setRepliees] = useState({})
   const Ecran = ECRANS[ecran]
+
+  const basculerSection = (nom) =>
+    setRepliees(prec => ({ ...prec, [nom]: !prec[nom] }))
 
   const navigation = (
     <nav className="flex-1 overflow-y-auto px-3 pb-4 space-y-4">
       {MENU.map(section => {
         const actif = section.items.some(i => i.id === ecran)
+        const ouverte = replieees[section.section] !== true
         return (
           <div key={section.section}>
-            <div className="flex items-center justify-between px-2 py-1">
+            <button
+              onClick={() => basculerSection(section.section)}
+              className="w-full flex items-center justify-between px-2 py-1"
+            >
               <span className="text-[11px] font-bold tracking-wider" style={{ color: actif ? C.teal : C.navTexte }}>{section.section}</span>
-              <ChevronDown className="w-3 h-3" style={{ color: actif ? C.teal : C.navTexte }} />
-            </div>
-            <div className="space-y-0.5 mt-0.5">
-              {section.items.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => { setEcran(item.id); setMenuOuvert(false) }}
-                  className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium text-left transition-colors"
-                  style={ecran === item.id ? { background: C.navActif, color: '#fff' } : { color: C.navTexte }}
-                >
-                  <item.icon className="w-4 h-4 flex-shrink-0" />
-                  {item.label}
-                </button>
-              ))}
-            </div>
+              {/* Deux icônes plutôt qu'une rotation CSS : la feuille de style
+                  du site force `transform: none !important` sur ses éléments
+                  animés, ce qui neutralisait la rotation du chevron. */}
+              {ouverte
+                ? <ChevronDown className="w-3 h-3" style={{ color: actif ? C.teal : C.navTexte }} />
+                : <ChevronRight className="w-3 h-3" style={{ color: actif ? C.teal : C.navTexte }} />}
+            </button>
+            {ouverte && (
+              <div className="space-y-0.5 mt-0.5">
+                {section.items.map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => { setEcran(item.id); setMenuOuvert(false) }}
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm font-medium text-left transition-colors"
+                    style={ecran === item.id ? { background: C.navActif, color: '#fff' } : { color: C.navTexte }}
+                  >
+                    <item.icon className="w-4 h-4 flex-shrink-0" />
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )
       })}
