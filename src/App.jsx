@@ -130,7 +130,6 @@ function PacksComparatif() {
 }
 import Tarifs from './pages/Tarifs'
 import Merci from './pages/Merci'
-import Demo from './pages/Demo'
 import ConsentGate from './components/ConsentGate'
 import { MentionsLegales, Confidentialite, CGV } from './pages/Legal'
 
@@ -216,22 +215,14 @@ function Hero() {
             {t('accueil.hero.cta')}
           </Link>
         </div>
-        {/* La capture mène à la visite guidée : c'est l'élément que le visiteur
-            cherche à agrandir en cliquant dessus. Le lien explicite est juste
-            en dessous, pour ceux qui ne devinent pas qu'elle est cliquable. */}
-        <Link to="/demo" data-anim="up" data-delay="400" className="relative mt-16 block group">
+        <div data-anim="up" data-delay="400" className="relative mt-16">
           <div className="absolute inset-x-0 top-4 h-2/3 blur-3xl pointer-events-none" style={{ background: `${TEAL}25` }} />
           <img
             src={dashboardScreenshot}
             alt="Interface de l'application Newrigen — tableau de bord"
-            className="relative w-full max-w-2xl mx-auto rounded-xl border shadow-2xl transition-transform duration-300 group-hover:scale-[1.01]"
+            className="relative w-full max-w-2xl mx-auto rounded-xl border shadow-2xl"
             style={{ borderColor: `${TEAL}30` }}
           />
-        </Link>
-        <div data-anim="up" data-delay="500" className="mt-6 flex justify-center">
-          <Link to="/demo" className="px-8 py-4 rounded-xl font-semibold text-sm border text-slate-300 hover:text-white hover:border-white/30 transition-all duration-200" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
-            {t('accueil.hero.demo')}
-          </Link>
         </div>
       </div>
     </section>
@@ -594,7 +585,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tarifs" element={<Tarifs />} />
-          <Route path="/demo" element={<Demo />} />
           <Route path="/merci" element={<Merci />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
           <Route path="/confidentialite" element={<Confidentialite />} />
