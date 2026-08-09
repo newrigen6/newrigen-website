@@ -13,13 +13,20 @@ export function useModuleTiers() {
 
   useEffect(() => {
     let alive = true
-    fetch(`${SUPABASE_URL}/rest/v1/module_tiers?select=module_key,tier,label&order=module_key`, {
+    fetch(`${SUPABASE_URL}/rest/v1/module_tiers?select=module_key,tier,label,label_site&order=module_key`, {
       headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
     })
       .then(r => (r.ok ? r.json() : null))
       .then(rows => {
         if (!alive || !Array.isArray(rows) || !rows.length) return
-        setModules(rows.filter(r => r.module_key !== 'parametres' && r.label))
+        // `label_site` prime quand il est renseigné : il permet de nommer un
+        // module autrement ici que dans l'application (onglet « Site web » de
+        // l'admin). Laissé vide, on reprend le nom de l'application.
+        setModules(
+          rows
+            .filter(r => r.module_key !== 'parametres' && (r.label_site || r.label))
+            .map(r => ({ ...r, label: (r.label_site || '').trim() || r.label }))
+        )
       })
       .catch(() => { /* on garde le repli statique */ })
     return () => { alive = false }
