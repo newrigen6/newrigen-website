@@ -55,7 +55,9 @@ function PacksComparatif() {
 
   return (
     <section className="py-14 px-6">
-      <div className="max-w-4xl mx-auto">
+      {/* Élargi à six colonnes depuis l'ajout du troisième pack : à 896 px, trois
+          cartes seraient tombées à 280 px, trop étroit pour leurs listes. */}
+      <div className="max-w-6xl mx-auto">
         <div data-anim="up" className="text-center mb-10">
           <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL_PACKS }}>{t('accueil.packs.eyebrow')}</span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-4 text-white">{t('accueil.packs.titre')}</h2>
@@ -80,7 +82,7 @@ function PacksComparatif() {
           </button>
         </div>
         {/* Cards */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {livePacks.map(plan => (
             <div key={plan.id} className="rounded-2xl p-8 border flex flex-col" style={{
               background: plan.highlight ? `${TEAL_PACKS}08` : `${TEAL_PACKS}04`,
@@ -123,34 +125,29 @@ function PacksComparatif() {
               </Link>
             </div>
           ))}
-        </div>
 
-        {/* Pack sur mesure — sans prix, il se chiffre après discussion. Posé en
-            bandeau sous les deux autres plutôt qu'en troisième colonne, qui les
-            aurait tous les trois rendus trop étroits pour leurs listes. */}
-        <div data-anim="up" className="mt-6 rounded-2xl p-8 border" style={{ background: `${TEAL_PACKS}04`, borderColor: `${TEAL_PACKS}20` }}>
-          <div className="md:flex md:items-start md:gap-10">
-            <div className="md:w-2/5">
-              <h2 className="text-2xl font-black text-white mb-1">{t('tarifs.surmesure.nom')}</h2>
-              <p className="text-slate-400 text-sm mb-5">{t('tarifs.surmesure.desc')}</p>
-              <div className="text-4xl font-black mb-2" style={{ color: TEAL_PACKS }}>{t('tarifs.surmesure.prix')}</div>
-              <p className="text-xs text-slate-500">{t('tarifs.surmesure.mention')}</p>
+          {/* Pack sur mesure — même carte que les deux autres, à ceci près qu'il
+              n'affiche aucun prix et renvoie au contact plutôt qu'au paiement. */}
+          <div className="rounded-2xl p-8 border flex flex-col" style={{ background: `${TEAL_PACKS}04`, borderColor: `${TEAL_PACKS}20` }}>
+            <h2 className="text-2xl font-black text-white mb-1">{t('tarifs.surmesure.nom')}</h2>
+            <p className="text-slate-400 text-sm mb-5">{t('tarifs.surmesure.desc')}</p>
+            <div className="mb-2 mt-1">
+              <span className="text-4xl font-black" style={{ color: TEAL_PACKS }}>{t('tarifs.surmesure.prix')}</span>
             </div>
-            <div className="md:w-3/5 mt-6 md:mt-0">
-              <ul className="space-y-3 mb-6">
-                {[1, 2, 3, 4].map(n => (
-                  <li key={n} className="flex items-center gap-3 text-sm text-slate-300">
-                    <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL_PACKS }} />
-                    {t(`tarifs.surmesure.f${n}`)}
-                  </li>
-                ))}
-              </ul>
-              <a href="#contact"
-                className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
-                style={{ border: `1px solid ${TEAL_PACKS}40`, color: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
-                {t('tarifs.surmesure.cta')}
-              </a>
-            </div>
+            <p className="text-xs text-slate-500 mb-4">{t('tarifs.surmesure.mention')}</p>
+            <ul className="space-y-3 mb-8 flex-1">
+              {[1, 2, 3, 4].map(n => (
+                <li key={n} className="flex items-center gap-3 text-sm text-slate-300">
+                  <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL_PACKS }} />
+                  {t(`tarifs.surmesure.f${n}`)}
+                </li>
+              ))}
+            </ul>
+            <a href="#contact"
+              className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
+              style={{ border: `1px solid ${TEAL_PACKS}40`, color: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
+              {t('tarifs.surmesure.cta')}
+            </a>
           </div>
         </div>
       </div>

@@ -244,7 +244,9 @@ export default function Tarifs() {
       </nav>
 
       <div className="pt-32 pb-24 px-6">
-        <div className="max-w-4xl mx-auto">
+        {/* Élargi depuis l'ajout du troisième pack : trois cartes dans 896 px
+            n'auraient laissé que 280 px chacune. */}
+        <div className="max-w-6xl mx-auto">
 
           {/* Header */}
           <div className="text-center mb-12">
@@ -281,7 +283,7 @@ export default function Tarifs() {
           </div>
 
           {/* Cards */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {livePlans.map((plan) => (
               <div
                 key={plan.id}
@@ -348,34 +350,31 @@ export default function Tarifs() {
                 </button>
               </div>
             ))}
-          </div>
 
-          {/* Pack sur mesure — aucun prix affiché : il se chiffre après discussion.
-              Il ne passe donc pas par le tunnel de paiement mais par un courriel. */}
-          <div className="mt-6 rounded-2xl p-8 border" style={{ background: `${TEAL}04`, borderColor: `${TEAL}20` }}>
-            <div className="md:flex md:items-start md:gap-10">
-              <div className="md:w-2/5">
-                <h2 className="text-2xl font-black text-white mb-1">{t('tarifs.surmesure.nom')}</h2>
-                <p className="text-slate-400 text-sm mb-5">{t('tarifs.surmesure.desc')}</p>
-                <div className="text-4xl font-black mb-2" style={{ color: TEAL }}>{t('tarifs.surmesure.prix')}</div>
-                <p className="text-xs text-slate-500">{t('tarifs.surmesure.mention')}</p>
+            {/* Pack sur mesure — même carte que les deux autres, mais sans prix :
+                il se chiffre après discussion et passe par le contact, pas par
+                le tunnel de paiement. */}
+            <div className="rounded-2xl p-8 border flex flex-col" style={{ background: `${TEAL}04`, borderColor: `${TEAL}20` }}>
+              <h2 className="text-2xl font-black text-white mb-1">{t('tarifs.surmesure.nom')}</h2>
+              <p className="text-slate-400 text-sm mb-6">{t('tarifs.surmesure.desc')}</p>
+              <div className="mb-2 mt-1">
+                <span className="text-4xl font-black" style={{ color: TEAL }}>{t('tarifs.surmesure.prix')}</span>
               </div>
-              <div className="md:w-3/5 mt-6 md:mt-0">
-                <ul className="space-y-3 mb-6">
-                  {[1, 2, 3, 4].map(n => (
-                    <li key={n} className="flex items-center gap-3 text-sm text-slate-300">
-                      <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
-                      {t(`tarifs.surmesure.f${n}`)}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/#contact"
-                  onClick={() => track('pack_choisi', { pack: 'surmesure', interval: 'sur-devis' })}
-                  className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
-                  style={{ border: `1px solid ${TEAL}40`, color: TEAL, background: `${TEAL}08` }}>
-                  {t('tarifs.surmesure.cta')}
-                </Link>
-              </div>
+              <p className="text-xs text-slate-500 mb-4">{t('tarifs.surmesure.mention')}</p>
+              <ul className="space-y-3 mb-8 flex-1">
+                {[1, 2, 3, 4].map(n => (
+                  <li key={n} className="flex items-center gap-3 text-sm text-slate-300">
+                    <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
+                    {t(`tarifs.surmesure.f${n}`)}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/#contact"
+                onClick={() => track('pack_choisi', { pack: 'surmesure', interval: 'sur-devis' })}
+                className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
+                style={{ border: `1px solid ${TEAL}40`, color: TEAL, background: `${TEAL}08` }}>
+                {t('tarifs.surmesure.cta')}
+              </Link>
             </div>
           </div>
 
