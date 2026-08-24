@@ -335,10 +335,8 @@ export default function Tarifs() {
                     setSelected(plan)
                   }}
                   className="w-full py-4 rounded-xl font-bold text-sm transition-all"
-                  style={plan.highlight
-                    ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F', boxShadow: `0 0 20px ${TEAL}40` }
-                    : { border: `1px solid ${TEAL}40`, color: TEAL, background: `${TEAL}08` }
-                  }
+                  // Même bouton plein pour les trois packs : aucun n'est mis en avant
+                  style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F' }}
                 >
                   {t('tarifs.commencerEssai')}
                 </button>
@@ -366,7 +364,7 @@ export default function Tarifs() {
               <Link to="/#contact"
                 onClick={() => track('pack_choisi', { pack: 'surmesure', interval: 'sur-devis' })}
                 className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
-                style={{ border: `1px solid ${TEAL}40`, color: TEAL, background: `${TEAL}08` }}>
+                style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F' }}>
                 {t('tarifs.surmesure.cta')}
               </Link>
             </div>

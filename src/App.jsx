@@ -112,11 +112,10 @@ function PacksComparatif() {
                   </li>
                 ))}
               </ul>
+              {/* Même bouton plein pour les trois packs : aucun n'est mis en avant */}
               <Link to="/tarifs"
                 className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
-                style={plan.highlight
-                  ? { background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)`, color: '#0A0A0F' }
-                  : { border: `1px solid ${TEAL_PACKS}40`, color: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
+                style={{ background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)`, color: '#0A0A0F' }}>
                 {t('tarifs.commencerEssai')}
               </Link>
             </div>
@@ -141,7 +140,7 @@ function PacksComparatif() {
             </ul>
             <a href="#contact"
               className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
-              style={{ border: `1px solid ${TEAL_PACKS}40`, color: TEAL_PACKS, background: `${TEAL_PACKS}08` }}>
+              style={{ background: `linear-gradient(135deg, ${TEAL_PACKS}, #3BC8C8)`, color: '#0A0A0F' }}>
               {t('tarifs.surmesure.cta')}
             </a>
           </div>
