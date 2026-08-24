@@ -83,11 +83,12 @@ function PacksComparatif() {
         </div>
         {/* Cards */}
         <div className="grid md:grid-cols-3 gap-6">
+          {/* Cadre et halo identiques pour les trois packs : seul le fond, à
+              peine plus clair, distingue encore le Premium. */}
           {livePacks.map(plan => (
             <div key={plan.id} className="rounded-2xl p-8 border flex flex-col" style={{
               background: plan.highlight ? `${TEAL_PACKS}08` : `${TEAL_PACKS}04`,
-              borderColor: plan.highlight ? TEAL_PACKS : `${TEAL_PACKS}20`,
-              boxShadow: plan.highlight ? `0 0 40px ${TEAL_PACKS}15` : 'none',
+              borderColor: `${TEAL_PACKS}20`,
             }}>
               <h2 className="text-2xl font-black text-white mb-1">{plan.name}</h2>
               <p className="text-slate-400 text-sm mb-5">{plan.desc}</p>

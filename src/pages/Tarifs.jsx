@@ -288,10 +288,11 @@ export default function Tarifs() {
               <div
                 key={plan.id}
                 className="rounded-2xl p-8 border flex flex-col"
+                // Cadre et halo identiques pour les trois packs : seul le fond,
+                // à peine plus clair, distingue encore le Premium.
                 style={{
                   background: plan.highlight ? `${TEAL}08` : `${TEAL}04`,
-                  borderColor: plan.highlight ? TEAL : `${TEAL}20`,
-                  boxShadow: plan.highlight ? `0 0 40px ${TEAL}15` : 'none',
+                  borderColor: `${TEAL}20`,
                 }}
               >
                 <h2 className="text-2xl font-black text-white mb-1">{t(`tarifs.${plan.id}.nom`)}</h2>
