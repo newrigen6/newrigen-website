@@ -350,6 +350,35 @@ export default function Tarifs() {
             ))}
           </div>
 
+          {/* Pack sur mesure — aucun prix affiché : il se chiffre après discussion.
+              Il ne passe donc pas par le tunnel de paiement mais par un courriel. */}
+          <div className="mt-6 rounded-2xl p-8 border" style={{ background: `${TEAL}04`, borderColor: `${TEAL}20` }}>
+            <div className="md:flex md:items-start md:gap-10">
+              <div className="md:w-2/5">
+                <h2 className="text-2xl font-black text-white mb-1">{t('tarifs.surmesure.nom')}</h2>
+                <p className="text-slate-400 text-sm mb-5">{t('tarifs.surmesure.desc')}</p>
+                <div className="text-4xl font-black mb-2" style={{ color: TEAL }}>{t('tarifs.surmesure.prix')}</div>
+                <p className="text-xs text-slate-500">{t('tarifs.surmesure.mention')}</p>
+              </div>
+              <div className="md:w-3/5 mt-6 md:mt-0">
+                <ul className="space-y-3 mb-6">
+                  {[1, 2, 3, 4].map(n => (
+                    <li key={n} className="flex items-center gap-3 text-sm text-slate-300">
+                      <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
+                      {t(`tarifs.surmesure.f${n}`)}
+                    </li>
+                  ))}
+                </ul>
+                <Link to="/#contact"
+                  onClick={() => track('pack_choisi', { pack: 'surmesure', interval: 'sur-devis' })}
+                  className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
+                  style={{ border: `1px solid ${TEAL}40`, color: TEAL, background: `${TEAL}08` }}>
+                  {t('tarifs.surmesure.cta')}
+                </Link>
+              </div>
+            </div>
+          </div>
+
           {/* Option add-on */}
           <div className="mt-12 rounded-2xl border p-6" style={{ borderColor: `${TEAL}30`, background: `${TEAL}06` }}>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
