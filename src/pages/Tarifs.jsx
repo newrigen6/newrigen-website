@@ -294,13 +294,6 @@ export default function Tarifs() {
                   boxShadow: plan.highlight ? `0 0 40px ${TEAL}15` : 'none',
                 }}
               >
-                {plan.highlight && (
-                  <div className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full self-start mb-4 text-[#0A0A0F]"
-                    style={{ background: TEAL }}>
-                    {t('accueil.packs.recommande')}
-                  </div>
-                )}
-
                 <h2 className="text-2xl font-black text-white mb-1">{t(`tarifs.${plan.id}.nom`)}</h2>
                 <p className="text-slate-400 text-sm mb-6">{t(`tarifs.${plan.id}.desc`)}</p>
 

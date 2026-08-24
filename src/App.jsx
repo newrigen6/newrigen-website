@@ -89,11 +89,6 @@ function PacksComparatif() {
               borderColor: plan.highlight ? TEAL_PACKS : `${TEAL_PACKS}20`,
               boxShadow: plan.highlight ? `0 0 40px ${TEAL_PACKS}15` : 'none',
             }}>
-              {plan.highlight && (
-                <div className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full self-start mb-4 text-[#0A0A0F]" style={{ background: TEAL_PACKS }}>
-                  {t('accueil.packs.recommande')}
-                </div>
-              )}
               <h2 className="text-2xl font-black text-white mb-1">{plan.name}</h2>
               <p className="text-slate-400 text-sm mb-5">{plan.desc}</p>
               <div className="mb-1">
