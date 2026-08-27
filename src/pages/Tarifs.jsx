@@ -31,7 +31,12 @@ function CheckoutModal({ plan, interval, onClose }) {
   const { prix } = useSiteContent()
   // Le pack Premium inclut les employés illimités : aucun siège supplémentaire
   // n'est facturé (même règle que la fonction create-checkout).
-  const extra = plan.id === 'premium' ? 0 : Math.max(0, employes - 5)
+  // Solo : une personne, toujours. Le champ est masque, mais l'etat pourrait
+  // valoir davantage si l'on a change de pack en cours de route.
+  const employesEnvoyes = plan.id === 'solo' ? 1 : employes
+  const extra = plan.id === 'premium' || plan.id === 'solo'
+    ? 0
+    : Math.max(0, employes - 5)
   const extraCoutMensuel = extra * (prix.employe_sup_mensuel ?? 5)
   const extraCoutAnnuel = extra * (prix.employe_sup_annuel ?? 60)
 
@@ -50,7 +55,7 @@ function CheckoutModal({ plan, interval, onClose }) {
         body: JSON.stringify({
           pack: plan.id,
           interval: interval === 'annuel' ? 'annuel' : 'mensuel',
-          employes,
+          employes: employesEnvoyes,
           entreprise: form,
           trial: true,
         }),
@@ -142,16 +147,23 @@ function CheckoutModal({ plan, interval, onClose }) {
               className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-[#4DD9D9]/50" />
           </div>
 
-          <div>
-            <label className="block text-xs text-slate-400 mb-1">{t('checkout.employes')}</label>
-            <input
-              type="number" min="1" max="50" required
-              value={employes}
-              onChange={e => setEmployes(Math.max(1, parseInt(e.target.value) || 1))}
-              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-[#4DD9D9]/50"
-            />
-            <p className="text-xs text-slate-500 mt-1">5 employés inclus dans le pack</p>
-          </div>
+          {plan.id === 'solo' ? (
+            <div className="rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
+              <p className="text-sm text-white">{t('checkout.soloUnePersonne')}</p>
+              <p className="text-xs text-slate-500 mt-1">{t('checkout.soloEmbauche')}</p>
+            </div>
+          ) : (
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">{t('checkout.employes')}</label>
+              <input
+                type="number" min="1" max="50" required
+                value={employes}
+                onChange={e => setEmployes(Math.max(1, parseInt(e.target.value) || 1))}
+                className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-[#4DD9D9]/50"
+              />
+              <p className="text-xs text-slate-500 mt-1">5 employés inclus dans le pack</p>
+            </div>
+          )}
 
           {extra > 0 && (
             <div className="rounded-xl border p-3 text-sm space-y-1" style={{ borderColor: `${TEAL}40`, background: `${TEAL}08` }}>
