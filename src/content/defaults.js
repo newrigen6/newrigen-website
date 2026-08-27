@@ -7,6 +7,8 @@
 // pour le français, « main-de » / « main-en » / « main-pt » pour les autres).
 
 const PRIX = {
+  solo_mensuel: 17.9,
+  solo_annuel: 179,
   standard_mensuel: 49,
   standard_annuel: 539,
   premium_mensuel: 89,

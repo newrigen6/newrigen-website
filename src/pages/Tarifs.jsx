@@ -10,11 +10,15 @@ import { useModuleTiers } from '../content/moduleTiers'
 
 const TEAL = '#4DD9D9'
 
+/** « 49.- » pour un montant rond, « 17.90 » quand il y a des centimes. */
+const montant = (n) => (Number.isInteger(n) ? `${n}.-` : Number(n).toFixed(2))
+
 // Libellés dans le dictionnaire (tarifs.<id>.*) ; ici seuls l'identifiant, les
 // prix de repli et le nombre de points de la liste.
 const plans = [
-  { id: 'standard', priceMensuel: 49, priceAnnuel: 539, nbFeatures: 9, highlight: false },
-  { id: 'premium',  priceMensuel: 89, priceAnnuel: 979, nbFeatures: 7, highlight: true  },
+  { id: 'solo',     priceMensuel: 17.9, priceAnnuel: 179, nbFeatures: 6, highlight: false },
+  { id: 'standard', priceMensuel: 49,   priceAnnuel: 539, nbFeatures: 9, highlight: false },
+  { id: 'premium',  priceMensuel: 89,   priceAnnuel: 979, nbFeatures: 7, highlight: true  },
 ]
 
 function CheckoutModal({ plan, interval, onClose }) {
@@ -84,8 +88,8 @@ function CheckoutModal({ plan, interval, onClose }) {
             <p className="text-sm mt-0.5" style={{ color: TEAL }}>
               {t('accueil.packs.moisGratuit')} {t('tarifs.puisCourt')}{' '}
               {interval === 'annuel'
-                ? `${plan.priceAnnuel}.-/an`
-                : `${plan.priceMensuel}.-/mois`}
+                ? `${montant(plan.priceAnnuel)}/an`
+                : `${montant(plan.priceMensuel)}/mois`}
             </p>
           </div>
           <button onClick={onClose} className="p-2 text-slate-400 hover:text-white rounded-lg transition-colors">
@@ -156,7 +160,7 @@ function CheckoutModal({ plan, interval, onClose }) {
               </p>
               <div className="flex justify-between text-slate-300">
                 <span>Pack {plan.name}</span>
-                <span>{interval === 'annuel' ? `${plan.priceAnnuel}.-/an` : `${plan.priceMensuel}.-/mois`}</span>
+                <span>{interval === 'annuel' ? `${montant(plan.priceAnnuel)}/an` : `${montant(plan.priceMensuel)}/mois`}</span>
               </div>
               <div className="flex justify-between text-slate-300">
                 <span>{extra} × 5.-{interval === 'annuel' ? ' × 12 mois' : '/mois'}</span>
@@ -166,8 +170,8 @@ function CheckoutModal({ plan, interval, onClose }) {
                 <span>{t('checkout.total')}</span>
                 <span>
                   {interval === 'annuel'
-                    ? `${plan.priceAnnuel + extraCoutAnnuel}.-/an`
-                    : `${plan.priceMensuel + extraCoutMensuel}.-/mois`}
+                    ? `${montant(plan.priceAnnuel + extraCoutAnnuel)}/an`
+                    : `${montant(plan.priceMensuel + extraCoutMensuel)}/mois`}
                 </span>
               </div>
             </div>
@@ -216,6 +220,7 @@ export default function Tarifs() {
     // Les libellés de module_tiers sont saisis en français dans l'admin : dans
     // les autres langues on garde la liste traduite du dictionnaire.
     if (!liveModules || langue !== 'fr') return priced
+    if (p.id === 'solo') return priced
     if (p.id === 'standard') {
       const features = liveModules.filter(m => m.tier === 'standard').map(m => m.label)
       return features.length ? { ...priced, features } : priced
@@ -283,7 +288,7 @@ export default function Tarifs() {
           </div>
 
           {/* Cards */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
             {livePlans.map((plan) => (
               <div
                 key={plan.id}
@@ -300,7 +305,7 @@ export default function Tarifs() {
 
                 <div className="mb-1">
                   <span className="text-2xl font-bold line-through text-slate-600 mr-2">
-                    {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.-
+                    {montant(interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel)}
                   </span>
                   <span className="text-sm font-bold px-2 py-0.5 rounded-full text-[#0A0A0F]" style={{ background: TEAL }}>{t('accueil.packs.moisGratuit')}</span>
                 </div>

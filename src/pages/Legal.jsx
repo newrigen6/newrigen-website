@@ -219,9 +219,10 @@ export function CGV() {
       <section>
         <H2>2. Offres et tarifs</H2>
         <ul className="mt-2 list-disc pl-5 space-y-1">
+          <li><strong className="text-white">Pack Solo</strong> : {Number(prix.solo_mensuel).toFixed(2)} CHF/mois ou {prix.solo_annuel} CHF/an, pour une seule personne, sans employé ;</li>
           <li><strong className="text-white">Pack Standard</strong> : {prix.standard_mensuel} CHF/mois ou {prix.standard_annuel} CHF/an (2 mois offerts) ;</li>
           <li><strong className="text-white">Pack Premium</strong> : {prix.premium_mensuel} CHF/mois ou {prix.premium_annuel} CHF/an (2 mois offerts) ;</li>
-          <li>Chaque pack inclut jusqu'à 5 employés ; chaque employé supplémentaire est facturé {prix.employe_sup_mensuel} CHF/mois ({prix.employe_sup_annuel} CHF/an).</li>
+          <li>Les packs Standard et Premium incluent jusqu'à 5 employés ; chaque employé supplémentaire est facturé {prix.employe_sup_mensuel} CHF/mois ({prix.employe_sup_annuel} CHF/an).</li>
           <li><strong className="text-white">Option Devis vocal</strong> : 15 CHF/mois, activable et désactivable à tout moment depuis les paramètres de l'application.</li>
         </ul>
         <p className="mt-2">Les prix s'entendent en francs suisses. {ENTREPRISE.nom} se réserve le droit de modifier ses tarifs ; les modifications s'appliquent au renouvellement suivant, après information préalable.</p>
