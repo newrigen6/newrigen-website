@@ -7,8 +7,10 @@
 // pour le français, « main-de » / « main-en » / « main-pt » pour les autres).
 
 const PRIX = {
-  solo_mensuel: 17.9,
-  solo_annuel: 179,
+  solo_mensuel: 19,
+  // Dix mois payés pour douze, le rapport déjà retenu entre mensuel et annuel
+  // sur ce pack.
+  solo_annuel: 190,
   standard_mensuel: 49,
   standard_annuel: 539,
   premium_mensuel: 89,

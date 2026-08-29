@@ -25,7 +25,7 @@ function PacksComparatif() {
       priceAnnuel: prix.solo_annuel,
       extra: t('tarifs.solo.extra'),
       highlight: false,
-      features: [1, 2, 3, 4, 5, 6].map(n => t(`tarifs.solo.f${n}`)),
+      features: [1, 2, 3, 4, 5].map(n => t(`tarifs.solo.f${n}`)),
     },
     {
       id: 'standard',
