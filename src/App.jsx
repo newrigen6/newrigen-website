@@ -6,6 +6,7 @@ import { useModuleTiers } from './content/moduleTiers'
 import dashboardScreenshot from './assets/dashboard-screenshot.jpg'
 import SelecteurLangue from './components/SelecteurLangue'
 import { useT } from './i18n'
+import { montant } from './lib/montant'
 
 const TEAL_PACKS = '#4DD9D9'
 
@@ -16,6 +17,16 @@ function PacksComparatif() {
   const t = useT()
 
   const homePlans = [
+    {
+      id: 'solo',
+      name: t('tarifs.solo.nom'),
+      desc: t('tarifs.solo.desc'),
+      priceMensuel: prix.solo_mensuel,
+      priceAnnuel: prix.solo_annuel,
+      extra: t('tarifs.solo.extra'),
+      highlight: false,
+      features: [1, 2, 3, 4, 5, 6].map(n => t(`tarifs.solo.f${n}`)),
+    },
     {
       id: 'standard',
       name: t('tarifs.standard.nom'),
@@ -81,8 +92,8 @@ function PacksComparatif() {
             <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={interval === 'annuel' ? { background: 'rgba(0,0,0,0.25)', color: '#0A0A0F' } : { background: `${TEAL_PACKS}20`, color: TEAL_PACKS }}>{t('tarifs.unMoisOffert')}</span>
           </button>
         </div>
-        {/* Cards */}
-        <div className="grid md:grid-cols-3 gap-6">
+        {/* Cards — même grille que la page Tarifs, qui affiche les mêmes packs */}
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
           {/* Cadre et halo identiques pour les trois packs : seul le fond, à
               peine plus clair, distingue encore le Premium. */}
           {livePacks.map(plan => (
@@ -94,7 +105,7 @@ function PacksComparatif() {
               <p className="text-slate-400 text-sm mb-5">{plan.desc}</p>
               <div className="mb-1">
                 <span className="text-2xl font-bold line-through text-slate-600 mr-2">
-                  {interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel}.-
+                  {montant(interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel)}
                 </span>
                 <span className="text-sm font-bold px-2 py-0.5 rounded-full text-[#0A0A0F]" style={{ background: TEAL_PACKS }}>{t('accueil.packs.moisGratuit')}</span>
               </div>
@@ -102,7 +113,7 @@ function PacksComparatif() {
                 <span className="text-5xl font-black" style={{ color: TEAL_PACKS }}>0.-</span>
                 <span className="text-slate-400 text-sm ml-2">{t('accueil.packs.premierMois')}</span>
               </div>
-              <p className="text-xs text-slate-500 mb-1">{t('tarifs.puis', { prix: interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel, periode: interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois'), extra: plan.extra })}</p>
+              <p className="text-xs text-slate-500 mb-1">{t('tarifs.puis', { prix: montant(interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel), periode: interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois'), extra: plan.extra })}</p>
               <p className="text-xs text-slate-500 mb-4">{t('accueil.packs.empreinte')}</p>
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((f, idx) => (

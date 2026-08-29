@@ -7,11 +7,9 @@ import { useSiteContent } from '../content/SiteContent'
 import { useT, useLangue } from '../i18n'
 import SelecteurLangue from '../components/SelecteurLangue'
 import { useModuleTiers } from '../content/moduleTiers'
+import { montant } from '../lib/montant'
 
 const TEAL = '#4DD9D9'
-
-/** « 49.- » pour un montant rond, « 17.90 » quand il y a des centimes. */
-const montant = (n) => (Number.isInteger(n) ? `${n}.-` : Number(n).toFixed(2))
 
 // Libellés dans le dictionnaire (tarifs.<id>.*) ; ici seuls l'identifiant, les
 // prix de repli et le nombre de points de la liste.
@@ -329,7 +327,7 @@ export default function Tarifs() {
                 </div>
                 <p className="text-xs text-slate-500 mb-1">
                   {t('tarifs.puis', {
-                    prix: interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel,
+                    prix: montant(interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel),
                     periode: interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois'),
                     extra: t(`tarifs.${plan.id}.extra`),
                   })}
