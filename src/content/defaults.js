@@ -7,10 +7,13 @@
 // pour le français, « main-de » / « main-en » / « main-pt » pour les autres).
 
 const PRIX = {
-  solo_mensuel: 19,
+  // 17.90 et non 19 : c'est le prix créé chez Stripe sous le lookup key
+  // `solo_mensuel`, donc celui qui est réellement débité. Afficher autre chose
+  // ferait payer au client un montant différent de celui qu'on lui a annoncé.
+  solo_mensuel: 17.90,
   // Dix mois payés pour douze, le rapport déjà retenu entre mensuel et annuel
   // sur ce pack.
-  solo_annuel: 190,
+  solo_annuel: 179,
   standard_mensuel: 49,
   standard_annuel: 539,
   premium_mensuel: 89,
