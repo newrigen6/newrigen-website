@@ -236,3 +236,84 @@ un prégénérateur. C'est une étape à part entière, pas un réglage.
 retombent proprement. Un site cohérent en français vaut mieux qu'un site
 allemand troué. À reprendre quand la copie sera figée — la traduire avant, ce
 serait la traduire deux fois.
+
+---
+
+## 10. Résultats — actes C à G, et ce que la mesure a appris
+
+### Le découpage, deux fois trahi par l'outil
+
+Le chargement différé de la 3D était juste ; le paquet arrivait quand même en
+tête de page. Deux causes, trouvées seulement en regardant le réseau :
+
+1. Vite ajoutait un `<link rel="modulepreload">` sur le paquet 3D. **217 Ko de
+   three.js chargés dès la huitième milliseconde, chez tout le monde**, y compris
+   sur le téléphone où la 3D ne s'affiche jamais.
+2. Rollup rangeait React *avec* three, puisque la 3D en dépend. L'entrée
+   importait donc le paquet 3D pour aller y chercher React.
+
+Corrigé et vérifié : sur un téléphone, `trois-d` n'est plus téléchargé du tout.
+
+### Poids réels, après correction
+
+| | gzip |
+|---|---|
+| HTML | 0.97 Ko |
+| CSS | 6.97 Ko |
+| React + routeur | 60.2 Ko |
+| Site | 53.5 Ko |
+| **Chargement initial** | **≈ 122 Ko** |
+| Image du héros (AVIF) | 46.5 Ko |
+| *Différé* — GSAP + Lenis | 51.3 Ko |
+| *Différé* — three + fiber | 217.4 Ko |
+
+Budget de 1.5 Mo largement tenu à l'initial. Sur un poste capable, le total
+atteint tout de même **≈ 440 Ko** une fois la 3D chargée : c'est le prix de la
+scène, et il se paie après le premier affichage, jamais avant.
+
+### Le mur de consentement — la découverte qui compte
+
+Lighthouse donnait des scores identiques à l'ancienne et à la nouvelle page, au
+kilo-octet près. Explication : **l'élément LCP mesuré est le texte du panneau de
+consentement.** Ni Lighthouse, ni un robot d'indexation, ni un premier visiteur
+ne voient le site — ils voient un panneau plein écran.
+
+Conséquences, et elles dépassent la refonte :
+
+- Le « 100 en performance » de newrigen.ch aujourd'hui est **le score du panneau
+  de consentement**, pas celui de la page.
+- Toute cette refonte cinématique est derrière ce mur. L'effet qu'on cherche —
+  le « waouh » de la première seconde — n'a jamais lieu à la première seconde.
+- Un moteur de recherche indexe très peu de chose.
+
+Je n'y touche pas : c'est une décision de conformité, pas de design. Mais elle
+mérite un arbitrage explicite. Une piste courante et défendable : n'exiger le
+consentement que pour les mesures publicitaires, laisser le site s'afficher
+derrière, et ne charger le pixel Meta qu'après acceptation.
+
+En attendant, une amélioration a été faite : l'image du héros est **préchargée
+dès la première ligne du document**, donc téléchargée pendant que le panneau est
+affiché. Le clic sur « Accepter » découvre une page déjà peinte, au lieu d'un
+fond vide.
+
+### Ce que cet environnement n'a pas permis de mesurer
+
+Le panneau d'aperçu ne compose pas : ni `requestAnimationFrame`, ni observateur
+d'intersection, ni mesure de peinture n'y fonctionnent. **Les images par seconde
+n'ont donc pas pu être mesurées**, et je ne les invente pas. Ce qui a été fait à
+la place : n'animer qu'opacité et transformation, plafonner la densité de pixels
+de la scène à 2, et retirer l'épinglage horizontal partout sauf sur grand écran.
+
+Cette limite a tout de même servi à quelque chose. En tentant de vérifier, j'ai
+trouvé que des blocs pouvaient rester **invisibles pour toujours** — un visiteur
+arrivant au milieu de la page sautait par-dessus les déclencheurs. Le réveil est
+désormais confié à un observateur d'intersection, et l'on ne cache jamais rien
+dans une page que personne ne regarde.
+
+### La preview Vercel
+
+`https://newrigen-website-git-refonte-cinematique-newrigen.vercel.app`
+
+Elle est **protégée par l'authentification Vercel** : elle s'ouvre pour toi, pas
+pour un tiers. C'est aussi pourquoi le premier Lighthouse lancé dessus mesurait
+la page de connexion Vercel et non le site — chiffres écartés.

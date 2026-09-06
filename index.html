@@ -28,6 +28,18 @@
          anglaise et portugaise n'existent pas pour les moteurs de recherche.
          Domaine officiel : newrigen.ch (application sur app.newrigen.ch). -->
     <link rel="canonical" href="https://newrigen.ch/" />
+
+    <!-- Le plan large du heros, demande des la premiere ligne du document.
+         Il est l'element que la mesure du LCP regarde, et il est aussi cache
+         derriere le panneau de consentement : sans ce prechargement, son
+         telechargement ne commencerait qu'apres le clic, et la page passerait
+         du panneau a un fond vide. `imagesrcset` reprend exactement celui de
+         la balise picture, sinon le navigateur precharge une largeur et en
+         affiche une autre. -->
+    <link rel="preload" as="image" type="image/avif"
+          href="/media/hero-1280.avif"
+          imagesrcset="/media/hero-640.avif 640w, /media/hero-1280.avif 1280w, /media/hero-1920.avif 1920w"
+          imagesizes="100vw" fetchpriority="high" />
     <link rel="alternate" hreflang="fr" href="https://newrigen.ch/?lang=fr" />
     <link rel="alternate" hreflang="de" href="https://newrigen.ch/?lang=de" />
     <link rel="alternate" hreflang="en" href="https://newrigen.ch/?lang=en" />
