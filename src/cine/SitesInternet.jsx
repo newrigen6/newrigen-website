@@ -1,8 +1,11 @@
+import { useEffect, useRef } from 'react'
 import { useLangue } from '../i18n'
 import { useSiteContent } from '../content/SiteContent'
 import { contenuPourLangue } from './contenu'
 import { Acte, Oeil } from './composants/Acte'
 import { useTitre } from './useTitre'
+import { useTimelineMaitresse } from './useTimelineMaitresse'
+import { revelerBlocs, composerTitre, leverLeJour } from './animations'
 
 /**
  * L'offre « sites internet ».
@@ -19,6 +22,26 @@ export default function SitesInternet() {
   const { langue } = useLangue()
   const t = contenuPourLangue(langue)
   const { contact } = useSiteContent()
+  const { niveau, pret, ancre } = useTimelineMaitresse()
+
+  const page = useRef(null)
+  const titre = useRef(null)
+  const voile = useRef(null)
+  const devis = useRef(null)
+
+  useEffect(() => {
+    if (!pret || !page.current) return
+    const { gsap, trigger: ScrollTrigger } = ancre.current
+    if (!gsap || !ScrollTrigger) return
+
+    const sobre = niveau === 'sobre'
+    const defaire = [revelerBlocs(gsap, ScrollTrigger, page.current, { sobre })]
+    if (!sobre) {
+      defaire.push(composerTitre(gsap, titre.current))
+      defaire.push(leverLeJour(gsap, ScrollTrigger, voile.current, devis.current))
+    }
+    return () => defaire.forEach(f => f?.())
+  }, [pret, niveau, ancre])
 
   useTitre(
     'Création de site internet pour artisans — Newrigen',
@@ -29,11 +52,11 @@ export default function SitesInternet() {
   const telBrut = tel ? String(tel).replace(/\s/g, '') : null
 
   return (
-    <>
+    <div ref={page}>
       <Acte id="sites-hero" premier>
         <div className="max-w-4xl">
           <Oeil texte={t.sites.oeil} />
-          <h1 className="cine-h1 mt-6">
+          <h1 ref={titre} className="cine-h1 mt-6">
             Votre métier mérite{' '}
             <br />
             <span className="text-white">mieux qu’une page Facebook</span>
@@ -56,12 +79,15 @@ export default function SitesInternet() {
       </Acte>
 
       <Acte id="sites-ce-quon-fait">
-        <Oeil texte="Ce qu’on fait" />
-        <h2 className="cine-h2 mt-6">Quatre choses,{' '}<br />et on ne promet rien d’autre</h2>
+        <div data-revele>
+          <Oeil texte="Ce qu’on fait" />
+          <h2 className="cine-h2 mt-6">Quatre choses,{' '}<br />et on ne promet rien d’autre</h2>
+        </div>
 
         <ul className="mt-12 grid gap-4 md:grid-cols-2">
-          {t.sites.points.map(p => (
-            <li key={p} className="cine-carte p-7 text-[var(--gris-clair)] leading-relaxed">
+          {t.sites.points.map((p, i) => (
+            <li key={p} className="cine-carte p-7 text-[var(--gris-clair)] leading-relaxed"
+                data-revele data-retard={i * 0.08}>
               {p}
             </li>
           ))}
@@ -69,7 +95,7 @@ export default function SitesInternet() {
       </Acte>
 
       <Acte id="sites-preuve">
-        <div className="cine-carte p-8 md:p-12 border-[var(--filet-fort)]">
+        <div className="cine-carte p-8 md:p-12 border-[var(--filet-fort)]" data-revele>
           <Oeil texte="La preuve" />
           <h2 className="cine-h2 mt-6">Vous êtes dessus</h2>
           <p className="cine-intro mt-6">
@@ -81,8 +107,9 @@ export default function SitesInternet() {
       </Acte>
 
       {/* Le prix se discute : on le dit clairement plutôt que d'afficher un
-          « dès X.– » qui n'engagerait à rien et decevrait à la première visite. */}
-      <section id="sites-devis" className="mt-24 bg-white text-[#0B1220] py-20 md:py-28">
+          « dès X.– » qui n'engagerait à rien et décevrait à la première visite. */}
+      <div ref={voile} aria-hidden="true" className="fixed inset-0 -z-10 bg-white pointer-events-none opacity-0" />
+      <section id="sites-devis" ref={devis} className="mt-24 bg-white text-[#0B1220] py-20 md:py-28">
         <div className="cine-conteneur">
           <p className="cine-oeil !text-[#5A6B7A]">Le prix</p>
           <span className="cine-filet mt-3 !bg-[#0F8F8F]" aria-hidden="true" />
@@ -106,6 +133,6 @@ export default function SitesInternet() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
