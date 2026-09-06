@@ -17,21 +17,40 @@ const ELAN = 'power3.out'
 /**
  * L'entrée des blocs au défilement.
  *
- * `once: true` : rejouer l'animation quand on remonte donnerait un site qui
- * clignote dès qu'on relit un paragraphe.
+ * Confiée à un observateur d'intersection, et non au moteur de défilement.
+ * La différence n'est pas théorique : avec un déclencheur lié au défilement,
+ * un visiteur qui arrive directement au milieu de la page — une ancre, un
+ * rechargement, une recherche dans la page — saute par-dessus les
+ * déclenchements, et les blocs qu'il a franchis restent invisibles pour
+ * toujours. Un observateur, lui, signale aussi ce qui est déjà à l'écran au
+ * moment où on l'installe : le contenu ne peut pas rester caché.
+ *
+ * On ne révèle qu'une fois. Rejouer l'entrée en remontant donnerait un site
+ * qui clignote dès qu'on relit un paragraphe.
  */
 export function revelerBlocs(gsap, ScrollTrigger, racine, { sobre = false } = {}) {
-  const cibles = racine.querySelectorAll('[data-revele]')
-  const nettoyages = []
+  const cibles = [...racine.querySelectorAll('[data-revele]')]
+  if (!cibles.length) return () => {}
 
-  cibles.forEach((el) => {
-    const decalage = sobre ? 0 : 28
-    gsap.set(el, { opacity: 0, y: decalage })
-    const tr = ScrollTrigger.create({
-      trigger: el,
-      start: 'top 88%',
-      once: true,
-      onEnter: () => gsap.to(el, {
+  // Sans observateur — navigateur ancien, environnement inhabituel — on ne
+  // cache rien du tout. Mieux vaut une page sans animation qu'une page vide.
+  if (typeof IntersectionObserver === 'undefined') return () => {}
+
+  const decalage = sobre ? 0 : 28
+
+  // On ne cache jamais rien dans une page que personne ne regarde.
+  //
+  // Un onglet en arrière-plan ne compose pas : l'observateur d'intersection n'y
+  // signale rien, et le rAF ne tourne pas. Si l'on masquait quand même, du
+  // texte pourrait rester à opacité zéro sans qu'aucun mécanisme ne vienne le
+  // rallumer. Constaté ici même, sur un panneau d'aperçu masqué. On attend donc
+  // que la page soit visible pour commencer à cacher quoi que ce soit.
+  const creerObservateur = () => new IntersectionObserver((entrees) => {
+    for (const entree of entrees) {
+      if (!entree.isIntersecting) continue
+      const el = entree.target
+      observateur.unobserve(el)
+      gsap.to(el, {
         opacity: 1,
         y: 0,
         duration: sobre ? 0.5 : DUREE,
@@ -39,12 +58,29 @@ export function revelerBlocs(gsap, ScrollTrigger, racine, { sobre = false } = {}
         // Les enfants d'une même liste entrent l'un après l'autre : c'est ce
         // léger retard qui fait lire une séquence plutôt qu'un bloc.
         delay: Number(el.dataset.retard || 0),
-      }),
-    })
-    nettoyages.push(() => tr.kill())
-  })
+      })
+    }
+  }, { rootMargin: '0px 0px -12% 0px' })
 
-  return () => nettoyages.forEach(f => f())
+  let observateur = null
+  const armer = () => {
+    if (observateur) return
+    gsap.set(cibles, { opacity: 0, y: decalage })
+    observateur = creerObservateur()
+    cibles.forEach(el => observateur.observe(el))
+  }
+
+  const surVisibilite = () => { if (document.visibilityState === 'visible') armer() }
+  if (document.visibilityState === 'visible') armer()
+  else document.addEventListener('visibilitychange', surVisibilite)
+
+  return () => {
+    document.removeEventListener('visibilitychange', surVisibilite)
+    observateur?.disconnect()
+    // On rend visible ce qui ne l'était pas encore : démonter le composant ne
+    // doit jamais laisser du texte à opacité zéro derrière soi.
+    gsap.set(cibles, { opacity: 1, y: 0 })
+  }
 }
 
 /**
@@ -55,8 +91,14 @@ export function revelerBlocs(gsap, ScrollTrigger, racine, { sobre = false } = {}
  * d'écran épellerait « L, e, space, d, e, v, i, s ». On découpe après le
  * premier affichage — le titre est déjà lisible avant que ce code s'exécute.
  */
-export function composerTitre(gsap, titre) {
+export function composerTitre(gsap, titre, { delaiMaxMs = 600 } = {}) {
   if (!titre || titre.dataset.compose === 'oui') return () => {}
+
+  // Le titre est peint bien avant que GSAP arrive. Si l'écart est trop grand,
+  // le composer reviendrait à le faire disparaître sous les yeux du visiteur
+  // pour le réécrire : un clignotement, pas une animation. Passé ce délai on
+  // renonce à l'effet et on garde le titre tel qu'il est déjà lisible.
+  if (performance.now() > delaiMaxMs) return () => {}
 
   const texteOrigine = titre.textContent.replace(/\s+/g, ' ').trim()
   titre.setAttribute('aria-label', texteOrigine)
@@ -67,15 +109,26 @@ export function composerTitre(gsap, titre) {
     for (const enfant of [...noeud.childNodes]) {
       if (enfant.nodeType === Node.TEXT_NODE) {
         const morceaux = document.createDocumentFragment()
-        for (const c of enfant.textContent) {
-          if (c === ' ') { morceaux.appendChild(document.createTextNode(' ')); continue }
-          const span = document.createElement('span')
-          span.textContent = c
-          span.setAttribute('aria-hidden', 'true')
-          span.style.display = 'inline-block'
-          span.style.willChange = 'transform, opacity'
-          morceaux.appendChild(span)
-          lettres.push(span)
+        // On découpe d'abord en mots, et chaque mot devient une boîte qui ne
+        // se coupe pas. Sans cela, chaque lettre devenant une boîte à part, le
+        // navigateur se croit autorisé à passer à la ligne entre deux lettres :
+        // « camionnett / e ». Le titre est l'endroit où cela se voit le plus.
+        for (const mot of enfant.textContent.split(/(\s+)/)) {
+          if (mot === '') continue
+          if (/^\s+$/.test(mot)) { morceaux.appendChild(document.createTextNode(' ')); continue }
+          const boite = document.createElement('span')
+          boite.setAttribute('aria-hidden', 'true')
+          boite.style.display = 'inline-block'
+          boite.style.whiteSpace = 'nowrap'
+          for (const c of mot) {
+            const span = document.createElement('span')
+            span.textContent = c
+            span.style.display = 'inline-block'
+            span.style.willChange = 'transform, opacity'
+            boite.appendChild(span)
+            lettres.push(span)
+          }
+          morceaux.appendChild(boite)
         }
         enfant.replaceWith(morceaux)
       } else if (enfant.nodeType === Node.ELEMENT_NODE && enfant.tagName !== 'BR') {

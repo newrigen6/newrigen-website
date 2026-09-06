@@ -58,6 +58,13 @@ export function useTimelineMaitresse() {
       gsap.ticker.lagSmoothing(0)
       lenis.on('scroll', ScrollTrigger.update)
 
+      // Exposé volontairement : Lenis prend la main sur le défilement, si bien
+      // que `window.scrollTo` ne fait plus rien de visible. Sans cette prise,
+      // ni nous ni un outil de mesure ne peut plus amener la page à un endroit
+      // précis pour la vérifier — et une page qu'on ne peut pas vérifier finit
+      // par n'être vérifiée par personne.
+      window.lenis = lenis
+
       ancre.current = { lenis, gsap, trigger: ScrollTrigger }
       setPret(true)
 
@@ -65,6 +72,7 @@ export function useTimelineMaitresse() {
         gsap.ticker.remove(avancer)
         ScrollTrigger.getAll().forEach(t => t.kill())
         lenis.destroy()
+        if (window.lenis === lenis) delete window.lenis
       }
     })()
 

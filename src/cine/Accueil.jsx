@@ -5,6 +5,7 @@ import { useSiteContent } from '../content/SiteContent'
 import { montant } from '../lib/montant'
 import { contenuPourLangue } from './contenu'
 import { Acte, Oeil } from './composants/Acte'
+import HeroFond from './HeroFond'
 import { useTimelineMaitresse } from './useTimelineMaitresse'
 import {
   revelerBlocs, composerTitre, parallaxeSouris, epinglerFonctions, leverLeJour,
@@ -32,6 +33,7 @@ export default function Accueil() {
   const page = useRef(null)
   const titre = useRef(null)
   const calque3d = useRef(null)
+  const sectionProduit = useRef(null)
   const sectionFonctions = useRef(null)
   const voile = useRef(null)
   const conversion = useRef(null)
@@ -58,11 +60,13 @@ export default function Accueil() {
       defaire.push(epinglerFonctions(gsap, ScrollTrigger, sectionFonctions.current))
       defaire.push(leverLeJour(gsap, ScrollTrigger, voile.current, conversion.current))
 
-      // La progression du héros, lue par la scène 3D.
+      // La progression de l'acte du produit, lue par la scène 3D : le devis se
+      // remplit pendant qu'on lit comment il se remplit. C'est tout l'intérêt
+      // de brancher la 3D sur le défilement plutôt que sur une horloge.
       const suivi = ScrollTrigger.create({
-        trigger: page.current.querySelector('#hero'),
-        start: 'top top',
-        end: 'bottom top',
+        trigger: sectionProduit.current || page.current.querySelector('#produit'),
+        start: 'top 80%',
+        end: 'bottom 40%',
         scrub: true,
         onUpdate: (self) => { progression.current = self.progress },
       })
@@ -93,26 +97,9 @@ export default function Accueil() {
   return (
     <div ref={page}>
       {/* ── Acte 1 — le héros ────────────────────────────────────────────── */}
-      <Acte id="hero" premier>
+      <Acte id="hero" premier fond={<HeroFond anime={niveau === 'complet'} />}>
         <div className="relative">
-          {/* La scène est décorative : elle ne porte aucune information que le
-              texte ne dise déjà, et reste donc invisible aux lecteurs d'écran. */}
-          {niveau === 'complet' && (
-            <div
-              ref={calque3d}
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-10 -top-24 hidden lg:block w-[520px] h-[560px] opacity-90"
-              style={{ perspective: '1200px' }}
-            >
-              {scene3dVoulue && (
-                <Suspense fallback={null}>
-                  <Scene3D progression={progression} />
-                </Suspense>
-              )}
-            </div>
-          )}
-
-          <div className="max-w-3xl relative">
+          <div className="max-w-4xl relative">
             <Oeil texte={t.hero.oeil} />
             <h1 ref={titre} className="cine-h1 mt-6">
               {t.hero.titre1}{' '}
@@ -154,10 +141,29 @@ export default function Accueil() {
 
       {/* ── Acte 3 — le produit ──────────────────────────────────────────── */}
       <Acte id="produit">
-        <div data-revele>
-          <Oeil texte={t.produit.oeil} />
-          <h2 className="cine-h2 mt-6 whitespace-pre-line">{t.produit.titre}</h2>
-          <p className="cine-intro mt-6">{t.produit.intro}</p>
+        <div ref={sectionProduit} className="lg:grid lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:items-center">
+          <div data-revele>
+            <Oeil texte={t.produit.oeil} />
+            <h2 className="cine-h2 mt-6 whitespace-pre-line">{t.produit.titre}</h2>
+            <p className="cine-intro mt-6">{t.produit.intro}</p>
+          </div>
+
+          {/* La tablette est décorative : le texte dit déjà tout ce qu'elle
+              montre, elle reste donc invisible aux lecteurs d'écran. */}
+          {niveau === 'complet' && (
+            <div
+              ref={calque3d}
+              aria-hidden="true"
+              className="pointer-events-none hidden lg:block h-[520px] -mr-6"
+              style={{ perspective: '1200px' }}
+            >
+              {scene3dVoulue && (
+                <Suspense fallback={null}>
+                  <Scene3D progression={progression} />
+                </Suspense>
+              )}
+            </div>
+          )}
         </div>
 
         <ol className="mt-12 grid gap-4 md:grid-cols-3">

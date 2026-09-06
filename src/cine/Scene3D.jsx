@@ -3,7 +3,7 @@ import { useRef, useMemo } from 'react'
 import * as THREE from 'three'
 
 /**
- * La scène 3D du héros — une tablette posée dans la nuit, qui respire.
+ * La scène 3D de l’acte du produit — une tablette posée dans la nuit.
  *
  * Rien n'est importé d'un fichier de modèle : la géométrie est faite ici, en
  * quelques primitives. Un modèle exporté d'un logiciel de 3D aurait pesé
@@ -18,7 +18,9 @@ import * as THREE from 'three'
  */
 
 const TURQUOISE = '#4DD9D9'
-const ARDOISE = '#172940'
+// Un bleu un peu plus clair que l'ardoise du site : l'écran doit se détacher
+// du corps de la tablette, sinon l'objet n'est qu'un rectangle uni.
+const ECRAN = '#1E3450'
 const NUIT = '#05070A'
 
 /** Les lignes du devis qui se remplissent : c'est le sujet, pas la tablette. */
@@ -33,7 +35,10 @@ function LignesDeDevis({ progression }) {
       // décalé fait qu'on lit un devis qui se remplit, pas six barres qui
       // s'allument ensemble.
       const seuil = i / lignes.length
-      const part = THREE.MathUtils.clamp((progression.current - seuil) * 3.2, 0, 1)
+      // On part de 0.22 : a l'arret, l'ecran doit montrer un devis commence.
+      // Vide, la tablette n'est qu'un rectangle noir et ne raconte rien.
+      const avance = 0.22 + progression.current * 0.85
+      const part = THREE.MathUtils.clamp((avance - seuil) * 3.2, 0, 1)
       ligne.scale.x = Math.max(0.001, part)
       // L'échelle part du bord gauche : sans ce recentrage, la barre grandirait
       // par le milieu et le devis aurait l'air de se déplier au lieu de s'écrire.
@@ -82,7 +87,7 @@ function Tablette({ progression }) {
           se disputent le même plan et papillotent. */}
       <mesh position={[0, 0, 0.029]}>
         <planeGeometry args={[1.38, 1.92]} />
-        <meshBasicMaterial color={ARDOISE} toneMapped={false} />
+        <meshBasicMaterial color={ECRAN} toneMapped={false} />
       </mesh>
       {/* Le filet turquoise de l'en-tête : la signature de la marque, jusqu'ici. */}
       <mesh position={[-0.52, 0.56, 0.031]}>
