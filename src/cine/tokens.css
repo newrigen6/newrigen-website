@@ -1,0 +1,222 @@
+/**
+ * Direction artistique — « nuit et chantier ».
+ *
+ * Les couleurs ne sont pas inventées : ce sont exactement celles des quinze
+ * publications Instagram déjà produites. Un prospect qui voit un visuel dans son
+ * fil puis ouvre le site doit reconnaître la même maison. Une charte de site qui
+ * diverge de la charte sociale fait deux marques au lieu d'une.
+ *
+ * Aucune police web. Le public est sur un chantier, en 4G : une fonte distante
+ * coûte un aller-retour réseau sur le chemin critique du premier affichage, pour
+ * un gain que la pile système rend presque nul en gras serré. C'est un choix de
+ * performance assumé, pas un renoncement.
+ */
+
+:root {
+  /* Le dégradé de fond, du noir bleuté au bleu marine — celui des visuels. */
+  --nuit:        #05070A;
+  --nuit-bas:    #0E2132;
+  --ardoise:     #172940;
+  --ardoise-2:   #21354A;
+
+  --turquoise:   #4DD9D9;
+  --turquoise-sombre: #3BC8C8;
+
+  --blanc:       #FFFFFF;
+  --gris-clair:  #B8C7D1;
+  --gris:        #7A8C99;
+
+  --ambre:       #F2B85A;
+  --vert:        #4ACC8C;
+
+  /* Le trait qui sépare sans découper : presque invisible, jamais absent. */
+  --filet:       rgb(255 255 255 / 0.09);
+  --filet-fort:  rgb(255 255 255 / 0.16);
+
+  /* Échelle fluide. Le titre suit la largeur au lieu de sauter par paliers :
+     entre un téléphone de chantier et un 27 pouces, il n'y a pas deux mises en
+     page mais une seule qui respire. */
+  --pas-oeil:    clamp(0.72rem, 0.68rem + 0.2vw, 0.82rem);
+  --pas-corps:   clamp(1rem,    0.95rem + 0.3vw, 1.15rem);
+  --pas-intro:   clamp(1.12rem, 1rem + 0.7vw,    1.45rem);
+  --pas-h2:      clamp(2rem,    1.5rem + 2.6vw,  3.9rem);
+  --pas-h1:      clamp(2.6rem,  1.7rem + 4.2vw,  5.6rem);
+
+  --gouttiere:   clamp(1.25rem, 0.9rem + 1.8vw, 3.5rem);
+  --largeur:     1180px;
+
+  --rayon:       1rem;
+  --rayon-large: 1.5rem;
+
+  /* Une seule courbe d'accélération dans tout le site. Plusieurs donneraient
+     l'impression que les éléments n'obéissent pas au même monde. */
+  --elan:        cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  /* Lenis prend la main sur le défilement à l'étape C. D'ici là, et pour tous
+     ceux qui refusent le mouvement, le défilement natif doit rester net. */
+  scroll-behavior: smooth;
+  background-color: var(--nuit);
+}
+
+body {
+  margin: 0;
+  color: var(--blanc);
+  background-color: var(--nuit);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: var(--pas-corps);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Le dégradé du fond, posé une fois pour toute la page. Il est fixe : le
+   contenu défile devant, la nuit ne bouge pas. */
+.cine-fond {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(180deg, var(--nuit) 0%, var(--nuit-bas) 100%);
+}
+
+.cine-conteneur {
+  width: 100%;
+  max-width: var(--largeur);
+  margin-inline: auto;
+  padding-inline: var(--gouttiere);
+}
+
+/* ── Typographie ─────────────────────────────────────────────────────────── */
+
+.cine-oeil {
+  font-size: var(--pas-oeil);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+/* Le filet turquoise sous le surtitre : la signature des visuels. */
+.cine-filet {
+  display: block;
+  width: 56px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--turquoise);
+}
+
+.cine-h1,
+.cine-h2 {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  text-wrap: balance;
+  margin: 0;
+}
+
+.cine-h1 { font-size: var(--pas-h1); color: var(--turquoise); }
+.cine-h2 { font-size: var(--pas-h2); color: var(--turquoise); }
+
+.cine-intro {
+  font-size: var(--pas-intro);
+  line-height: 1.55;
+  color: var(--gris-clair);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+/* ── Surfaces ────────────────────────────────────────────────────────────── */
+
+.cine-carte {
+  background: var(--ardoise);
+  border: 1px solid var(--filet);
+  border-radius: var(--rayon-large);
+}
+
+.cine-pastille {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.3em 0.8em;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--ardoise-2);
+  color: var(--turquoise);
+}
+
+/* ── Boutons ─────────────────────────────────────────────────────────────── */
+
+.cine-bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  /* 48 px de haut au minimum : une main gantée ne vise pas au pixel. */
+  min-height: 48px;
+  padding: 0.85em 1.6em;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.25s var(--elan), background-color 0.25s var(--elan),
+              border-color 0.25s var(--elan), color 0.25s var(--elan);
+}
+
+.cine-bouton--plein {
+  background: var(--turquoise);
+  color: var(--nuit);
+}
+.cine-bouton--plein:hover { background: var(--turquoise-sombre); transform: translateY(-2px); }
+
+.cine-bouton--fantome {
+  background: transparent;
+  color: var(--blanc);
+  border-color: var(--filet-fort);
+}
+.cine-bouton--fantome:hover { border-color: var(--turquoise); color: var(--turquoise); }
+
+/* ── Accessibilité ───────────────────────────────────────────────────────── */
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--turquoise);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Le lien d'évitement : premier élément focusable de la page, invisible tant
+   qu'on ne l'atteint pas au clavier. Sur une page longue et animée, sauter au
+   contenu n'est pas un luxe. */
+.cine-evitement {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--turquoise);
+  color: var(--nuit);
+  font-weight: 700;
+  border-radius: 0 0 var(--rayon) 0;
+}
+.cine-evitement:focus { left: 0; }
+
+/**
+ * Qui refuse le mouvement obtient un site immobile — pas un site diminué.
+ *
+ * Cette règle est écrite dès l'étape des tokens, avant la première animation :
+ * ajoutée après coup, il en reste toujours une qui a été oubliée.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

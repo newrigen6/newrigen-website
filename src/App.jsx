@@ -7,6 +7,9 @@ import dashboardScreenshot from './assets/dashboard-screenshot.jpg'
 import SelecteurLangue from './components/SelecteurLangue'
 import { useT } from './i18n'
 import { montant } from './lib/montant'
+import CineLayout from './cine/CineLayout'
+import CineAccueil from './cine/Accueil'
+import CineSitesInternet from './cine/SitesInternet'
 
 const TEAL_PACKS = '#4DD9D9'
 
@@ -615,7 +618,17 @@ export default function App() {
     <ConsentGate>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Refonte cinematique. Le tunnel /tarifs et /merci reste intact :
+              une animation ratee coute de l'effet, une regression sur le
+              paiement coute des clients. */}
+          <Route element={<CineLayout />}>
+            <Route path="/" element={<CineAccueil />} />
+            <Route path="/sites-internet" element={<CineSitesInternet />} />
+          </Route>
+
+          {/* L'ancienne page reste accessible tant que la refonte n'est pas
+              validee — de quoi comparer sans avoir a changer de branche. */}
+          <Route path="/ancien" element={<Home />} />
           <Route path="/tarifs" element={<Tarifs />} />
           <Route path="/merci" element={<Merci />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
