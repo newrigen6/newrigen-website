@@ -33,7 +33,10 @@ export const FR = {
     intro: 'Chiffrez sur le chantier à partir de vos propres prix, suivez les heures de vos employés, facturez avec le QR suisse. Fait en Valais, pour les artisans d’ici.',
     ctaPrincipal: 'Essayer gratuitement',
     ctaSecondaire: 'Voir les fonctions',
-    mention: '1 mois offert · sans carte bancaire',
+    mention: '1 mois offert · sans engagement',
+    // Trois preuves vérifiables, rien d'autre : pas de note, pas de nombre de
+    // clients qu'on ne pourrait pas montrer.
+    preuves: ['Fait en Valais', 'Hébergé en Suisse', 'QR-facture conforme'],
   },
 
   // ── Acte 2 — le problème ─────────────────────────────────────────────────
@@ -120,8 +123,15 @@ export const FR = {
   // Fond clair, plus de 3D, plus rien à regarder que le prix et le bouton.
   offre: {
     oeil: 'Tarifs',
-    titre: 'Un mois offert,\nsans carte bancaire',
+    // « Sans carte bancaire » était faux : la page Tarifs demande une empreinte
+    // bancaire à l'inscription. Promettre l'inverse à la dernière étape, c'est
+    // perdre le client au moment précis où il allait signer.
+    titre: 'Un mois offert,\nsans engagement',
     intro: 'Vous essayez avec vos vrais chantiers. Si ça ne vous sert pas, vous arrêtez sans rien devoir.',
+    // Le paquet mis en avant l'est par son usage, jamais par une popularité
+    // qu'on ne peut pas prouver.
+    miseEnAvant: 'standard',
+    etiquetteMiseEnAvant: 'Pour une équipe',
     packs: [
       { cle: 'solo',     nom: 'Solo',     pour: 'Vous travaillez seul',        detail: 'Devis, factures, comptabilité. Sans gestion d’employés.' },
       { cle: 'standard', nom: 'Standard', pour: 'Jusqu’à 5 employés',          detail: 'Tout Solo, plus les heures, les chantiers et le rapport mensuel.' },

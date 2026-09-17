@@ -29,6 +29,14 @@
          Domaine officiel : newrigen.ch (application sur app.newrigen.ch). -->
     <link rel="canonical" href="https://newrigen.ch/" />
 
+    <!-- Polices du site : Bricolage Grotesque pour les titres, Manrope pour le
+         texte. `display=swap` : le texte s'affiche immediatement dans la police
+         de secours, on ne fait jamais attendre la lecture pour une police. La
+         pre-connexion fait gagner l'aller-retour DNS + TLS vers les deux hotes. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&display=swap" />
+
     <!-- Le plan large du heros, demande des la premiere ligne du document.
          Il est l'element que la mesure du LCP regarde, et il est aussi cache
          derriere le panneau de consentement : sans ce prechargement, son

@@ -6,10 +6,11 @@
  * fil puis ouvre le site doit reconnaître la même maison. Une charte de site qui
  * diverge de la charte sociale fait deux marques au lieu d'une.
  *
- * Aucune police web. Le public est sur un chantier, en 4G : une fonte distante
- * coûte un aller-retour réseau sur le chemin critique du premier affichage, pour
- * un gain que la pile système rend presque nul en gras serré. C'est un choix de
- * performance assumé, pas un renoncement.
+ * Deux polices web, pas plus : Bricolage Grotesque pour les titres, Manrope
+ * pour le texte. La pile système donnait Roboto sur Android et Segoe sur
+ * Windows — le même site ne ressemblait pas à la même marque selon l'appareil.
+ * Elles sont chargées en `swap` : le texte s'affiche tout de suite, la police
+ * arrive ensuite. Voir DESIGN.md.
  */
 
 :root {
@@ -24,7 +25,9 @@
 
   --blanc:       #FFFFFF;
   --gris-clair:  #B8C7D1;
-  --gris:        #7A8C99;
+  /* #7A8C99 échouait sur les cartes (4.23:1). #8A9BA8 y passe à 5.14:1.
+     Sur ardoise-2 il reste à 4.38 : là, on écrit en gris-clair. */
+  --gris:        #8A9BA8;
 
   --ambre:       #F2B85A;
   --vert:        #4ACC8C;
@@ -39,8 +42,16 @@
   --pas-oeil:    clamp(0.72rem, 0.68rem + 0.2vw, 0.82rem);
   --pas-corps:   clamp(1rem,    0.95rem + 0.3vw, 1.15rem);
   --pas-intro:   clamp(1.12rem, 1rem + 0.7vw,    1.45rem);
-  --pas-h2:      clamp(2rem,    1.5rem + 2.6vw,  3.9rem);
-  --pas-h1:      clamp(2.6rem,  1.7rem + 4.2vw,  5.6rem);
+  --pas-h2:      clamp(2rem,    1.4rem + 2.8vw,  4rem);
+  --pas-h1:      clamp(2.5rem,  1.5rem + 4.1vw,  5.2rem);
+
+  --police-titre: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --police-texte: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  /* Ombre en deux couches : une proche qui pose l'objet, une lointaine qui le
+     détache. Une seule ombre fait soit coller, soit flotter. */
+  --ombre:       0 1px 2px rgb(0 0 0 / 0.35), 0 18px 40px -18px rgb(0 0 0 / 0.55);
+  --ombre-haute: 0 2px 6px rgb(0 0 0 / 0.4), 0 40px 80px -30px rgb(0 0 0 / 0.7);
 
   --gouttiere:   clamp(1.25rem, 0.9rem + 1.8vw, 3.5rem);
   --largeur:     1180px;
@@ -51,6 +62,7 @@
   /* Une seule courbe d'accélération dans tout le site. Plusieurs donneraient
      l'impression que les éléments n'obéissent pas au même monde. */
   --elan:        cubic-bezier(0.16, 1, 0.3, 1);
+  --survol:      cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 html {
@@ -64,9 +76,9 @@ body {
   margin: 0;
   color: var(--blanc);
   background-color: var(--nuit);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--police-texte);
   font-size: var(--pas-corps);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -78,6 +90,31 @@ body {
   inset: 0;
   z-index: -2;
   background: linear-gradient(180deg, var(--nuit) 0%, var(--nuit-bas) 100%);
+}
+
+/* Le grain : un bruit très léger sur tout le site. Un aplat sombre parfait
+   trahit l'écran ; un peu de matière le rapproche d'une photo de nuit. Le motif
+   est un SVG de quelques octets, pas une image. */
+.cine-fond::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* Un halo turquoise flou, derrière ce qu'on veut faire remonter. Un par écran,
+   au plus : deux halos voisins s'annulent et salissent le noir. */
+.cine-halo {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(77 217 217 / 0.16) 0%, transparent 65%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .cine-conteneur {
@@ -107,16 +144,23 @@ body {
 }
 
 .cine-h1,
-.cine-h2 {
+.cine-h2,
+.cine-titre {
+  font-family: var(--police-titre);
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.04;
+  /* -0.035em collait les lettres de Bricolage en gras : « devis » se touchait.
+     Mesuré à l'écran, -0.02em garde la densité sans que les lettres fusionnent. */
+  letter-spacing: -0.02em;
+  line-height: 1.03;
   text-wrap: balance;
   margin: 0;
 }
 
 .cine-h1 { font-size: var(--pas-h1); color: var(--turquoise); }
 .cine-h2 { font-size: var(--pas-h2); color: var(--turquoise); }
+
+/* Les montants s'alignent comme sur un devis. */
+.cine-chiffres { font-variant-numeric: tabular-nums; }
 
 .cine-intro {
   font-size: var(--pas-intro);
@@ -129,9 +173,30 @@ body {
 /* ── Surfaces ────────────────────────────────────────────────────────────── */
 
 .cine-carte {
-  background: var(--ardoise);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.025), transparent 40%), var(--ardoise);
   border: 1px solid var(--filet);
   border-radius: var(--rayon-large);
+  box-shadow: var(--ombre);
+  transition: transform 0.35s var(--survol), border-color 0.35s var(--survol);
+}
+
+/* Survol : la carte monte de deux pixels et son bord s'allume. Réservé aux
+   pointeurs fins — sur un écran tactile, un survol « collé » après le toucher
+   laisserait une carte allumée sans raison. */
+@media (hover: hover) {
+  .cine-carte--vivante:hover {
+    transform: translateY(-2px);
+    border-color: rgb(77 217 217 / 0.35);
+  }
+}
+
+/* Verre dépoli : en-tête et carte flottante du héros uniquement. */
+.cine-verre {
+  background: rgb(23 41 64 / 0.62);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow: var(--ombre-haute);
 }
 
 .cine-pastille {
@@ -158,6 +223,7 @@ body {
   padding: 0.85em 1.6em;
   border-radius: 999px;
   font-size: 1rem;
+  font-family: var(--police-texte);
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;

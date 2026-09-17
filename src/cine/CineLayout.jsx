@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useLangue } from '../i18n'
 import { useSiteContent } from '../content/SiteContent'
@@ -17,6 +17,27 @@ export default function CineLayout() {
   const t = contenuPourLangue(langue)
   const contenu = useSiteContent()
   const [defile, setDefile] = useState(false)
+  const [menuOuvert, setMenuOuvert] = useState(false)
+  const { pathname } = useLocation()
+
+  // Changer de page referme le menu : sinon il reste ouvert par-dessus la page
+  // d'arrivée, et le visiteur croit que le lien n'a rien fait.
+  useEffect(() => { setMenuOuvert(false) }, [pathname])
+
+  // Menu ouvert : la page dessous ne défile plus, et Échap le referme.
+  useEffect(() => {
+    if (!menuOuvert) return
+    const avant = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.lenis?.stop()
+    const echap = (e) => { if (e.key === 'Escape') setMenuOuvert(false) }
+    window.addEventListener('keydown', echap)
+    return () => {
+      document.body.style.overflow = avant
+      window.lenis?.start()
+      window.removeEventListener('keydown', echap)
+    }
+  }, [menuOuvert])
 
   // L'en-tête ne s'opacifie qu'une fois qu'on a quitté le haut : posée sur le
   // héros dès la première image, une barre opaque mangerait le plan large.
@@ -40,7 +61,7 @@ export default function CineLayout() {
 
       <header
         className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
-          defile ? 'bg-[rgb(5_7_10_/_0.82)] backdrop-blur border-b border-[var(--filet)]' : ''
+          defile || menuOuvert ? 'bg-[rgb(5_7_10_/_0.86)] backdrop-blur-md border-b border-[var(--filet)]' : ''
         }`}
       >
         <div className="cine-conteneur flex items-center justify-between h-16 lg:h-20">
@@ -51,7 +72,7 @@ export default function CineLayout() {
             >
               N
             </span>
-            <span className="text-lg tracking-[0.12em]">NEWRIGEN</span>
+            <span className="text-lg tracking-[0.12em]" style={{ fontFamily: 'var(--police-titre)' }}>NEWRIGEN</span>
           </Link>
 
           <nav aria-label="Navigation principale" className="hidden md:flex items-center gap-1">
@@ -67,11 +88,60 @@ export default function CineLayout() {
             >
               {t.nav.connexion}
             </a>
-            <Link to="/tarifs" className="cine-bouton cine-bouton--plein !min-h-0 !py-2.5 !px-5 !text-sm">
+            <Link to="/tarifs" className="hidden sm:inline-flex cine-bouton cine-bouton--plein !min-h-0 !py-2.5 !px-5 !text-sm">
               {t.nav.essai}
             </Link>
+
+            {/* Le menu du téléphone. Avant, la navigation était simplement
+                masquée sous 768 px : sur mobile, rien ne menait aux sites
+                internet ni aux tarifs — soit la moitié des visiteurs. */}
+            <button
+              type="button"
+              onClick={() => setMenuOuvert(o => !o)}
+              aria-expanded={menuOuvert}
+              aria-controls="menu-mobile"
+              aria-label={menuOuvert ? 'Fermer le menu' : 'Ouvrir le menu'}
+              className="md:hidden grid place-items-center w-11 h-11 rounded-full border border-[var(--filet-fort)] text-white"
+            >
+              <span aria-hidden="true" className="relative block w-5 h-3">
+                <span className={`absolute left-0 w-5 h-[2px] rounded bg-current transition-transform duration-300 ${menuOuvert ? 'top-[5px] rotate-45' : 'top-0'}`} />
+                <span className={`absolute left-0 top-[5px] w-5 h-[2px] rounded bg-current transition-opacity duration-200 ${menuOuvert ? 'opacity-0' : ''}`} />
+                <span className={`absolute left-0 w-5 h-[2px] rounded bg-current transition-transform duration-300 ${menuOuvert ? 'top-[5px] -rotate-45' : 'top-[10px]'}`} />
+              </span>
+            </button>
           </div>
         </div>
+
+        {menuOuvert && (
+          <nav
+            id="menu-mobile"
+            aria-label="Navigation mobile"
+            className="md:hidden border-t border-[var(--filet)] bg-[rgb(5_7_10_/_0.96)] backdrop-blur-md"
+          >
+            <div className="cine-conteneur py-6 flex flex-col">
+              {[
+                { to: '/', label: t.nav.logiciel, end: true },
+                { to: '/sites-internet', label: t.nav.sites },
+                { to: '/tarifs', label: t.nav.tarifs },
+              ].map(l => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  end={l.end}
+                  className={({ isActive }) =>
+                    `py-4 border-b border-[var(--filet)] text-2xl font-bold ${isActive ? 'text-[var(--turquoise)]' : 'text-white'}`}
+                  style={{ fontFamily: 'var(--police-titre)' }}
+                >
+                  {l.label}
+                </NavLink>
+              ))}
+              <div className="mt-6 grid gap-3">
+                <Link to="/tarifs" className="cine-bouton cine-bouton--plein w-full">{t.nav.essai}</Link>
+                <a href="https://app.newrigen.ch" className="cine-bouton cine-bouton--fantome w-full">{t.nav.connexion}</a>
+              </div>
+            </div>
+          </nav>
+        )}
       </header>
 
       <main id="contenu">
