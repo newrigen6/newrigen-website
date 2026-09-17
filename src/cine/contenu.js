@@ -142,6 +142,33 @@ export const FR = {
     ctaSecondaire: 'Voir le détail des packs',
   },
 
+  // ── La page « sites internet » ─────────────────────────────────────────
+  // Ses textes étaient écrits dans le composant : ils vivent ici pour pouvoir
+  // être modifiés depuis l'admin comme ceux de l'accueil.
+  pageSites: {
+    titre1: 'Votre métier mérite',
+    titre2: 'mieux qu’une page Facebook',
+    ctaAppeler: 'Appeler',
+    ctaEcrire: 'Écrire un message',
+    faitOeil: 'Ce qu’on fait',
+    faitTitre: 'Quatre choses,\net rien d’autre',
+    etapesOeil: 'Comment ça se passe',
+    etapesTitre: 'De la première discussion\nà la mise en ligne',
+    etapes: [
+      { titre: 'On se voit', texte: 'Vingt minutes, chez vous ou au téléphone. Vous nous dites ce que vous faites et à qui vous voulez parler.' },
+      { titre: 'On vous chiffre', texte: 'Un prix ferme, écrit, avant de commencer. Pas de supplément découvert en route.' },
+      { titre: 'On écrit et on dessine', texte: 'Les textes, les images, la mise en page. Vous relisez, on corrige.' },
+      { titre: 'Vous êtes en ligne', texte: 'Votre adresse, votre fiche Google, et la main sur vos textes pour les changer vous-même.' },
+    ],
+    preuveOeil: 'La preuve',
+    preuveTitre: 'Vous êtes dessus',
+    preuveTexte: 'Ce site est le nôtre, écrit et dessiné par nous. Jugez la vitesse, la lisibilité sur votre téléphone et le soin des détails — sans qu’on ait à vous montrer un portfolio.',
+    prixOeil: 'Le prix',
+    prixTitre: 'Sur demande,\nparce que ça dépend de vous',
+    contactTitre: 'Parlons de votre site',
+    contactTexte: 'Un appel suffit pour savoir ce qu’il vous faut.',
+  },
+
   pied: {
     baseline: 'Devis, chantiers et facturation pour les artisans suisses.',
     contact: 'Nous joindre',
@@ -152,13 +179,56 @@ export const FR = {
 }
 
 /**
- * La copie dans la langue demandée.
+ * La copie dans la langue demandée, avec les textes modifiés depuis l'admin.
  *
  * Tant que les traductions ne sont pas faites, on rend le français plutôt qu'un
  * texte à trous : un visiteur allemand lit un site cohérent en français, ce qui
  * vaut mieux qu'un site allemand où une section sur trois est vide.
+ *
+ * Les surcharges arrivent de `site_content.texts`, sous des clés préfixées
+ * `cine.` qui reprennent le chemin du texte : `cine.hero.titre1`,
+ * `cine.probleme.points.0.chiffre`. Le préfixe les sépare des quatre champs de
+ * l'ancienne page, qui partagent le même dictionnaire.
+ *
+ * Un champ laissé vide dans l'admin rend le texte d'origine : vider une case ne
+ * doit jamais vider la page.
  */
-export function contenuPourLangue(langue) {
+export const PREFIXE_SURCHARGE = 'cine.'
+
+export function contenuPourLangue(langue, surcharges = null) {
   const traductions = { fr: FR }
-  return traductions[langue] || FR
+  const base = traductions[langue] || FR
+  if (!surcharges) return base
+
+  const copie = structuredClone(base)
+  for (const [cle, valeur] of Object.entries(surcharges)) {
+    if (!cle.startsWith(PREFIXE_SURCHARGE)) continue
+    if (valeur == null || String(valeur).trim() === '') continue
+    appliquer(copie, cle.slice(PREFIXE_SURCHARGE.length).split('.'), String(valeur))
+  }
+  return copie
+}
+
+/**
+ * Pose une valeur au bout d'un chemin — mais seulement si ce chemin existe déjà
+ * et y mène à un texte. Une clé périmée ou mal formée dans la base ne doit ni
+ * créer de branche fantôme, ni remplacer une liste entière par une phrase.
+ */
+// Des chaînes qui ne sont pas des textes : `cle` choisit le prix et la vignette
+// d'une carte, `miseEnAvant` désigne le pack mis en avant. Réécrites depuis la
+// base, elles casseraient silencieusement l'affichage des tarifs.
+const CLES_TECHNIQUES = new Set(['cle', 'miseEnAvant'])
+
+function appliquer(objet, chemin, valeur) {
+  if (chemin.some(pas => CLES_TECHNIQUES.has(pas))) return
+  let noeud = objet
+  for (let i = 0; i < chemin.length - 1; i++) {
+    const pas = Array.isArray(noeud) ? Number(chemin[i]) : chemin[i]
+    if (noeud == null || typeof noeud !== 'object' || !(pas in noeud)) return
+    noeud = noeud[pas]
+  }
+  const dernier = Array.isArray(noeud) ? Number(chemin.at(-1)) : chemin.at(-1)
+  if (noeud && typeof noeud === 'object' && typeof noeud[dernier] === 'string') {
+    noeud[dernier] = valeur
+  }
 }

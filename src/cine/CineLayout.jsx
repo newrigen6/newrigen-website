@@ -1,8 +1,7 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { useLangue } from '../i18n'
 import { useSiteContent } from '../content/SiteContent'
-import { contenuPourLangue } from './contenu'
+import { useContenu } from './useContenu'
 import './tokens.css'
 
 /**
@@ -13,8 +12,7 @@ import './tokens.css'
  * noir, et la couture se voit.
  */
 export default function CineLayout() {
-  const { langue } = useLangue()
-  const t = contenuPourLangue(langue)
+  const t = useContenu()
   const contenu = useSiteContent()
   const [defile, setDefile] = useState(false)
   const [menuOuvert, setMenuOuvert] = useState(false)

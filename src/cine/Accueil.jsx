@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState, lazy, Suspense } from 'react'
-import { useLangue, useT } from '../i18n'
+import { useT } from '../i18n'
 import { useSiteContent } from '../content/SiteContent'
 import { montant } from '../lib/montant'
-import { contenuPourLangue } from './contenu'
+import { useContenu } from './useContenu'
 import { Acte, Oeil } from './composants/Acte'
 import {
   CarteDevis, VignetteDevis, VignetteEquipe, VignetteFacture, VignetteMarge, CadreNavigateur,
@@ -45,9 +45,8 @@ function Coche({ className = '' }) {
  * soit lisible.
  */
 export default function Accueil() {
-  const { langue } = useLangue()
   const tr = useT()
-  const t = contenuPourLangue(langue)
+  const t = useContenu()
   const { prix } = useSiteContent()
   const { niveau, pret, ancre } = useTimelineMaitresse()
 
