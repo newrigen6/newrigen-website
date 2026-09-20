@@ -73,7 +73,7 @@ export const FR = {
       { titre: 'Nous nous rencontrons', texte: 'En présentiel ou au téléphone, pour définir vos besoins.' },
       { titre: 'Le prix', texte: 'Le prix est ferme et devisé. Pas de supplément découvert en cours de route.' },
       { titre: 'La création', texte: 'Nous créons votre site, puis nous vous le montrons pour avoir votre avis.' },
-      { titre: 'Vous êtes en ligne', texte: 'Votre adresse, votre fiche Google, et la main sur vos textes pour les changer vous-même.' },
+      { titre: 'La publication', texte: 'Nous publions votre site web afin de vous faire connaître.' },
     ],
 
     preuveOeil: 'La preuve',
