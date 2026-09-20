@@ -51,7 +51,7 @@ export const FR = {
     problemePoints: [
       { titre: 'Pas de site', texte: 'On vous cherche par votre nom, on ne trouve rien. Le doute suffit à faire passer au suivant.' },
       { titre: 'Une page figée', texte: 'Une page Facebook ou Instagram dont la dernière publication date de deux ans. Ce n’est plus possible !' },
-      { titre: 'Illisible sur mobile', texte: 'Un ancien site qu’il faut agrandir des doigts tant les écritures sont illisibles, et où les liens ne fonctionnent pas. Changer cela !' },
+      { titre: 'Illisible sur mobile', texte: 'Un ancien site qu’il faut agrandir avec ses doigts tant les écritures sont illisibles, et où les liens ne fonctionnent pas. Changer cela !' },
     ],
 
     faitOeil: 'Ce qu’on fait',
