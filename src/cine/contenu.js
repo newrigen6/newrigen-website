@@ -77,10 +77,6 @@ export const FR = {
       { titre: 'Des modifications ?', texte: 'Contactez-nous, et nous adaptons votre site internet.' },
     ],
 
-    preuveOeil: 'La preuve',
-    preuveTitre: 'Vous êtes dessus',
-    preuveTexte: 'Ce site est le nôtre, écrit et dessiné par nous. Jugez la vitesse, la lisibilité sur votre téléphone et le soin des détails — sans qu’on ait à vous montrer un portfolio.',
-
     // Le renvoi vers le logiciel : discret, et seulement pour ceux que ça
     // concerne. Mis en avant, il brouillerait l'offre principale.
     logicielOeil: 'Aussi',

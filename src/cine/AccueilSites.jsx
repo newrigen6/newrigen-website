@@ -189,16 +189,6 @@ export default function AccueilSites() {
         </ol>
       </Acte>
 
-      {/* ── La preuve ──────────────────────────────────────────────────── */}
-      <section className="relative py-24 md:py-28 overflow-hidden">
-        <div className="cine-halo left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden="true" />
-        <div className="cine-conteneur relative text-center" data-revele>
-          <p className="cine-oeil">{s.preuveOeil}</p>
-          <h2 className="cine-h2 mt-5">{s.preuveTitre}</h2>
-          <p className="cine-intro mt-6 mx-auto">{s.preuveTexte}</p>
-        </div>
-      </section>
-
       {/* ── Le logiciel, en passant ─────────────────────────────────────────
           Une seule ligne, et seulement pour ceux que ça concerne. */}
       <Acte id="logiciel">
