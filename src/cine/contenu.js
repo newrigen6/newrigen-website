@@ -74,6 +74,7 @@ export const FR = {
       { titre: 'Le prix', texte: 'Le prix est ferme et devisé. Pas de supplément découvert en cours de route.' },
       { titre: 'La création', texte: 'Nous créons votre site, puis nous vous le montrons pour avoir votre avis.' },
       { titre: 'La publication', texte: 'Nous publions votre site web afin de vous faire connaître.' },
+      { titre: 'Des modifications ?', texte: 'Contactez-nous, et nous adaptons votre site internet.' },
     ],
 
     preuveOeil: 'La preuve',

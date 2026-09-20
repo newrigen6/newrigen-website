@@ -174,7 +174,9 @@ export default function AccueilSites() {
           <h2 className="cine-h2 mt-6 whitespace-pre-line">{s.etapesTitre}</h2>
         </div>
 
-        <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Cinq etapes : cinq colonnes sur grand ecran, sinon la cinquieme
+            carte se retrouverait seule sur une deuxieme rangee. */}
+        <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
           {s.etapes.map((e, i) => (
             <li key={e.titre} className="cine-carte cine-carte--vivante p-6" data-revele data-retard={i * 0.08}>
               <span className="text-xs font-bold tracking-[0.2em] text-[var(--turquoise)] cine-chiffres">
