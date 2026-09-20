@@ -57,10 +57,10 @@ export const FR = {
     faitOeil: 'Ce qu’on fait',
     faitTitre: '4 choses',
     points: [
-      'Prendre connaissance de vos besoins',
-      'Écrire et designer sur mesure',
-      'Publier sur Google pour votre métier et votre région',
-      'Trouvable sur internet, et adapté à l’ordinateur, à la tablette et au téléphone',
+      'Un prix ferme et devisé, avant de commencer',
+      'Les textes et les images de votre choix',
+      'Aucun abonnement nécessaire',
+      'Nous gardons la proximité du Valais en vous rencontrant',
     ],
 
     pourQuiOeil: 'Pour qui',
