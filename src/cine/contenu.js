@@ -64,7 +64,7 @@ export const FR = {
     ],
 
     pourQuiOeil: 'Pour qui',
-    pourQuiTitre: 'Tous les commerces,\npas seulement le bâtiment',
+    pourQuiTitre: 'Tous les commerces',
     pourQuiIntro: 'Si vos clients vous cherchent sur leur téléphone, vous avez besoin d’un site. Le métier ne change rien à cela.',
     metiers: ['Coiffure et esthétique', 'Restaurant et café', 'Onglerie et institut', 'Garage et carrosserie', 'Artisans du bâtiment', 'Santé et thérapies', 'Commerce de proximité', 'Indépendants et services'],
 
