@@ -37,11 +37,10 @@ export const FR = {
     titre1: 'On vous cherche.',
     titre2: 'On ne vous trouve pas.',
     intro: 'On crée le site qui vous rend visible : rapide sur téléphone, trouvable sur Google, et écrit pour donner envie de vous appeler. Pour les commerces et les indépendants d’ici.',
-    ctaAppeler: 'Appeler',
-    ctaEcrire: 'Écrire un message',
-    ctaAussi: 'ou, si ça ne répond pas :',
-    mention: 'Devis gratuit · prix fixé avant de commencer',
-    preuves: ['Fait en Valais', 'Prix ferme, écrit d’avance', 'Vous gardez la main sur vos textes'],
+    // Sous le titre : un mot, puis les numéros. Le prix, la preuve et la façon
+    // de travailler ont chacun leur section plus bas — les répéter ici noyait
+    // le seul geste qu'on attend du visiteur : appeler.
+    ctaContact: 'Contactez-nous',
 
     // Trois situations, pas des statistiques : on ne cite aucun chiffre qu'on
     // ne pourrait pas prouver.

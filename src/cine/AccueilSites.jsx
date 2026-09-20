@@ -8,15 +8,6 @@ import { useTimelineMaitresse } from './useTimelineMaitresse'
 import { revelerBlocs, composerTitre, leverLeJour } from './animations'
 import { numerosDeContact } from './telephones'
 
-/** Une petite coche, pour les preuves et les listes. */
-function Coche({ className = '' }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 16 16" className={`w-4 h-4 flex-shrink-0 ${className}`}>
-      <path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
 /**
  * La page d'accueil — la création de sites internet.
  *
@@ -57,11 +48,9 @@ export default function AccueilSites() {
     return () => defaire.forEach(f => f?.())
   }, [pret, niveau, ancre])
 
-  // Deux numéros : celui de Tiago et celui de David. Le premier sert de bouton
-  // principal, le second est proposé juste dessous — on ne met pas deux boutons
-  // pleins côte à côte, qui se disputeraient l'œil sans rien dire de plus.
+  // Deux numéros : celui de Tiago et celui de David. Le premier est plein, le
+  // second en contour — deux boutons pleins côte à côte se disputeraient l'œil.
   const numeros = numerosDeContact(contact)
-  const [principal, ...autres] = numeros
   const mailto = contact?.email ? `mailto:${contact.email}?subject=Site%20internet` : null
 
   return (
@@ -80,34 +69,24 @@ export default function AccueilSites() {
             </h1>
             <p className="cine-intro mt-7">{s.intro}</p>
 
-            <div className="mt-10 flex flex-wrap items-center gap-3">
-              {principal && (
-                <a href={principal.href} className="cine-bouton cine-bouton--plein">
-                  {s.ctaAppeler} — {principal.numero}
-                </a>
-              )}
-              {mailto && (
-                <a href={mailto} className="cine-bouton cine-bouton--fantome">{s.ctaEcrire}</a>
-              )}
-            </div>
-            {autres.length > 0 && (
-              <p className="mt-4 text-sm text-[var(--gris-clair)]">
-                {s.ctaAussi}{' '}
-                {autres.map(({ numero, href }) => (
-                  <a key={numero} href={href} className="underline underline-offset-4 hover:text-white whitespace-nowrap">{numero}</a>
-                ))}
-              </p>
+            {/* Les deux numéros, à poids égal : celui qui appelle le soir veut
+                une deuxième chance de tomber sur quelqu'un. */}
+            {numeros.length > 0 && (
+              <div className="mt-10">
+                <p className="cine-oeil">{s.ctaContact}</p>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  {numeros.map(({ numero, href }, i) => (
+                    <a
+                      key={numero}
+                      href={href}
+                      className={`cine-bouton ${i === 0 ? 'cine-bouton--plein' : 'cine-bouton--fantome'}`}
+                    >
+                      {numero}
+                    </a>
+                  ))}
+                </div>
+              </div>
             )}
-            <p className="mt-2 text-sm text-[var(--gris)]">{s.mention}</p>
-
-            <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--gris-clair)]">
-              {s.preuves.map(p => (
-                <li key={p} className="flex items-center gap-2">
-                  <Coche className="text-[var(--turquoise)]" />
-                  {p}
-                </li>
-              ))}
-            </ul>
           </div>
 
           <div className="relative hidden md:block">
