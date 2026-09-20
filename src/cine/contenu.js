@@ -49,7 +49,7 @@ export const FR = {
     problemeIntro: 'Quelqu’un cherche votre métier dans votre région, ce soir, sur son téléphone. S’il ne tombe pas sur vous, il tombe sur un concurrent.',
     problemePoints: [
       { titre: 'Pas de site', texte: 'On vous cherche par votre nom, on ne trouve rien. Le doute suffit à faire passer au suivant.' },
-      { titre: 'Une page figée', texte: 'Une page Facebook dont la dernière publication date de deux ans, avec un horaire qui n’est plus le bon.' },
+      { titre: 'Une page figée', texte: 'Une page Facebook ou Instagram dont la dernière publication date de deux ans. Ce n’est plus possible !' },
       { titre: 'Illisible sur mobile', texte: 'Un vieux site qu’il faut agrandir des doigts pour lire, et un numéro qu’on ne peut pas appuyer.' },
     ],
 
