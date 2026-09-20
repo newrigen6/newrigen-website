@@ -71,7 +71,7 @@ export const FR = {
     etapesTitre: 'De la première discussion\nà la mise en ligne',
     etapes: [
       { titre: 'Nous nous rencontrons', texte: 'En présentiel ou au téléphone, pour définir vos besoins.' },
-      { titre: 'On vous chiffre', texte: 'Un prix ferme, écrit, avant de commencer. Pas de supplément découvert en route.' },
+      { titre: 'Le prix', texte: 'Le prix est ferme et devisé. Pas de supplément découvert en cours de route.' },
       { titre: 'On écrit et on dessine', texte: 'Les textes, les images, la mise en page. Vous relisez, on corrige.' },
       { titre: 'Vous êtes en ligne', texte: 'Votre adresse, votre fiche Google, et la main sur vos textes pour les changer vous-même.' },
     ],
