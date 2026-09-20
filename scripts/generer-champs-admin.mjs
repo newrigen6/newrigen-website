@@ -5,14 +5,14 @@ import { writeFileSync } from 'node:fs'
 
 const SECTIONS = {
   nav:       'Menu',
-  hero:      'Accueil — le héros',
-  probleme:  'Accueil — le problème',
-  produit:   'Accueil — le logiciel',
-  fonctions: 'Accueil — les fonctions',
-  sites:     'Accueil — l’offre sites internet',
-  confiance: 'Accueil — la confiance',
-  offre:     'Accueil — les tarifs',
-  pageSites: 'Page « Sites internet »',
+  site:      'Accueil — sites internet',
+  hero:      'Page logiciel — le héros',
+  probleme:  'Page logiciel — le problème',
+  produit:   'Page logiciel — le produit',
+  fonctions: 'Page logiciel — les fonctions',
+  sites:     'Page logiciel — renvoi vers les sites',
+  confiance: 'Page logiciel — la confiance',
+  offre:     'Page logiciel — les tarifs',
   pied:      'Pied de page',
 }
 const NOMS = {
@@ -30,8 +30,15 @@ const NOMS = {
   preuveOeil: 'Preuve — surtitre', preuveTitre: 'Preuve — titre', preuveTexte: 'Preuve — texte',
   prixOeil: 'Prix — surtitre', prixTitre: 'Prix — titre',
   contactTitre: 'Encadré contact — titre', contactTexte: 'Encadré contact — texte',
+  problemeOeil: 'Le problème — surtitre', problemeTitre: 'Le problème — titre',
+  problemeIntro: 'Le problème — introduction',
+  pourQuiOeil: 'Pour qui — surtitre', pourQuiTitre: 'Pour qui — titre', pourQuiIntro: 'Pour qui — introduction',
+  logicielOeil: 'Renvoi logiciel — surtitre', logicielTitre: 'Renvoi logiciel — titre',
+  logicielTexte: 'Renvoi logiciel — texte', logicielCta: 'Renvoi logiciel — bouton',
+  prixTexte: 'Prix — texte', devis: 'Bouton « demander un devis »',
 }
-const LISTES = { preuves: 'Preuve', points: 'Point', etapes: 'Étape', liste: 'Fonction', packs: 'Pack' }
+const LISTES = { preuves: 'Preuve', points: 'Point', etapes: 'Étape', liste: 'Fonction', packs: 'Pack',
+  problemePoints: 'Situation', metiers: 'Métier' }
 const TECHNIQUES = new Set(['cle', 'miseEnAvant'])
 
 const champs = []

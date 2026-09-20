@@ -74,8 +74,8 @@ export default function CineLayout() {
           </Link>
 
           <nav aria-label="Navigation principale" className="hidden md:flex items-center gap-1">
-            <NavLink to="/" end className={lienNav}>{t.nav.logiciel}</NavLink>
-            <NavLink to="/sites-internet" className={lienNav}>{t.nav.sites}</NavLink>
+            <NavLink to="/" end className={lienNav}>{t.nav.sites}</NavLink>
+            <NavLink to="/logiciel" className={lienNav}>{t.nav.logiciel}</NavLink>
             <NavLink to="/tarifs" className={lienNav}>{t.nav.tarifs}</NavLink>
           </nav>
 
@@ -86,9 +86,11 @@ export default function CineLayout() {
             >
               {t.nav.connexion}
             </a>
-            <Link to="/tarifs" className="hidden sm:inline-flex cine-bouton cine-bouton--plein !min-h-0 !py-2.5 !px-5 !text-sm">
-              {t.nav.essai}
-            </Link>
+            {/* Le bouton d'en-tete sert l'offre principale : un devis de
+                site, pas l'essai du logiciel. */}
+            <a href="#devis" className="hidden sm:inline-flex cine-bouton cine-bouton--plein !min-h-0 !py-2.5 !px-5 !text-sm">
+              {t.nav.devis}
+            </a>
 
             {/* Le menu du téléphone. Avant, la navigation était simplement
                 masquée sous 768 px : sur mobile, rien ne menait aux sites
@@ -118,8 +120,8 @@ export default function CineLayout() {
           >
             <div className="cine-conteneur py-6 flex flex-col">
               {[
-                { to: '/', label: t.nav.logiciel, end: true },
-                { to: '/sites-internet', label: t.nav.sites },
+                { to: '/', label: t.nav.sites, end: true },
+                { to: '/logiciel', label: t.nav.logiciel },
                 { to: '/tarifs', label: t.nav.tarifs },
               ].map(l => (
                 <NavLink
@@ -134,7 +136,7 @@ export default function CineLayout() {
                 </NavLink>
               ))}
               <div className="mt-6 grid gap-3">
-                <Link to="/tarifs" className="cine-bouton cine-bouton--plein w-full">{t.nav.essai}</Link>
+                <a href="#devis" className="cine-bouton cine-bouton--plein w-full">{t.nav.devis}</a>
                 <a href="https://app.newrigen.ch" className="cine-bouton cine-bouton--fantome w-full">{t.nav.connexion}</a>
               </div>
             </div>

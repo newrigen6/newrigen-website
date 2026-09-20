@@ -12,11 +12,11 @@ verifier('sans surcharge, le contenu d’origine est rendu tel quel',
 const c = contenuPourLangue('fr', {
   'cine.hero.titre1': 'Le devis file',
   'cine.probleme.points.2.chiffre': '1 oubli',
-  'cine.pageSites.etapes.0.titre': 'On boit un café',
+  'cine.site.etapes.0.titre': 'On boit un café',
 })
 verifier('un texte simple est remplacé', c.hero.titre1 === 'Le devis file', c.hero.titre1)
 verifier('un texte dans une liste est remplacé', c.probleme.points[2].chiffre === '1 oubli')
-verifier('un texte de la page sites est remplacé', c.pageSites.etapes[0].titre === 'On boit un café')
+verifier('un texte de l’accueil sites est remplacé', c.site.etapes[0].titre === 'On boit un café')
 verifier('les textes voisins ne bougent pas', c.hero.titre2 === FR.hero.titre2 && c.probleme.points[1].chiffre === FR.probleme.points[1].chiffre)
 verifier('l’original n’est jamais modifié', FR.hero.titre1 === 'Le devis part', FR.hero.titre1)
 

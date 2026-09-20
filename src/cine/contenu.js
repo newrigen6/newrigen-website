@@ -7,21 +7,94 @@
  * mieux qu'un site à moitié en anglais — et les prix continuent de venir de
  * l'admin, jamais d'une valeur figée dans une page.
  *
- * Deux offres cohabitent, et l'ordre compte : le logiciel se vend seul, à prix
- * affiché ; les sites internet se vendent sur mesure, après une conversation.
- * Mélanger les deux entonnoirs perdrait les deux.
+ * Deux offres cohabitent, et l'ordre compte. Depuis le 20.09.2026, la création
+ * de sites internet est l'offre principale : c'est elle qui occupe la page
+ * d'accueil, et elle s'adresse à TOUS les commerces — coiffure, restaurant,
+ * onglerie, garage, bâtiment. Le logiciel de devis reste vendu, sur sa propre
+ * page, au seul métier pour lequel il est fait.
+ *
+ * Les deux entonnoirs ne se mélangent pas : un site se chiffre après une
+ * conversation, le logiciel se souscrit seul à prix affiché.
  */
 
 export const FR = {
   marque: 'Newrigen',
 
   nav: {
-    logiciel: 'Le logiciel',
     sites: 'Sites internet',
+    logiciel: 'Logiciel devis',
     tarifs: 'Tarifs',
     connexion: 'Connexion',
     essai: 'Essai gratuit',
+    devis: 'Demander un devis',
   },
+
+  // ══ LA PAGE D'ACCUEIL — création de sites internet ══════════════════════
+  // Le récit est celui de la publicité du 18.09 : on vous cherche, on ne vous
+  // trouve pas… puis ils vous appellent. Même histoire à l'écran et en vidéo.
+  site: {
+    oeil: 'Création de sites internet · Valais',
+    titre1: 'On vous cherche.',
+    titre2: 'On ne vous trouve pas.',
+    intro: 'On crée le site qui vous rend visible : rapide sur téléphone, trouvable sur Google, et écrit pour donner envie de vous appeler. Pour les commerces et les indépendants d’ici.',
+    ctaAppeler: 'Appeler',
+    ctaEcrire: 'Écrire un message',
+    mention: 'Devis gratuit · prix fixé avant de commencer',
+    preuves: ['Fait en Valais', 'Prix ferme, écrit d’avance', 'Vous gardez la main sur vos textes'],
+
+    // Trois situations, pas des statistiques : on ne cite aucun chiffre qu'on
+    // ne pourrait pas prouver.
+    problemeOeil: 'Aujourd’hui',
+    problemeTitre: 'Introuvable,\nou pire : mal trouvé',
+    problemeIntro: 'Quelqu’un cherche votre métier dans votre région, ce soir, sur son téléphone. S’il ne tombe pas sur vous, il tombe sur un concurrent.',
+    problemePoints: [
+      { titre: 'Pas de site', texte: 'On vous cherche par votre nom, on ne trouve rien. Le doute suffit à faire passer au suivant.' },
+      { titre: 'Une page figée', texte: 'Une page Facebook dont la dernière publication date de deux ans, avec un horaire qui n’est plus le bon.' },
+      { titre: 'Illisible sur mobile', texte: 'Un vieux site qu’il faut agrandir des doigts pour lire, et un numéro qu’on ne peut pas appuyer.' },
+    ],
+
+    faitOeil: 'Ce qu’on fait',
+    faitTitre: 'Quatre choses,\net rien d’autre',
+    points: [
+      'Écrit et dessiné sur mesure, pas un modèle rempli',
+      'Rapide sur un téléphone en 4G, parce que c’est là qu’on vous lira',
+      'Trouvable sur Google pour votre métier et votre région',
+      'Vous modifiez vos textes vous-même, sans nous rappeler',
+    ],
+
+    pourQuiOeil: 'Pour qui',
+    pourQuiTitre: 'Tous les commerces,\npas seulement le bâtiment',
+    pourQuiIntro: 'Si vos clients vous cherchent sur leur téléphone, vous avez besoin d’un site. Le métier ne change rien à cela.',
+    metiers: ['Coiffure et esthétique', 'Restaurant et café', 'Onglerie et institut', 'Garage et carrosserie', 'Artisans du bâtiment', 'Santé et thérapies', 'Commerce de proximité', 'Indépendants et services'],
+
+    etapesOeil: 'Comment ça se passe',
+    etapesTitre: 'De la première discussion\nà la mise en ligne',
+    etapes: [
+      { titre: 'On se voit', texte: 'Vingt minutes, chez vous ou au téléphone. Vous nous dites ce que vous faites et à qui vous voulez parler.' },
+      { titre: 'On vous chiffre', texte: 'Un prix ferme, écrit, avant de commencer. Pas de supplément découvert en route.' },
+      { titre: 'On écrit et on dessine', texte: 'Les textes, les images, la mise en page. Vous relisez, on corrige.' },
+      { titre: 'Vous êtes en ligne', texte: 'Votre adresse, votre fiche Google, et la main sur vos textes pour les changer vous-même.' },
+    ],
+
+    preuveOeil: 'La preuve',
+    preuveTitre: 'Vous êtes dessus',
+    preuveTexte: 'Ce site est le nôtre, écrit et dessiné par nous. Jugez la vitesse, la lisibilité sur votre téléphone et le soin des détails — sans qu’on ait à vous montrer un portfolio.',
+
+    // Le renvoi vers le logiciel : discret, et seulement pour ceux que ça
+    // concerne. Mis en avant, il brouillerait l'offre principale.
+    logicielOeil: 'Aussi',
+    logicielTitre: 'Vous êtes dans le bâtiment ?',
+    logicielTexte: 'On édite aussi Newrigen, un logiciel suisse de devis, de suivi de chantier et de facturation QR pour les entreprises du bâtiment.',
+    logicielCta: 'Voir le logiciel',
+
+    prixOeil: 'Le prix',
+    prixTitre: 'Sur demande,\nparce que ça dépend de vous',
+    prixTexte: 'Le prix dépend de ce qu’il vous faut : une page qui vous rend joignable, ou un site complet avec vos réalisations. On en discute, on vous chiffre, vous décidez.',
+    contactTitre: 'Parlons de votre site',
+    contactTexte: 'Un appel suffit pour savoir ce qu’il vous faut.',
+  },
+
+  // ══ LA PAGE DU LOGICIEL ═════════════════════════════════════════════════
 
   // ── Acte 1 — le héros ────────────────────────────────────────────────────
   // Visible dès la première image, avant toute animation : ce que c'est, pour
@@ -91,21 +164,21 @@ export const FR = {
     ],
   },
 
-  // ── Acte 5 — la deuxième offre ───────────────────────────────────────────
-  // Le site qu'on est en train de regarder est le seul argument dont cette
-  // offre a besoin. On le dit franchement au lieu de montrer un portfolio.
+  // ── Acte 5 — le renvoi vers l'offre principale ───────────────────────────
+  // Le visiteur du logiciel est un artisan : il a souvent besoin d'un site
+  // aussi. Le renvoi est court — cette page-ci vend le logiciel.
   sites: {
-    oeil: 'Sites internet',
-    titre: 'Et si votre entreprise\nn’a pas de site ?',
-    intro: 'On les fait aussi. Celui que vous êtes en train de regarder, c’est nous — c’est le seul exemple qu’on ait besoin de vous montrer.',
+    oeil: 'Et aussi',
+    titre: 'Votre entreprise\nn’a pas de site ?',
+    intro: 'C’est notre autre métier. On crée des sites pour les commerces et les indépendants d’ici — celui que vous êtes en train de lire, c’est nous.',
     points: [
       'Écrit et dessiné sur mesure, pas un modèle rempli',
       'Rapide sur un téléphone en 4G, parce que c’est là qu’on vous lira',
       'Trouvable sur Google pour votre métier et votre région',
-      'Vous pouvez modifier vos textes vous-même, sans nous rappeler',
+      'Vous modifiez vos textes vous-même, sans nous rappeler',
     ],
-    prix: 'Le prix dépend de ce qu’il vous faut : une page qui vous rend joignable, ou un site complet avec vos réalisations. On en discute, on vous chiffre, vous décidez.',
-    cta: 'Demander un devis',
+    prix: 'Le prix dépend de ce qu’il vous faut. On en discute, on vous chiffre, vous décidez.',
+    cta: 'Voir l’offre',
   },
 
   // ── Acte 6 — la confiance ────────────────────────────────────────────────
@@ -142,35 +215,8 @@ export const FR = {
     ctaSecondaire: 'Voir le détail des packs',
   },
 
-  // ── La page « sites internet » ─────────────────────────────────────────
-  // Ses textes étaient écrits dans le composant : ils vivent ici pour pouvoir
-  // être modifiés depuis l'admin comme ceux de l'accueil.
-  pageSites: {
-    titre1: 'Votre métier mérite',
-    titre2: 'mieux qu’une page Facebook',
-    ctaAppeler: 'Appeler',
-    ctaEcrire: 'Écrire un message',
-    faitOeil: 'Ce qu’on fait',
-    faitTitre: 'Quatre choses,\net rien d’autre',
-    etapesOeil: 'Comment ça se passe',
-    etapesTitre: 'De la première discussion\nà la mise en ligne',
-    etapes: [
-      { titre: 'On se voit', texte: 'Vingt minutes, chez vous ou au téléphone. Vous nous dites ce que vous faites et à qui vous voulez parler.' },
-      { titre: 'On vous chiffre', texte: 'Un prix ferme, écrit, avant de commencer. Pas de supplément découvert en route.' },
-      { titre: 'On écrit et on dessine', texte: 'Les textes, les images, la mise en page. Vous relisez, on corrige.' },
-      { titre: 'Vous êtes en ligne', texte: 'Votre adresse, votre fiche Google, et la main sur vos textes pour les changer vous-même.' },
-    ],
-    preuveOeil: 'La preuve',
-    preuveTitre: 'Vous êtes dessus',
-    preuveTexte: 'Ce site est le nôtre, écrit et dessiné par nous. Jugez la vitesse, la lisibilité sur votre téléphone et le soin des détails — sans qu’on ait à vous montrer un portfolio.',
-    prixOeil: 'Le prix',
-    prixTitre: 'Sur demande,\nparce que ça dépend de vous',
-    contactTitre: 'Parlons de votre site',
-    contactTexte: 'Un appel suffit pour savoir ce qu’il vous faut.',
-  },
-
   pied: {
-    baseline: 'Devis, chantiers et facturation pour les artisans suisses.',
+    baseline: 'Sites internet pour les commerces d’ici, et un logiciel de devis pour le bâtiment.',
     contact: 'Nous joindre',
     mentions: 'Mentions légales',
     confidentialite: 'Confidentialité',

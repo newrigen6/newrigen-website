@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, ChevronRight, Instagram, Facebook } from 'lucide-react'
 import { useSiteContent } from './content/SiteContent'
 import { useModuleTiers } from './content/moduleTiers'
@@ -9,7 +9,7 @@ import { useT } from './i18n'
 import { montant } from './lib/montant'
 import CineLayout from './cine/CineLayout'
 import CineAccueil from './cine/Accueil'
-import CineSitesInternet from './cine/SitesInternet'
+import CineAccueilSites from './cine/AccueilSites'
 
 const TEAL_PACKS = '#4DD9D9'
 
@@ -622,9 +622,16 @@ export default function App() {
               une animation ratee coute de l'effet, une regression sur le
               paiement coute des clients. */}
           <Route element={<CineLayout />}>
-            <Route path="/" element={<CineAccueil />} />
-            <Route path="/sites-internet" element={<CineSitesInternet />} />
+            {/* La creation de sites est l'offre principale : elle prend
+                l'accueil. Le logiciel garde sa page, pour le seul metier a
+                qui il s'adresse. */}
+            <Route path="/" element={<CineAccueilSites />} />
+            <Route path="/logiciel" element={<CineAccueil />} />
           </Route>
+
+          {/* L'ancienne adresse de l'offre, indexee depuis le 17.09 : elle
+              mene a l'accueil plutot qu'a une page morte. */}
+          <Route path="/sites-internet" element={<Navigate to="/" replace />} />
 
           {/* L'ancienne page reste accessible tant que la refonte n'est pas
               validee — de quoi comparer sans avoir a changer de branche. */}

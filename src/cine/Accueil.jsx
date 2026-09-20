@@ -4,6 +4,7 @@ import { useT } from '../i18n'
 import { useSiteContent } from '../content/SiteContent'
 import { montant } from '../lib/montant'
 import { useContenu } from './useContenu'
+import { useTitre } from './useTitre'
 import { Acte, Oeil } from './composants/Acte'
 import {
   CarteDevis, VignetteDevis, VignetteEquipe, VignetteFacture, VignetteMarge, CadreNavigateur,
@@ -49,6 +50,14 @@ export default function Accueil() {
   const t = useContenu()
   const { prix } = useSiteContent()
   const { niveau, pret, ancre } = useTimelineMaitresse()
+
+  // La page d'accueil vend désormais les sites internet : celle-ci a son
+  // propre titre, sinon les deux se concurrenceraient dans les résultats de
+  // recherche au lieu de s'ajouter.
+  useTitre(
+    'Logiciel de devis et facturation pour artisans suisses — Newrigen',
+    'Devis sur le chantier, heures des employés, QR-facture suisse et marge en direct. Logiciel suisse pour les entreprises du bâtiment, dès 17.90 CHF/mois.',
+  )
 
   const page = useRef(null)
   const titre = useRef(null)
@@ -337,7 +346,7 @@ export default function Accueil() {
             <div className="flex-1 rounded-[var(--rayon-large)] p-7 flex flex-col justify-between gap-6 bg-[var(--turquoise)] text-[var(--nuit)]" data-revele>
               <p className="font-semibold leading-relaxed">{t.sites.prix}</p>
               <Link
-                to="/sites-internet"
+                to="/"
                 className="self-start cine-bouton !bg-[var(--nuit)] !text-white hover:!bg-[var(--ardoise)]"
               >
                 {t.sites.cta}
