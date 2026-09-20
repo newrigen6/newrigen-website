@@ -183,7 +183,7 @@ export default function CineLayout() {
         </div>
 
         <div className="cine-conteneur pb-10 text-xs text-[var(--gris)]">
-          © {new Date().getFullYear()} {t.marque} · Conthey, Valais · Hébergé en Suisse
+          © {new Date().getFullYear()} {t.marque} · Conthey, Valais
         </div>
       </footer>
     </>
