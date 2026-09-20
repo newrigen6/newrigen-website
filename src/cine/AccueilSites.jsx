@@ -48,8 +48,8 @@ export default function AccueilSites() {
     return () => defaire.forEach(f => f?.())
   }, [pret, niveau, ancre])
 
-  // Deux numéros : celui de Tiago et celui de David. Le premier est plein, le
-  // second en contour — deux boutons pleins côte à côte se disputeraient l'œil.
+  // Deux numéros : celui de Tiago et celui de David, présentés à l'identique.
+  // Aucun des deux n'est « le bon » — on appelle celui qu'on veut.
   const numeros = numerosDeContact(contact)
   const mailto = contact?.email ? `mailto:${contact.email}?subject=Site%20internet` : null
 
@@ -75,12 +75,8 @@ export default function AccueilSites() {
               <div className="mt-10">
                 <p className="cine-oeil">{s.ctaContact}</p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
-                  {numeros.map(({ numero, href }, i) => (
-                    <a
-                      key={numero}
-                      href={href}
-                      className={`cine-bouton ${i === 0 ? 'cine-bouton--plein' : 'cine-bouton--fantome'}`}
-                    >
+                  {numeros.map(({ numero, href }) => (
+                    <a key={numero} href={href} className="cine-bouton cine-bouton--plein">
                       {numero}
                     </a>
                   ))}
