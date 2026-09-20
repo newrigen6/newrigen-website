@@ -55,10 +55,10 @@ export const FR = {
     ],
 
     faitOeil: 'Ce qu’on fait',
-    faitTitre: '4 choses,\net rien d’autre',
+    faitTitre: '4 choses',
     points: [
       'Prendre connaissance de vos besoins',
-      'Écrire et dessiner sur mesure',
+      'Écrire et designer sur mesure',
       'Publier sur Google pour votre métier et votre région',
       'Trouvable sur internet, et adapté à l’ordinateur, à la tablette et au téléphone',
     ],
