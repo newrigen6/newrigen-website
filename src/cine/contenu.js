@@ -55,7 +55,7 @@ export const FR = {
     ],
 
     faitOeil: 'Ce qu’on fait',
-    faitTitre: 'Quatre choses,\net rien d’autre',
+    faitTitre: '4 choses,\net rien d’autre',
     points: [
       'Écrit et dessiné sur mesure, pas un modèle rempli',
       'Rapide sur un téléphone en 4G, parce que c’est là qu’on vous lira',
