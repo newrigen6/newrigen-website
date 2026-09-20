@@ -33,7 +33,7 @@ export const FR = {
   // Le récit est celui de la publicité du 18.09 : on vous cherche, on ne vous
   // trouve pas… puis ils vous appellent. Même histoire à l'écran et en vidéo.
   site: {
-    oeil: 'Création de sites internet · Valais',
+    oeil: 'Création de sites internet',
     titre1: 'On vous cherche.',
     titre2: 'On ne vous trouve pas.',
     intro: 'On crée le site qui vous rend visible : rapide sur téléphone, trouvable sur Google, et écrit pour donner envie de vous appeler. Pour les commerces et les indépendants d’ici.',
