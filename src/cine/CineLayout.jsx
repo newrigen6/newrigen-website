@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useSiteContent } from '../content/SiteContent'
 import { useContenu } from './useContenu'
+import { numerosDeContact } from './telephones'
 import './tokens.css'
 
 /**
@@ -168,9 +169,9 @@ export default function CineLayout() {
             {contenu.contact?.email && (
               <p><a className="text-[var(--gris-clair)] hover:text-white" href={`mailto:${contenu.contact.email}`}>{contenu.contact.email}</a></p>
             )}
-            {contenu.contact?.telephone1 && (
-              <p><a className="text-[var(--gris-clair)] hover:text-white" href={`tel:${String(contenu.contact.telephone1).replace(/\s/g, '')}`}>{contenu.contact.telephone1}</a></p>
-            )}
+            {numerosDeContact(contenu.contact).map(({ numero, href }) => (
+              <p key={numero}><a className="text-[var(--gris-clair)] hover:text-white" href={href}>{numero}</a></p>
+            ))}
           </div>
 
           <nav aria-label="Informations légales" className="text-sm space-y-1.5">

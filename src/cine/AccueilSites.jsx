@@ -6,6 +6,7 @@ import { Acte, Oeil } from './composants/Acte'
 import { CadreNavigateur } from './composants/Vignettes'
 import { useTimelineMaitresse } from './useTimelineMaitresse'
 import { revelerBlocs, composerTitre, leverLeJour } from './animations'
+import { numerosDeContact } from './telephones'
 
 /** Une petite coche, pour les preuves et les listes. */
 function Coche({ className = '' }) {
@@ -56,8 +57,11 @@ export default function AccueilSites() {
     return () => defaire.forEach(f => f?.())
   }, [pret, niveau, ancre])
 
-  const tel = contact?.telephone1
-  const telBrut = tel ? String(tel).replace(/\s/g, '') : null
+  // Deux numéros : celui de Tiago et celui de David. Le premier sert de bouton
+  // principal, le second est proposé juste dessous — on ne met pas deux boutons
+  // pleins côte à côte, qui se disputeraient l'œil sans rien dire de plus.
+  const numeros = numerosDeContact(contact)
+  const [principal, ...autres] = numeros
   const mailto = contact?.email ? `mailto:${contact.email}?subject=Site%20internet` : null
 
   return (
@@ -77,16 +81,24 @@ export default function AccueilSites() {
             <p className="cine-intro mt-7">{s.intro}</p>
 
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              {telBrut && (
-                <a href={`tel:${telBrut}`} className="cine-bouton cine-bouton--plein">
-                  {s.ctaAppeler} — {tel}
+              {principal && (
+                <a href={principal.href} className="cine-bouton cine-bouton--plein">
+                  {s.ctaAppeler} — {principal.numero}
                 </a>
               )}
               {mailto && (
                 <a href={mailto} className="cine-bouton cine-bouton--fantome">{s.ctaEcrire}</a>
               )}
             </div>
-            <p className="mt-4 text-sm text-[var(--gris)]">{s.mention}</p>
+            {autres.length > 0 && (
+              <p className="mt-4 text-sm text-[var(--gris-clair)]">
+                {s.ctaAussi}{' '}
+                {autres.map(({ numero, href }) => (
+                  <a key={numero} href={href} className="underline underline-offset-4 hover:text-white whitespace-nowrap">{numero}</a>
+                ))}
+              </p>
+            )}
+            <p className="mt-2 text-sm text-[var(--gris)]">{s.mention}</p>
 
             <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--gris-clair)]">
               {s.preuves.map(p => (
@@ -242,7 +254,15 @@ export default function AccueilSites() {
             <p className="cine-titre text-2xl">{s.contactTitre}</p>
             <p className="mt-2 text-[var(--gris-clair)]">{s.contactTexte}</p>
             <div className="mt-8 grid gap-3">
-              {telBrut && <a href={`tel:${telBrut}`} className="cine-bouton cine-bouton--plein w-full">{tel}</a>}
+              {numeros.map(({ numero, href }, i) => (
+                <a
+                  key={numero}
+                  href={href}
+                  className={`cine-bouton w-full ${i === 0 ? 'cine-bouton--plein' : 'cine-bouton--fantome'}`}
+                >
+                  {numero}
+                </a>
+              ))}
               {mailto && (
                 <a href={mailto} className="cine-bouton cine-bouton--fantome w-full">{contact.email}</a>
               )}

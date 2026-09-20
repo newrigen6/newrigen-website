@@ -8,6 +8,7 @@ import { useT, useLangue } from '../i18n'
 import SelecteurLangue from '../components/SelecteurLangue'
 import { useModuleTiers } from '../content/moduleTiers'
 import { montant } from '../lib/montant'
+import { numerosDeContact } from '../cine/telephones'
 
 const TEAL = '#4DD9D9'
 
@@ -216,7 +217,7 @@ export default function Tarifs() {
   const { langue } = useLangue()
   const [interval, setInterval] = useState('mensuel')
   const [selected, setSelected] = useState(null)
-  const { prix } = useSiteContent()
+  const { prix, contact } = useSiteContent()
   const liveModules = useModuleTiers()
 
   // Prix + fonctionnalités pilotés depuis l'admin (repli sur les valeurs codées en dur
@@ -413,9 +414,15 @@ export default function Tarifs() {
           {/* Note bas */}
           <p className="text-center text-slate-500 text-sm mt-8">
             {t('tarifs.questions')}{' '}
-            <a href="mailto:info@newrigen.ch" className="hover:text-white transition-colors" style={{ color: TEAL }}>
-              info@newrigen.ch
+            <a href={`mailto:${contact.email}`} className="hover:text-white transition-colors" style={{ color: TEAL }}>
+              {contact.email}
             </a>
+            {numerosDeContact(contact).map(({ numero, href }) => (
+              <span key={numero}>
+                {' · '}
+                <a href={href} className="hover:text-white transition-colors" style={{ color: TEAL }}>{numero}</a>
+              </span>
+            ))}
           </p>
         </div>
       </div>

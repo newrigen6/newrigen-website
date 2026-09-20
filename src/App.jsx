@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
-import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, ChevronRight, Instagram, Facebook } from 'lucide-react'
+import { Menu, X, Check, ArrowRight, Zap, Brain, Workflow, LineChart, Star, MapPin, Mail, Phone, ChevronRight, Instagram, Facebook } from 'lucide-react'
 import { useSiteContent } from './content/SiteContent'
+import { numerosDeContact } from './cine/telephones'
 import { useModuleTiers } from './content/moduleTiers'
 import dashboardScreenshot from './assets/dashboard-screenshot.jpg'
 import SelecteurLangue from './components/SelecteurLangue'
@@ -494,6 +495,11 @@ function Contact() {
               <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
                 <Mail className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{contact.email}
               </a>
+              {numerosDeContact(contact).map(({ numero, href }) => (
+                <a key={numero} href={href} className="flex items-center gap-3 text-slate-300 hover:text-white transition-colors">
+                  <Phone className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{numero}
+                </a>
+              ))}
               <span className="flex items-center gap-3 text-slate-300">
                 <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />{t('contact.region')}
               </span>

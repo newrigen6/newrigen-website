@@ -39,6 +39,7 @@ export const FR = {
     intro: 'On crée le site qui vous rend visible : rapide sur téléphone, trouvable sur Google, et écrit pour donner envie de vous appeler. Pour les commerces et les indépendants d’ici.',
     ctaAppeler: 'Appeler',
     ctaEcrire: 'Écrire un message',
+    ctaAussi: 'ou, si ça ne répond pas :',
     mention: 'Devis gratuit · prix fixé avant de commencer',
     preuves: ['Fait en Valais', 'Prix ferme, écrit d’avance', 'Vous gardez la main sur vos textes'],
 

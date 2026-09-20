@@ -9,10 +9,14 @@ const TEAL = '#4DD9D9'
 // Pas de numéro IDE : Newrigen n'est pas encore inscrite au registre du
 // commerce. Mieux vaut ne rien afficher qu'un numéro faux ou un champ à trous.
 // À ajouter ici (et dans la rubrique « Éditeur du site ») après l'inscription.
+// Volontairement écrits en dur, et non repris de l'admin : l'identification de
+// l'éditeur est une obligation légale, elle ne doit pas pouvoir disparaître de
+// la page parce qu'un champ a été vidé par mégarde dans l'onglet « Site web ».
 const ENTREPRISE = {
   nom: 'Newrigen',
   adresse: 'Valais, Suisse',
   email: 'info@newrigen.ch',
+  telephones: ['079 324 65 93', '079 873 37 91'],
 }
 
 function LegalLayout({ title, updated, children }) {
@@ -64,7 +68,14 @@ export function MentionsLegales() {
         <p className="mt-2">
           {ENTREPRISE.nom}<br />
           {ENTREPRISE.adresse}<br />
-          Email : <a href={`mailto:${ENTREPRISE.email}`} className="underline hover:text-white">{ENTREPRISE.email}</a>
+          Email : <a href={`mailto:${ENTREPRISE.email}`} className="underline hover:text-white">{ENTREPRISE.email}</a><br />
+          Téléphone :{' '}
+          {ENTREPRISE.telephones.map((numero, i) => (
+            <span key={numero}>
+              {i > 0 && ' · '}
+              <a href={`tel:${numero.replace(/\s/g, '')}`} className="underline hover:text-white">{numero}</a>
+            </span>
+          ))}
         </p>
       </section>
       <section>
