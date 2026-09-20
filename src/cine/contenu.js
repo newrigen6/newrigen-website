@@ -54,7 +54,7 @@ export const FR = {
       { titre: 'Illisible sur mobile', texte: 'Un ancien site qu’il faut agrandir avec ses doigts tant les écritures sont illisibles, et où les liens ne fonctionnent pas. Changer cela !' },
     ],
 
-    faitOeil: 'Ce qu’on fait',
+    faitOeil: 'Les essentiels',
     faitTitre: '4 choses',
     points: [
       'Un prix ferme et devisé, avant de commencer',
