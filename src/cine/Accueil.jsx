@@ -157,14 +157,6 @@ export default function Accueil() {
             </div>
             <p className="mt-4 text-sm text-[var(--gris)]">{t.hero.mention}</p>
 
-            <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--gris-clair)]">
-              {t.hero.preuves.map(p => (
-                <li key={p} className="flex items-center gap-2">
-                  <Coche className="text-[var(--turquoise)]" />
-                  {p}
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* La carte flotte sur la photo, légèrement inclinée : elle montre le

@@ -106,7 +106,6 @@ export const FR = {
     mention: '1 mois offert · sans engagement',
     // Trois preuves vérifiables, rien d'autre : pas de note, pas de nombre de
     // clients qu'on ne pourrait pas montrer.
-    preuves: ['Fait en Valais', 'Hébergé en Suisse', 'QR-facture conforme'],
   },
 
   // ── Acte 2 — le problème ─────────────────────────────────────────────────
