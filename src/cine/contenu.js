@@ -161,22 +161,6 @@ export const FR = {
   },
 
   // ── Acte 5 — le renvoi vers l'offre principale ───────────────────────────
-  // Le visiteur du logiciel est un artisan : il a souvent besoin d'un site
-  // aussi. Le renvoi est court — cette page-ci vend le logiciel.
-  sites: {
-    oeil: 'Et aussi',
-    titre: 'Votre entreprise\nn’a pas de site ?',
-    intro: 'C’est notre autre métier. On crée des sites pour les commerces et les indépendants d’ici — celui que vous êtes en train de lire, c’est nous.',
-    points: [
-      'Écrit et dessiné sur mesure, pas un modèle rempli',
-      'Rapide sur un téléphone en 4G, parce que c’est là qu’on vous lira',
-      'Trouvable sur Google pour votre métier et votre région',
-      'Vous modifiez vos textes vous-même, sans nous rappeler',
-    ],
-    prix: 'Le prix dépend de ce qu’il vous faut. On en discute, on vous chiffre, vous décidez.',
-    cta: 'Voir l’offre',
-  },
-
   // ── Acte 6 — la confiance ────────────────────────────────────────────────
   confiance: {
     oeil: 'D’ici',

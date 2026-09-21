@@ -7,7 +7,7 @@ import { useContenu } from './useContenu'
 import { useTitre } from './useTitre'
 import { Acte, Oeil } from './composants/Acte'
 import {
-  CarteDevis, VignetteDevis, VignetteEquipe, VignetteFacture, VignetteMarge, CadreNavigateur,
+  CarteDevis, VignetteDevis, VignetteEquipe, VignetteFacture, VignetteMarge,
 } from './composants/Vignettes'
 import HeroFond from './HeroFond'
 import { useTimelineMaitresse } from './useTimelineMaitresse'
@@ -294,43 +294,6 @@ export default function Accueil() {
           </div>
         </div>
       </section>
-
-      {/* ── Acte 5 — la seconde offre ─────────────────────────────────────
-          Bento asymétrique : un grand bloc avec le cadre de navigateur, des
-          blocs d'arguments autour. Deux entonnoirs : un site se chiffre après
-          une conversation, il n'a pas le bouton d'essai du logiciel. */}
-      <Acte id="sites">
-        <div className="grid gap-5 lg:grid-cols-[1.55fr_1fr] items-stretch">
-          <div className="cine-carte p-8 md:p-10 relative overflow-hidden" data-revele>
-            <div className="cine-halo -bottom-40 -right-40" aria-hidden="true" />
-            <div className="relative">
-              <Oeil texte={t.sites.oeil} />
-              <h2 className="cine-h2 mt-6 whitespace-pre-line">{t.sites.titre}</h2>
-              <p className="cine-intro mt-6">{t.sites.intro}</p>
-              <CadreNavigateur className="mt-10 max-w-[560px]" />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-5">
-            {t.sites.points.map((p, i) => (
-              <div key={p} className="cine-carte cine-carte--vivante p-6 flex items-start gap-5" data-revele data-retard={0.08 + i * 0.07}>
-                <span className="cine-titre text-3xl leading-none text-[var(--turquoise)] cine-chiffres">{String(i + 1).padStart(2, '0')}</span>
-                <p className="text-white leading-snug pt-1">{p}</p>
-              </div>
-            ))}
-
-            <div className="flex-1 rounded-[var(--rayon-large)] p-7 flex flex-col justify-between gap-6 bg-[var(--turquoise)] text-[var(--nuit)]" data-revele>
-              <p className="font-semibold leading-relaxed">{t.sites.prix}</p>
-              <Link
-                to="/"
-                className="self-start cine-bouton !bg-[var(--nuit)] !text-white hover:!bg-[var(--ardoise)]"
-              >
-                {t.sites.cta}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </Acte>
 
       {/* ── Acte 6 — la confiance ─────────────────────────────────────────
           Bandeau centré, une phrase et trois preuves en ligne. Retour au calme
