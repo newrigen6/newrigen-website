@@ -5,6 +5,44 @@ import { useContenu } from './useContenu'
 import { numerosDeContact } from './telephones'
 import './tokens.css'
 
+/** Hauteur de l'en-tête fixe, qui recouvrirait le haut de la section visée. */
+const hauteurEntete = () => (window.innerWidth >= 1024 ? 80 : 64)
+
+/**
+ * Amène la page sur une ancre, d'où qu'on vienne.
+ *
+ * Deux raisons de ne pas s'en remettre au navigateur. React Router ne défile
+ * pas vers le fragment d'une URL : arriver sur « /#devis » depuis une autre
+ * page laissait le visiteur en haut de la page d'accueil. Et Lenis a pris la
+ * main sur le défilement, si bien qu'un simple saut d'ancre ne se voit pas.
+ *
+ * `immediat` sert à l'arrivée depuis une autre page. Une glissade douce y est
+ * avalée : changer de page détruit l'instance Lenis de la page quittée, en
+ * plein milieu de son animation. Le saut sec est aussi ce qu'on attend d'une
+ * navigation — la glissade est réservée au clic sur la page où l'on est déjà.
+ *
+ * Dans les deux cas la cible peut n'être pas encore montée, et sa position
+ * bouger encore une fois montée (images, sections révélées au défilement) :
+ * on repointe à chaque image jusqu'à y être, et on renonce au bout de deux
+ * secondes plutôt que de tourner indéfiniment.
+ */
+function allerAlAncre(id, { immediat = false } = {}) {
+  const limite = performance.now() + 2000
+  const pas = () => {
+    const cible = document.getElementById(id)
+    if (!cible) {
+      if (performance.now() < limite) requestAnimationFrame(pas)
+      return
+    }
+    const y = Math.max(0, cible.getBoundingClientRect().top + window.scrollY - hauteurEntete())
+    if (Math.abs(window.scrollY - y) < 4) return
+    if (window.lenis) window.lenis.scrollTo(y, immediat ? { immediate: true } : undefined)
+    else window.scrollTo({ top: y, behavior: immediat ? 'auto' : 'smooth' })
+    if (immediat && performance.now() < limite) requestAnimationFrame(pas)
+  }
+  requestAnimationFrame(pas)
+}
+
 /**
  * Le cadre du site cinématique : la nuit en fond, l'en-tête, le pied.
  *
@@ -17,11 +55,17 @@ export default function CineLayout() {
   const contenu = useSiteContent()
   const [defile, setDefile] = useState(false)
   const [menuOuvert, setMenuOuvert] = useState(false)
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
 
   // Changer de page referme le menu : sinon il reste ouvert par-dessus la page
   // d'arrivée, et le visiteur croit que le lien n'a rien fait.
   useEffect(() => { setMenuOuvert(false) }, [pathname])
+
+  // Arrivée sur « /#devis » depuis les tarifs ou la page logiciel : c'est ici
+  // qu'on rejoint la section, React Router s'arrêtant au changement d'adresse.
+  useEffect(() => {
+    if (hash) allerAlAncre(hash.slice(1), { immediat: true })
+  }, [pathname, hash])
 
   // Menu ouvert : la page dessous ne défile plus, et Échap le referme.
   useEffect(() => {
@@ -91,10 +135,16 @@ export default function CineLayout() {
               {t.nav.connexion}
             </a>
             {/* Le bouton d'en-tete sert l'offre principale : un devis de
-                site, pas l'essai du logiciel. */}
-            <a href="#devis" className="hidden sm:inline-flex cine-bouton cine-bouton--plein !min-h-0 !py-2.5 !px-5 !text-sm">
+                site, pas l'essai du logiciel. La zone de contact n'existe que
+                sur la page des sites internet — d'ou l'adresse absolue, qui
+                ramene depuis la page logiciel comme depuis les tarifs. */}
+            <Link
+              to="/#devis"
+              onClick={() => { if (pathname === '/') allerAlAncre('devis') }}
+              className="hidden sm:inline-flex cine-bouton cine-bouton--plein !min-h-0 !py-2.5 !px-5 !text-sm"
+            >
               {t.nav.devis}
-            </a>
+            </Link>
 
             {/* Le menu du téléphone — et desormais aussi des tablettes, le
                 seuil etant passe a 1024 px. Avant, la navigation était
@@ -141,7 +191,16 @@ export default function CineLayout() {
                 </NavLink>
               ))}
               <div className="mt-6 grid gap-3">
-                <a href="#devis" className="cine-bouton cine-bouton--plein w-full">{t.nav.devis}</a>
+                <Link
+                  to="/#devis"
+                  onClick={() => {
+                    setMenuOuvert(false)
+                    if (pathname === '/') requestAnimationFrame(() => allerAlAncre('devis'))
+                  }}
+                  className="cine-bouton cine-bouton--plein w-full"
+                >
+                  {t.nav.devis}
+                </Link>
                 <a href="https://app.newrigen.ch" className="cine-bouton cine-bouton--fantome w-full">{t.nav.connexion}</a>
               </div>
             </div>

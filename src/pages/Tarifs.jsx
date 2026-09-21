@@ -365,7 +365,9 @@ export default function Tarifs() {
                   </li>
                 ))}
               </ul>
-              <Link to="/#contact"
+              {/* « /#contact » ne menait nulle part : cette ancre n'existe que
+                  sur l'ancienne page. La zone de contact s'appelle « devis ». */}
+              <Link to="/#devis"
                 onClick={() => track('pack_choisi', { pack: 'surmesure', interval: 'sur-devis' })}
                 className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
                 style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F' }}>
