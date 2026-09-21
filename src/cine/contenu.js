@@ -22,7 +22,7 @@ export const FR = {
 
   nav: {
     sites: 'Sites internet',
-    logiciel: 'Logiciel devis',
+    logiciel: 'Logiciel de gestion d’entreprise',
     tarifs: 'Tarifs',
     connexion: 'Connexion',
     essai: 'Essai gratuit',

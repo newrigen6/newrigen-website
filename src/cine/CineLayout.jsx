@@ -74,7 +74,10 @@ export default function CineLayout() {
             <span className="text-lg tracking-[0.12em]" style={{ fontFamily: 'var(--police-titre)' }}>NEWRIGEN</span>
           </Link>
 
-          <nav aria-label="Navigation principale" className="hidden md:flex items-center gap-1">
+          {/* Seuil a 1024 px et non 768 : « Logiciel de gestion d'entreprise »
+              est long, et la barre horizontale debordait sur les tablettes et
+              les petits portables. En dessous, c'est le menu du telephone. */}
+          <nav aria-label="Navigation principale" className="hidden lg:flex items-center gap-1">
             <NavLink to="/" end className={lienNav}>{t.nav.sites}</NavLink>
             <NavLink to="/logiciel" className={lienNav}>{t.nav.logiciel}</NavLink>
             <NavLink to="/tarifs" className={lienNav}>{t.nav.tarifs}</NavLink>
@@ -93,16 +96,17 @@ export default function CineLayout() {
               {t.nav.devis}
             </a>
 
-            {/* Le menu du téléphone. Avant, la navigation était simplement
-                masquée sous 768 px : sur mobile, rien ne menait aux sites
-                internet ni aux tarifs — soit la moitié des visiteurs. */}
+            {/* Le menu du téléphone — et desormais aussi des tablettes, le
+                seuil etant passe a 1024 px. Avant, la navigation était
+                simplement masquée aux petites largeurs : rien ne menait aux
+                sites internet ni aux tarifs — soit la moitié des visiteurs. */}
             <button
               type="button"
               onClick={() => setMenuOuvert(o => !o)}
               aria-expanded={menuOuvert}
               aria-controls="menu-mobile"
               aria-label={menuOuvert ? 'Fermer le menu' : 'Ouvrir le menu'}
-              className="md:hidden grid place-items-center w-11 h-11 rounded-full border border-[var(--filet-fort)] text-white"
+              className="lg:hidden grid place-items-center w-11 h-11 rounded-full border border-[var(--filet-fort)] text-white"
             >
               <span aria-hidden="true" className="relative block w-5 h-3">
                 <span className={`absolute left-0 w-5 h-[2px] rounded bg-current transition-transform duration-300 ${menuOuvert ? 'top-[5px] rotate-45' : 'top-0'}`} />
@@ -117,7 +121,7 @@ export default function CineLayout() {
           <nav
             id="menu-mobile"
             aria-label="Navigation mobile"
-            className="md:hidden border-t border-[var(--filet)] bg-[rgb(5_7_10_/_0.96)] backdrop-blur-md"
+            className="lg:hidden border-t border-[var(--filet)] bg-[rgb(5_7_10_/_0.96)] backdrop-blur-md"
           >
             <div className="cine-conteneur py-6 flex flex-col">
               {[
