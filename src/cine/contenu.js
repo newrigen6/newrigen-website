@@ -86,7 +86,7 @@ export const FR = {
 
     prixOeil: 'Le prix',
     prixTitre: 'Sur demande,\nparce que ça dépend de vous',
-    prixTexte: 'Le prix dépend de ce qu’il vous faut : une page qui vous rend joignable, ou un site complet avec vos réalisations. On en discute, on vous chiffre, vous décidez.',
+    prixTexte: 'Le prix dépend de ce qu’il vous faut : une page qui vous rend joignable, ou un site complet avec vos réalisations. On en discute, on vous propose un prix, vous décidez.',
     contactTitre: 'Parlons de votre site',
     contactTexte: 'Un appel suffit pour savoir ce qu’il vous faut.',
   },
