@@ -160,18 +160,6 @@ export const FR = {
     ],
   },
 
-  // ── Acte 5 — le renvoi vers l'offre principale ───────────────────────────
-  // ── Acte 6 — la confiance ────────────────────────────────────────────────
-  confiance: {
-    oeil: 'D’ici',
-    titre: 'Vos données restent\nen Suisse, et chez vous',
-    points: [
-      { titre: 'Hébergement suisse', texte: 'Vos devis, vos clients et vos prix ne quittent pas le pays.' },
-      { titre: 'Cloisonné par entreprise', texte: 'Aucune autre entreprise ne peut lire vos dossiers. La séparation est faite dans la base, pas à l’écran.' },
-      { titre: 'Vous partez quand vous voulez', texte: 'Vos données s’exportent. Pas d’engagement, pas de reprise en otage.' },
-    ],
-  },
-
   // ── Acte 7 — la conversion ───────────────────────────────────────────────
   // Fond clair, plus de 3D, plus rien à regarder que le prix et le bouton.
   offre: {

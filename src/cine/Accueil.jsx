@@ -295,32 +295,6 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* ── Acte 6 — la confiance ─────────────────────────────────────────
-          Bandeau centré, une phrase et trois preuves en ligne. Retour au calme
-          avant le prix. */}
-      <section id="confiance" data-acte="confiance" className="relative py-24 md:py-32 overflow-hidden">
-        <div className="cine-halo left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden="true" />
-        <div className="cine-conteneur relative text-center" data-revele>
-          <span
-            aria-hidden="true"
-            className="mx-auto grid place-items-center w-14 h-14 rounded-2xl bg-[#DA291C] shadow-[var(--ombre)]"
-          >
-            <svg viewBox="0 0 32 32" className="w-7 h-7"><path d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z" fill="#fff" /></svg>
-          </span>
-          <p className="cine-oeil mt-8">{t.confiance.oeil}</p>
-          <h2 className="cine-h2 mt-5 whitespace-pre-line mx-auto max-w-[18ch]">{t.confiance.titre}</h2>
-
-          <dl className="mt-14 grid gap-8 md:grid-cols-3 text-left md:text-center max-w-5xl mx-auto">
-            {t.confiance.points.map((p, i) => (
-              <div key={p.titre} data-revele data-retard={i * 0.1}>
-                <dt className="cine-titre text-xl text-white">{p.titre}</dt>
-                <dd className="mt-2 text-[var(--gris-clair)] leading-relaxed">{p.texte}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
       {/* ── Acte 7 — la conversion ────────────────────────────────────────
           Le jour se lève : il ne reste que le prix. Le pack du milieu est mis
           en avant par son usage, jamais par une popularité inventée. */}
