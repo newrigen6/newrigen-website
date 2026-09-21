@@ -221,12 +221,10 @@ export default function AccueilSites() {
             <p className="cine-titre text-2xl">{s.contactTitre}</p>
             <p className="mt-2 text-[var(--gris-clair)]">{s.contactTexte}</p>
             <div className="mt-8 grid gap-3">
-              {numeros.map(({ numero, href }, i) => (
-                <a
-                  key={numero}
-                  href={href}
-                  className={`cine-bouton w-full ${i === 0 ? 'cine-bouton--plein' : 'cine-bouton--fantome'}`}
-                >
+              {/* Les trois moyens de joindre, presentes a l'identique : aucun
+                  n'est « le bon », on prend celui qui arrange. */}
+              {numeros.map(({ numero, href }) => (
+                <a key={numero} href={href} className="cine-bouton cine-bouton--fantome w-full">
                   {numero}
                 </a>
               ))}
