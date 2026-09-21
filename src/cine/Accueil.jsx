@@ -12,7 +12,7 @@ import {
 import HeroFond from './HeroFond'
 import { useTimelineMaitresse } from './useTimelineMaitresse'
 import {
-  revelerBlocs, composerTitre, parallaxeSouris, epinglerFonctions, leverLeJour,
+  revelerBlocs, composerTitre, parallaxeSouris, leverLeJour,
 } from './animations'
 
 // La 3D n'entre jamais dans le paquet de départ : elle pèse à elle seule plus
@@ -63,7 +63,6 @@ export default function Accueil() {
   const titre = useRef(null)
   const calque3d = useRef(null)
   const sectionProduit = useRef(null)
-  const sectionFonctions = useRef(null)
   const voile = useRef(null)
   const conversion = useRef(null)
 
@@ -84,7 +83,6 @@ export default function Accueil() {
     if (!sobre) {
       defaire.push(composerTitre(gsap, titre.current))
       defaire.push(parallaxeSouris(gsap, calque3d.current))
-      defaire.push(epinglerFonctions(gsap, ScrollTrigger, sectionFonctions.current))
       defaire.push(leverLeJour(gsap, ScrollTrigger, voile.current, conversion.current))
 
       // Le devis de la tablette se remplit pendant qu'on lit comment il se
@@ -116,8 +114,6 @@ export default function Accueil() {
       else window.clearTimeout(id)
     }
   }, [niveau])
-
-  const horizontal = niveau === 'complet'
 
   // Les fonctions de chaque pack sont reprises mot pour mot de la page Tarifs,
   // par les mêmes clés de traduction : les deux pages ne peuvent pas diverger,
@@ -258,16 +254,15 @@ export default function Accueil() {
       </Acte>
 
       {/* ── Acte 4 — les fonctions ────────────────────────────────────────
-          Épinglé et horizontal sur grand écran ; chaque carte montre un
-          fragment de l'interface. Simple liste ailleurs : sur téléphone,
-          épingler confisque le seul geste que le visiteur connaisse. */}
+          Les quatre cartes sont posees a plat : deux par deux, puis quatre de
+          front quand l'ecran le permet. Elles defilaient avant a l'horizontale
+          dans une section epinglee — c'etait plus spectaculaire, mais la
+          quatrieme restait hors champ tant qu'on n'avait pas compris qu'il
+          fallait continuer a defiler. */}
       <section
         id="fonctions"
         data-acte="fonctions"
-        ref={sectionFonctions}
-        className={horizontal
-          ? 'relative min-h-[100svh] flex items-center overflow-hidden py-20'
-          : 'relative py-24 md:py-32'}
+        className="relative py-24 md:py-32"
       >
         <div className="cine-conteneur w-full">
           <div data-revele className="flex flex-wrap items-end justify-between gap-6">
@@ -275,27 +270,16 @@ export default function Accueil() {
               <Oeil texte={t.fonctions.oeil} />
               <h2 className="cine-h2 mt-6 whitespace-pre-line">{t.fonctions.titre}</h2>
             </div>
-            {horizontal && (
-              <p className="text-sm text-[var(--gris)] flex items-center gap-2">
-                Continuez à défiler
-                <span aria-hidden="true" className="inline-block w-8 h-px bg-[var(--gris)]" />
-              </p>
-            )}
           </div>
 
-          <div
-            data-piste={horizontal ? 'oui' : undefined}
-            className={horizontal
-              ? 'mt-12 flex gap-5 w-max will-change-transform'
-              : 'mt-12 grid gap-5 md:grid-cols-2'}
-          >
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {t.fonctions.liste.map((f, i) => {
               const Vignette = VIGNETTES[f.cle]
               return (
                 <article
                   key={f.cle}
-                  className={`cine-carte cine-carte--vivante p-6 flex flex-col ${horizontal ? 'w-[min(80vw,400px)] flex-shrink-0' : ''}`}
-                  data-revele={horizontal ? undefined : true}
+                  className="cine-carte cine-carte--vivante p-6 flex flex-col"
+                  data-revele
                   data-retard={i * 0.08}
                 >
                   {Vignette && <Vignette />}

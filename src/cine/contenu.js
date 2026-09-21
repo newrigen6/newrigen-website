@@ -135,7 +135,7 @@ export const FR = {
   // ── Acte 4 — les fonctions ───────────────────────────────────────────────
   fonctions: {
     oeil: 'Ce que ça fait',
-    titre: 'Quatre choses,\nfaites correctement',
+    titre: '4 choses,\nfaites correctement',
     liste: [
       {
         cle: 'devis',

@@ -183,40 +183,6 @@ export function parallaxeSouris(gsap, calque, { amplitude = 3 } = {}) {
 }
 
 /**
- * L'acte des fonctions, épinglé et défilant à l'horizontale.
- *
- * Réservé au grand écran avec pointeur fin. Sur un téléphone, épingler une
- * section confisque le geste vertical — le seul que l'utilisateur connaisse —
- * et il n'a plus aucun moyen de deviner comment sortir. La liste reste alors
- * une liste verticale ordinaire, ce qui se lit très bien.
- */
-export function epinglerFonctions(gsap, ScrollTrigger, section) {
-  if (!section) return () => {}
-  const piste = section.querySelector('[data-piste]')
-  if (!piste) return () => {}
-
-  const distance = () => Math.max(0, piste.scrollWidth - section.clientWidth)
-  if (distance() <= 0) return () => {}
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: section,
-      start: 'top top',
-      end: () => `+=${distance() + window.innerHeight * 0.6}`,
-      pin: true,
-      scrub: 0.8,
-      // La longueur dépend de la largeur : sans recalcul, une rotation d'écran
-      // laisse la piste s'arrêter au milieu.
-      invalidateOnRefresh: true,
-      anticipatePin: 1,
-    },
-  })
-  tl.to(piste, { x: () => -distance(), ease: 'none' })
-
-  return () => { tl.scrollTrigger?.kill(); tl.kill() }
-}
-
-/**
  * Le fond qui s'éclaircit à l'approche de la conversion.
  *
  * C'est la bascule de l'acte 7 : la nuit se retire, la page devient blanche, et
