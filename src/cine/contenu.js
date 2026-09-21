@@ -169,7 +169,7 @@ export const FR = {
     // bancaire à l'inscription. Promettre l'inverse à la dernière étape, c'est
     // perdre le client au moment précis où il allait signer.
     titre: 'Un mois offert,\nsans engagement',
-    intro: 'Essayez le mois gratuit. Si cela n’est pas fait pour votre entreprise, résiliez l’abonnement.',
+    intro: 'Essayez le mois gratuit. Si cela n’est pas fait pour votre entreprise, résiliez votre abonnement sans aucun engagement.',
     // Le paquet mis en avant l'est par son usage, jamais par une popularité
     // qu'on ne peut pas prouver.
     miseEnAvant: 'standard',
