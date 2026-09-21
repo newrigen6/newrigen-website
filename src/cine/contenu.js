@@ -30,12 +30,13 @@ export const FR = {
   },
 
   // ══ LA PAGE D'ACCUEIL — création de sites internet ══════════════════════
-  // Le récit est celui de la publicité du 18.09 : on vous cherche, on ne vous
-  // trouve pas… puis ils vous appellent. Même histoire à l'écran et en vidéo.
+  // Le titre ne reprend plus mot pour mot la publicité du 18.09 (« on vous
+  // cherche, on ne vous trouve pas… puis ils vous appellent ») : il attaque
+  // désormais par ce que le visiteur a déjà, une page de réseau social.
   site: {
     oeil: 'Création de sites internet',
-    titre1: 'On vous cherche.',
-    titre2: 'On ne vous trouve pas.',
+    titre1: 'Votre entreprise mérite mieux',
+    titre2: 'qu’une page Instagram.',
     intro: 'On crée le site qui vous rend visible : rapide sur téléphone, trouvable sur Google, et conçu pour donner envie de vous contacter. Pour les commerces et les indépendants d’ici.',
     // Sous le titre : un mot, puis les numéros. Le prix, la preuve et la façon
     // de travailler ont chacun leur section plus bas — les répéter ici noyait
