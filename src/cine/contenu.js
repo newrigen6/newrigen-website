@@ -36,7 +36,7 @@ export const FR = {
     oeil: 'Création de sites internet',
     titre1: 'On vous cherche.',
     titre2: 'On ne vous trouve pas.',
-    intro: 'On crée le site qui vous rend visible : rapide sur téléphone, trouvable sur Google, et écrit pour donner envie de vous appeler. Pour les commerces et les indépendants d’ici.',
+    intro: 'On crée le site qui vous rend visible : rapide sur téléphone, trouvable sur Google, et conçu pour donner envie de vous contacter. Pour les commerces et les indépendants d’ici.',
     // Sous le titre : un mot, puis les numéros. Le prix, la preuve et la façon
     // de travailler ont chacun leur section plus bas — les répéter ici noyait
     // le seul geste qu'on attend du visiteur : appeler.
