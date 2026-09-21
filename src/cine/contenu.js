@@ -100,7 +100,7 @@ export const FR = {
     oeil: 'Logiciel suisse pour les métiers du bâtiment',
     titre1: 'Fini le temps perdu',
     titre2: 'sur l’administratif',
-    intro: 'Chiffrez sur le chantier à partir de vos propres prix, suivez les heures de vos employés, facturez avec le QR suisse. Fait en Valais, pour les artisans d’ici.',
+    intro: 'Gérez votre entreprise depuis une application qui centralise toute l’information : rapport d’heures des employés, création de devis, agenda.',
     ctaPrincipal: 'Essayer gratuitement',
     ctaSecondaire: 'Voir les fonctions',
     mention: '1 mois offert · sans engagement',
