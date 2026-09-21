@@ -111,7 +111,7 @@ export const FR = {
   // ── Acte 2 — le problème ─────────────────────────────────────────────────
   probleme: {
     oeil: 'Le soir',
-    titre: 'La journée finit\nquand les papiers finissent',
+    titre: 'Vous avez un métier.\nLa paperasse en est un autre.',
     intro: 'Vous rentrez à dix-neuf heures. Le devis promis attend, les heures de la semaine sont sur un carnet dans la camionnette, et la facture du fournisseur est passée sous une pile.',
     points: [
       { chiffre: '3 jours', libelle: 'de retard sur un devis, et le client a signé ailleurs' },
