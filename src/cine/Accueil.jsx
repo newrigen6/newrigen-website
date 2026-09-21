@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState, lazy, Suspense } from 'react'
-import { useT } from '../i18n'
+import { useT, useLangue } from '../i18n'
 import { useSiteContent } from '../content/SiteContent'
+import { useModuleTiers, fonctionsDuPack } from '../content/moduleTiers'
 import { montant } from '../lib/montant'
 import { useContenu } from './useContenu'
 import { useTitre } from './useTitre'
@@ -49,6 +50,8 @@ export default function Accueil() {
   const tr = useT()
   const t = useContenu()
   const { prix } = useSiteContent()
+  const { langue } = useLangue()
+  const modulesEnDirect = useModuleTiers()
   const { niveau, pret, ancre } = useTimelineMaitresse()
 
   // La page d'accueil vend désormais les sites internet : celle-ci a son
@@ -115,18 +118,12 @@ export default function Accueil() {
     }
   }, [niveau])
 
-  // Les fonctions de chaque pack sont reprises mot pour mot de la page Tarifs,
-  // par les mêmes clés de traduction : les deux pages ne peuvent pas diverger,
-  // et elles existent déjà dans les cinq langues.
-  const fonctionsDuPack = (cle) => {
-    const liste = []
-    for (let n = 1; n <= 9; n++) {
-      const k = `tarifs.${cle}.f${n}`
-      const v = tr(k)
-      if (v && v !== k) liste.push(v)
-    }
-    return liste
-  }
+  // Les fonctions de chaque pack viennent de la même fonction que la page
+  // Tarifs : Standard et Premium suivent la répartition réelle des modules,
+  // pilotée depuis l'admin. Cette page listait avant une version figée du
+  // dictionnaire, qui avait fini par annoncer autre chose que la page Tarifs.
+  const listerFonctions = (cle) =>
+    fonctionsDuPack(cle, { modules: modulesEnDirect, langue, traduire: tr })
 
   return (
     <div ref={page}>
@@ -321,7 +318,7 @@ export default function Accueil() {
           <div className="mt-14 grid gap-5 md:grid-cols-3 items-stretch">
             {t.offre.packs.map(p => {
               const enAvant = p.cle === t.offre.miseEnAvant
-              const fonctions = fonctionsDuPack(p.cle)
+              const fonctions = listerFonctions(p.cle)
               return (
                 <article
                   key={p.cle}

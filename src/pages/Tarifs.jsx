@@ -6,18 +6,18 @@ import { pixel } from '../lib/pixelMeta'
 import { useSiteContent } from '../content/SiteContent'
 import { useT, useLangue } from '../i18n'
 import SelecteurLangue from '../components/SelecteurLangue'
-import { useModuleTiers } from '../content/moduleTiers'
+import { useModuleTiers, fonctionsDuPack } from '../content/moduleTiers'
 import { montant } from '../lib/montant'
 import { numerosDeContact } from '../cine/telephones'
 
 const TEAL = '#4DD9D9'
 
-// Libellés dans le dictionnaire (tarifs.<id>.*) ; ici seuls l'identifiant, les
-// prix de repli et le nombre de points de la liste.
+// Libellés dans le dictionnaire (tarifs.<id>.*) ; ici seuls l'identifiant et
+// les prix de repli. La liste des fonctions vient de `fonctionsDuPack`.
 const plans = [
-  { id: 'solo',     priceMensuel: 17.90, priceAnnuel: 179, nbFeatures: 5, highlight: false },
-  { id: 'standard', priceMensuel: 49,   priceAnnuel: 539, nbFeatures: 9, highlight: false },
-  { id: 'premium',  priceMensuel: 89,   priceAnnuel: 979, nbFeatures: 7, highlight: true  },
+  { id: 'solo',     priceMensuel: 17.90, priceAnnuel: 179, highlight: false },
+  { id: 'standard', priceMensuel: 49,   priceAnnuel: 539, highlight: false },
+  { id: 'premium',  priceMensuel: 89,   priceAnnuel: 979, highlight: true  },
 ]
 
 function CheckoutModal({ plan, interval, onClose }) {
@@ -222,26 +222,14 @@ export default function Tarifs() {
 
   // Prix + fonctionnalités pilotés depuis l'admin (repli sur les valeurs codées en dur
   // tant que Supabase n'a pas répondu, ou en cas d'échec)
-  const livePlans = plans.map(p => {
-    const priced = {
-      ...p,
-      priceMensuel: prix[`${p.id}_mensuel`] ?? p.priceMensuel,
-      priceAnnuel:  prix[`${p.id}_annuel`]  ?? p.priceAnnuel,
-    }
-    // Les libellés de module_tiers sont saisis en français dans l'admin : dans
-    // les autres langues on garde la liste traduite du dictionnaire.
-    if (!liveModules || langue !== 'fr') return priced
-    if (p.id === 'solo') return priced
-    if (p.id === 'standard') {
-      const features = liveModules.filter(m => m.tier === 'standard').map(m => m.label)
-      return features.length ? { ...priced, features } : priced
-    }
-    if (p.id === 'premium') {
-      const premiumOnly = liveModules.filter(m => m.tier === 'premium').map(m => m.label)
-      return premiumOnly.length ? { ...priced, features: ['Tout le Pack Standard', ...premiumOnly] } : priced
-    }
-    return priced
-  })
+  // La liste des fonctions vient de `fonctionsDuPack`, partagée avec l'accueil :
+  // les deux pages ne peuvent plus annoncer des packs différents.
+  const livePlans = plans.map(p => ({
+    ...p,
+    priceMensuel: prix[`${p.id}_mensuel`] ?? p.priceMensuel,
+    priceAnnuel:  prix[`${p.id}_annuel`]  ?? p.priceAnnuel,
+    features: fonctionsDuPack(p.id, { modules: liveModules, langue, traduire: t }),
+  }))
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white">
@@ -336,7 +324,7 @@ export default function Tarifs() {
                 <p className="text-xs text-slate-500 mb-4">{t('accueil.packs.empreinte')}</p>
 
                 <ul className="space-y-3 mb-8 flex-1">
-                  {(plan.features ?? Array.from({ length: plan.nbFeatures }, (_, k) => t(`tarifs.${plan.id}.f${k + 1}`))).map((f) => (
+                  {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
                       <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
                       {f}

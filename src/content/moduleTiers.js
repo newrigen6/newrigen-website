@@ -34,3 +34,48 @@ export function useModuleTiers() {
 
   return modules
 }
+
+/**
+ * Les fonctions listées pour un pack.
+ *
+ * Une seule fonction pour toutes les pages qui affichent les packs : l'accueil
+ * en listait une version figée dans le dictionnaire pendant que la page Tarifs
+ * lisait la répartition réelle des modules — les deux avaient fini par
+ * annoncer des choses différentes au même visiteur.
+ *
+ * Standard et Premium viennent de `module_tiers`, pilotée depuis l'admin :
+ * c'est la seule liste qui fait foi. Ses libellés y sont saisis en français,
+ * donc dans les autres langues on retombe sur le dictionnaire traduit. Solo
+ * n'a pas de répartition par module : sa liste vit dans le dictionnaire.
+ *
+ * @param {string} cle        'solo' | 'standard' | 'premium'
+ * @param {object} o
+ * @param {Array|null} o.modules   retour de `useModuleTiers()`, null si pas chargé
+ * @param {string} o.langue        langue courante
+ * @param {Function} o.traduire    le `t` de `useT()`
+ */
+export function fonctionsDuPack(cle, { modules, langue, traduire }) {
+  // Le dictionnaire s'arrête au premier trou : les clés vont de f1 à fN.
+  const duDictionnaire = () => {
+    const liste = []
+    for (let n = 1; n <= 20; n++) {
+      const k = `tarifs.${cle}.f${n}`
+      const v = traduire(k)
+      if (!v || v === k) break
+      liste.push(v)
+    }
+    return liste
+  }
+
+  if (!modules || langue !== 'fr' || cle === 'solo') return duDictionnaire()
+
+  if (cle === 'standard') {
+    const l = modules.filter(m => m.tier === 'standard').map(m => m.label)
+    return l.length ? l : duDictionnaire()
+  }
+  if (cle === 'premium') {
+    const l = modules.filter(m => m.tier === 'premium').map(m => m.label)
+    return l.length ? ['Tout le Pack Standard', ...l] : duDictionnaire()
+  }
+  return duDictionnaire()
+}
