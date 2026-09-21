@@ -9,6 +9,22 @@ import { revelerBlocs, composerTitre, leverLeJour } from './animations'
 import { numerosDeContact } from './telephones'
 
 /**
+ * Met en italique ce qu'entourent des astérisques : « ne dépend *que* de vous ».
+ *
+ * Les textes vivent dans `contenu.js` et peuvent être réécrits depuis l'admin,
+ * où l'on saisit une simple ligne de texte : une chaîne reste donc une chaîne,
+ * et toute la mise en forme possible tient dans cette convention. Un astérisque
+ * seul, ou une paire vide, se rend tel quel plutôt que de manger du texte.
+ */
+function avecItaliques(texte) {
+  return String(texte).split(/(\*[^*]+\*)/g).map((bout, i) =>
+    bout.length > 2 && bout.startsWith('*') && bout.endsWith('*')
+      ? <em key={i}>{bout.slice(1, -1)}</em>
+      : bout,
+  )
+}
+
+/**
  * La page d'accueil — la création de sites internet.
  *
  * C'est l'offre principale depuis le 20.09.2026, et elle s'adresse à tous les
@@ -213,7 +229,7 @@ export default function AccueilSites() {
           <div>
             <p className="cine-oeil !text-[#5A6B7A]">{s.prixOeil}</p>
             <span className="cine-filet mt-3 !bg-[#0F8F8F]" aria-hidden="true" />
-            <h2 className="cine-h2 mt-6 !text-[#0B1220] whitespace-pre-line">{s.prixTitre}</h2>
+            <h2 className="cine-h2 mt-6 !text-[#0B1220] whitespace-pre-line">{avecItaliques(s.prixTitre)}</h2>
             <p className="cine-intro mt-6 !text-[#4A5A68]">{s.prixTexte}</p>
           </div>
 

@@ -85,7 +85,8 @@ export const FR = {
     logicielCta: 'Voir le logiciel',
 
     prixOeil: 'Le prix',
-    prixTitre: 'Sur demande,\nparce que ça dépend de vous',
+    // Les astérisques passent en italique au rendu (voir `avecItaliques`).
+    prixTitre: 'Sur demande,\nparce que ça ne dépend *que* de vous',
     prixTexte: 'Le prix dépend de ce qu’il vous faut : une page qui vous rend joignable, ou un site complet avec vos réalisations. On en discute, on vous propose un prix, vous décidez.',
     contactTitre: 'Parlons de votre site',
     contactTexte: 'Un appel suffit pour savoir ce qu’il vous faut.',
