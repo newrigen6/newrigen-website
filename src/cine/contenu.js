@@ -98,8 +98,8 @@ export const FR = {
   // qui, et par où commencer. Le cinéma vient après la promesse.
   hero: {
     oeil: 'Logiciel suisse pour les métiers du bâtiment',
-    titre1: 'Le devis part',
-    titre2: 'avant la camionnette',
+    titre1: 'Fini, le temps perdu',
+    titre2: 'sur l’administratif',
     intro: 'Chiffrez sur le chantier à partir de vos propres prix, suivez les heures de vos employés, facturez avec le QR suisse. Fait en Valais, pour les artisans d’ici.',
     ctaPrincipal: 'Essayer gratuitement',
     ctaSecondaire: 'Voir les fonctions',
