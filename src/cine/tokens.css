@@ -39,7 +39,10 @@
   /* Échelle fluide. Le titre suit la largeur au lieu de sauter par paliers :
      entre un téléphone de chantier et un 27 pouces, il n'y a pas deux mises en
      page mais une seule qui respire. */
-  --pas-oeil:    clamp(0.72rem, 0.68rem + 0.2vw, 0.82rem);
+  /* Le plancher etait a 0.72rem, soit 11.5 px : sous la limite de lisibilite,
+     et sous les 0.78rem que DESIGN.md annonce. En capitales espacees, c'est
+     la taille ou le surtitre devient un gris illisible sur un telephone. */
+  --pas-oeil:    clamp(0.78rem, 0.74rem + 0.2vw, 0.82rem);
   --pas-corps:   clamp(1rem,    0.95rem + 0.3vw, 1.15rem);
   --pas-intro:   clamp(1.12rem, 1rem + 0.7vw,    1.45rem);
   --pas-h2:      clamp(2rem,    1.4rem + 2.8vw,  4rem);
@@ -133,6 +136,22 @@ body {
   text-transform: uppercase;
   color: var(--gris);
 }
+
+/**
+ * Un lien de pied de page, assez haut pour le pouce.
+ *
+ * Le texte seul ne faisait que 19 px de haut : sur un téléphone, viser le
+ * numéro de téléphone du pied de page relevait de l'adresse. 44 px est le
+ * minimum recommandé par Apple, et c'est ce que mesurent déjà les boutons.
+ */
+.cine-lien-pied {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--gris-clair);
+  transition: color 0.2s;
+}
+.cine-lien-pied:hover { color: #fff; }
 
 /* Le filet turquoise sous le surtitre : la signature des visuels. */
 .cine-filet {

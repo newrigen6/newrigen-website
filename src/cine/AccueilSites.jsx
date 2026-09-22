@@ -111,7 +111,7 @@ export default function AccueilSites() {
       {/* ── Le problème ────────────────────────────────────────────────────
           Trois situations, pas des statistiques : on ne cite aucun chiffre
           qu'on ne pourrait pas prouver. */}
-      <section id="probleme" data-acte="probleme" className="relative py-24 md:py-32">
+      <section id="probleme" data-acte="probleme" className="relative py-16 md:py-32">
         <div className="cine-conteneur">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-end" data-revele>
             <div>
@@ -139,7 +139,7 @@ export default function AccueilSites() {
 
       {/* ── Ce qu'on fait ──────────────────────────────────────────────────
           Liste numérotée, titre collant à gauche. */}
-      <section className="relative py-24 md:py-32">
+      <section className="relative py-16 md:py-32">
         <div className="cine-conteneur grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
           <div data-revele className="lg:sticky lg:top-28 self-start">
             <Oeil texte={s.faitOeil} />
@@ -224,7 +224,7 @@ export default function AccueilSites() {
           Il se discute : on le dit franchement plutôt que d'afficher un
           « dès X.– » qui n'engagerait à rien et décevrait à la première visite. */}
       <div ref={voile} aria-hidden="true" className="fixed inset-0 -z-10 bg-[#F4F7F9] pointer-events-none opacity-0" />
-      <section id="devis" ref={devis} className="mt-10 bg-[#F4F7F9] text-[#0B1220] py-24 md:py-32">
+      <section id="devis" ref={devis} className="mt-10 bg-[#F4F7F9] text-[#0B1220] py-16 md:py-32">
         <div className="cine-conteneur grid lg:grid-cols-2 gap-10 items-end">
           <div>
             <p className="cine-oeil !text-[#5A6B7A]">{s.prixOeil}</p>

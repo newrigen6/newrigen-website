@@ -12,10 +12,13 @@ export function Acte({ id, premier = false, fond = null, children }) {
       id={id}
       data-acte={id}
       className={`relative ${premier
-        // Le héros occupe l'écran sans jamais le dépasser : sur un téléphone
-        // couché, `100vh` cacherait le bouton sous la barre du navigateur.
-        ? 'min-h-[100svh] flex items-center pt-28 pb-20'
-        : 'py-20 md:py-28'}`}
+        // Sur grand écran le héros occupe la hauteur d'écran — `svh` et non
+        // `vh`, sinon un téléphone couché cacherait le bouton sous la barre du
+        // navigateur. Sur téléphone il ne la force plus : son contenu tient en
+        // 520 px, le reste était du vide, et l'écran ne laissait rien deviner
+        // de la section suivante — rien n'invitait à faire défiler.
+        ? 'flex items-center pt-24 pb-14 md:min-h-[100svh] md:pt-28 md:pb-20'
+        : 'py-14 md:py-28'}`}
     >
       {fond}
       <div className="cine-conteneur relative">{children}</div>

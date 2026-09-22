@@ -108,7 +108,7 @@ export default function CineLayout() {
         }`}
       >
         <div className="cine-conteneur flex items-center justify-between h-16 lg:h-20">
-          <Link to="/" className="flex items-center gap-2.5 font-extrabold tracking-tight text-white">
+          <Link to="/" className="flex items-center gap-2.5 min-h-11 font-extrabold tracking-tight text-white">
             <span
               aria-hidden="true"
               className="grid place-items-center w-8 h-8 rounded-lg bg-[var(--turquoise)] text-[var(--nuit)] text-lg font-black"
@@ -230,18 +230,18 @@ export default function CineLayout() {
           <div className="text-sm">
             <p className="cine-oeil mb-3">{t.pied.contact}</p>
             {contenu.contact?.email && (
-              <p><a className="text-[var(--gris-clair)] hover:text-white" href={`mailto:${contenu.contact.email}`}>{contenu.contact.email}</a></p>
+              <p><a className="cine-lien-pied" href={`mailto:${contenu.contact.email}`}>{contenu.contact.email}</a></p>
             )}
             {numerosDeContact(contenu.contact).map(({ numero, href }) => (
-              <p key={numero}><a className="text-[var(--gris-clair)] hover:text-white" href={href}>{numero}</a></p>
+              <p key={numero}><a className="cine-lien-pied" href={href}>{numero}</a></p>
             ))}
           </div>
 
-          <nav aria-label="Informations légales" className="text-sm space-y-1.5">
+          <nav aria-label="Informations légales" className="text-sm">
             <p className="cine-oeil mb-3">Informations</p>
-            <p><Link className="text-[var(--gris-clair)] hover:text-white" to="/mentions-legales">{t.pied.mentions}</Link></p>
-            <p><Link className="text-[var(--gris-clair)] hover:text-white" to="/confidentialite">{t.pied.confidentialite}</Link></p>
-            <p><Link className="text-[var(--gris-clair)] hover:text-white" to="/cgv">{t.pied.cgv}</Link></p>
+            <p><Link className="cine-lien-pied" to="/mentions-legales">{t.pied.mentions}</Link></p>
+            <p><Link className="cine-lien-pied" to="/confidentialite">{t.pied.confidentialite}</Link></p>
+            <p><Link className="cine-lien-pied" to="/cgv">{t.pied.cgv}</Link></p>
           </nav>
         </div>
 

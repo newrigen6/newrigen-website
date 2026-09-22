@@ -166,7 +166,7 @@ export default function Accueil() {
       {/* ── Acte 2 — le problème ──────────────────────────────────────────
           Éditorial : énoncé en deux colonnes, puis trois chiffres géants
           séparés par des filets. Pas une carte. */}
-      <section id="probleme" data-acte="probleme" className="relative py-24 md:py-32">
+      <section id="probleme" data-acte="probleme" className="relative py-16 md:py-32">
         <div className="cine-conteneur">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-end" data-revele>
             <div>
@@ -259,7 +259,7 @@ export default function Accueil() {
       <section
         id="fonctions"
         data-acte="fonctions"
-        className="relative py-24 md:py-32"
+        className="relative py-16 md:py-32"
       >
         <div className="cine-conteneur w-full">
           <div data-revele className="flex flex-wrap items-end justify-between gap-6">
@@ -303,7 +303,7 @@ export default function Accueil() {
       <section
         id="offre"
         ref={conversion}
-        className="mt-10 bg-[#F4F7F9] text-[#0B1220] py-24 md:py-32"
+        className="mt-10 bg-[#F4F7F9] text-[#0B1220] py-16 md:py-32"
       >
         <div className="cine-conteneur">
           <div className="grid lg:grid-cols-2 gap-6 items-end">
