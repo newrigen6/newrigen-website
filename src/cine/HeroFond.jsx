@@ -1,37 +1,43 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Le plan large du héros — un chantier valaisan à l'heure bleue.
+ * Le plan large du héros — un chantier valaisan à l'heure bleue, dessiné.
  *
- * C'est l'élément le plus grand de la première image, donc celui que le
- * navigateur mesure pour le LCP. Il est chargé sans retard et avec priorité :
- * différer l'image du héros pour « gagner du poids » revient à retarder
- * exactement ce que la mesure regarde.
+ * C'était une photo : trois tailles en AVIF et trois en JPEG, 260 Ko pour la
+ * plus grande, plus une vignette encodée dans le HTML pour boucher le trou
+ * pendant le chargement. Elle est remplacée par un décor construit en CSS et
+ * en SVG. La page ne télécharge plus rien pour son fond, et le plus grand
+ * élément de la première image devient le titre — ce qui est mesuré est donc
+ * ce qu'on veut voir arriver vite.
  *
- * AVIF d'abord, JPEG derrière. Le même plan pèse 46 Ko en AVIF contre 254 en
- * JPEG à 1920 : c'est le rapport qui justifie la balise `<picture>` plutôt
- * qu'une simple `<img>`.
- *
- * Une vignette de vingt-quatre pixels, encodée dans le HTML, occupe la place en
- * attendant. Elle ajoute un kilo-octet et supprime le trou noir — sur une 4G de
- * chantier, ce trou dure assez longtemps pour qu'on referme l'onglet.
+ * Ce n'est pas un dégradé abstrait pour autant : la charte dit « la nuit bleue
+ * du Valais, la lumière turquoise des projecteurs de chantier » (DESIGN.md).
+ * On garde donc les deux — une crête de montagne en ombre chinoise, et une
+ * lueur de projecteur qui vient d'en bas à gauche, hors champ.
  */
 
-const AMORCE = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QBMRXhpZgAATU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAGKADAAQAAAABAAAADQAAAAD/7QA4UGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ+/8AAEQgADQAYAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/bAEMADg4ODg4OFw4OFyEXFxchLSEhISEtOS0tLS0tOUQ5OTk5OTlERERERERERFJSUlJSUmBgYGBga2tra2tra2tra//bAEMBERISGxkbLxkZL3BMPkxwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcP/dAAQAAv/aAAwDAQACEQMRAD8A5mIWKJveQfQdary3itkWkfAGSW/wqlGCe9WlBA5OR6GunmbRztJEUstyiKXC4cZBx2qt583t+VW2fAwoAqLc3+RU69xr0P/Z'
+// Un grain très fin, en SVG encodé : il casse le plat numérique des aplats
+// sombres, où les dégradés se voient par bandes sur un écran de téléphone.
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23b)' opacity='0.5'/%3E%3C/svg%3E\")"
+
+// Deux crêtes : la lointaine, plus claire, pose la profondeur ; la proche, plus
+// sombre, ferme le bas de l'image. `preserveAspectRatio="none"` les laisse
+// s'étirer — une montagne étirée reste une montagne, un cercle étiré non.
+const CRETE_LOIN = 'M0,300 L90,266 L210,292 L300,212 L392,246 L520,148 L640,198 L742,118 L880,176 L1010,94 L1150,164 L1268,122 L1380,182 L1440,154 L1440,400 L0,400 Z'
+const CRETE_PRES = 'M0,352 L150,320 L286,352 L420,298 L556,336 L690,284 L840,330 L986,290 L1140,336 L1300,298 L1440,338 L1440,400 L0,400 Z'
 
 export default function HeroFond({ anime = false }) {
-  const image = useRef(null)
+  const calque = useRef(null)
 
   // Une dérive très lente vers le haut pendant qu'on descend. Uniquement une
   // transformation : animer la position ferait recalculer la mise en page à
   // chaque image, et le héros est justement le moment où il faut être net.
   useEffect(() => {
-    if (!anime || !image.current) return
-    const el = image.current
-    let brut = 0
+    if (!anime || !calque.current) return
+    const el = calque.current
     const suivre = () => {
-      brut = window.scrollY
-      el.style.transform = `translate3d(0, ${Math.min(brut * 0.14, 120)}px, 0) scale(1.06)`
+      el.style.transform = `translate3d(0, ${Math.min(window.scrollY * 0.14, 120)}px, 0)`
     }
     suivre()
     window.addEventListener('scroll', suivre, { passive: true })
@@ -40,43 +46,57 @@ export default function HeroFond({ anime = false }) {
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      <div
-        ref={image}
-        className="absolute inset-0 will-change-transform"
-        style={{
-          backgroundImage: `url(${AMORCE})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          transform: 'scale(1.06)',
-        }}
-      >
-        <picture>
-          <source
-            type="image/avif"
-            srcSet="/media/hero-640.avif 640w, /media/hero-1280.avif 1280w, /media/hero-1920.avif 1920w"
-            sizes="100vw"
-          />
-          <img
-            src="/media/hero-1280.jpg"
-            srcSet="/media/hero-640.jpg 640w, /media/hero-1280.jpg 1280w, /media/hero-1920.jpg 1920w"
-            sizes="100vw"
-            alt=""
-            width="2752"
-            height="1536"
-            fetchPriority="high"
-            decoding="async"
-            className="w-full h-full object-cover"
-            style={{ filter: 'brightness(1.28) saturate(1.1)' }}
-          />
-        </picture>
-      </div>
-
-      {/* Deux voiles, et ils ne sont pas décoratifs : le texte doit rester
-          lisible quelle que soit la largeur de l'écran, y compris quand le
-          cadrage déplace la montagne claire derrière le titre. */}
+      {/* La nuit, du plus sombre en haut au marine du bas de page. */}
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(90deg, rgb(5 7 10 / 0.92) 0%, rgb(5 7 10 / 0.66) 36%, rgb(5 7 10 / 0.12) 72%, rgb(5 7 10 / 0) 100%)' }}
+        style={{ background: 'linear-gradient(180deg, #05070A 0%, #08111C 46%, #0E2132 100%)' }}
+      />
+
+      {/* Le projecteur de chantier : il éclaire depuis le bas à gauche, hors
+          champ. C'est lui qui donne sa couleur à la scène. */}
+      <div
+        className="absolute"
+        style={{
+          left: '-12%', bottom: '-28%', width: '78%', height: '86%',
+          background: 'radial-gradient(closest-side, rgb(77 217 217 / 0.26), rgb(77 217 217 / 0.07) 58%, transparent 100%)',
+          filter: 'blur(14px)',
+        }}
+      />
+      {/* Une seconde lueur, plus froide et plus lointaine, pour que le ciel ne
+          soit pas uniforme à droite du titre. */}
+      <div
+        className="absolute"
+        style={{
+          right: '-16%', top: '-24%', width: '62%', height: '76%',
+          background: 'radial-gradient(closest-side, rgb(60 140 190 / 0.20), transparent 100%)',
+          filter: 'blur(20px)',
+        }}
+      />
+
+      {/* Les crêtes, qui dérivent au défilement. */}
+      <div ref={calque} className="absolute inset-x-0 bottom-0 h-[62%] will-change-transform">
+        <svg
+          className="absolute inset-0 w-full h-full"
+          viewBox="0 0 1440 400"
+          preserveAspectRatio="none"
+          role="presentation"
+        >
+          <path d={CRETE_LOIN} fill="#0C1B2A" />
+          <path d={CRETE_PRES} fill="#060B12" />
+        </svg>
+      </div>
+
+      {/* Le grain, par-dessus tout le reste. */}
+      <div
+        className="absolute inset-0"
+        style={{ backgroundImage: GRAIN, opacity: 0.045, mixBlendMode: 'overlay' }}
+      />
+
+      {/* Deux voiles, et ils ne sont pas décoratifs : le texte doit rester
+          lisible quelle que soit la largeur de l'écran. */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(90deg, rgb(5 7 10 / 0.88) 0%, rgb(5 7 10 / 0.58) 38%, rgb(5 7 10 / 0.10) 74%, rgb(5 7 10 / 0) 100%)' }}
       />
       <div
         className="absolute inset-x-0 bottom-0 h-1/3"
