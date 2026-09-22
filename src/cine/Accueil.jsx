@@ -153,11 +153,13 @@ export default function Accueil() {
           </div>
 
           {/* La carte flotte sur la photo, légèrement inclinée : elle montre le
-              produit dès la première seconde, là où le texte le décrit. */}
-          <div className="hidden lg:flex justify-end">
+              produit dès la première seconde, là où le texte le décrit. Elle
+              était masquée sous 1024 px — un visiteur sur téléphone n'avait
+              alors jamais vu le logiciel dont on lui parle. */}
+          <div className="mt-10 flex justify-center lg:mt-0 lg:justify-end">
             <div className="relative">
-              <div className="cine-halo -top-24 -left-24" aria-hidden="true" />
-              <CarteDevis className="relative rotate-[-2.5deg]" />
+              <div className="cine-halo -top-24 -left-24 hidden lg:block" aria-hidden="true" />
+              <CarteDevis className="relative rotate-[-2.5deg] lg:rotate-[-2.5deg]" />
             </div>
           </div>
         </div>
@@ -202,6 +204,13 @@ export default function Accueil() {
             <Oeil texte={t.produit.oeil} />
             <h2 className="cine-h2 mt-6 whitespace-pre-line">{t.produit.titre}</h2>
             <p className="cine-intro mt-6">{t.produit.intro}</p>
+          </div>
+
+          {/* Sur téléphone, ni la tablette 3D ni son repli ne s'affichaient :
+              la section n'avait aucune image. La carte reprend ce rôle, sous
+              le texte, quel que soit le niveau de rendu. */}
+          <div className="mt-10 flex justify-center lg:hidden" aria-hidden="true">
+            <CarteDevis className="rotate-[1.5deg]" />
           </div>
 
           {/* Décorative : le texte dit déjà tout ce que la tablette montre. */}

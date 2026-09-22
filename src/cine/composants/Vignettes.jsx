@@ -10,9 +10,12 @@
 const ligne = 'flex items-baseline justify-between gap-4 py-2.5 border-b border-[var(--filet)] last:border-0'
 
 /** Le devis du héros : quelques postes, un total, un statut. */
+// La largeur etait figee a 340 px : un telephone de 375 px n'offre que 333 px
+// entre les gouttieres, la carte debordait donc — et c'est pour cela qu'elle
+// avait fini masquee sur mobile. Elle s'adapte maintenant a la place offerte.
 export function CarteDevis({ className = '' }) {
   return (
-    <div aria-hidden="true" className={`cine-verre rounded-[1.4rem] p-6 w-[340px] ${className}`}>
+    <div aria-hidden="true" className={`cine-verre rounded-[1.4rem] p-6 w-full max-w-[340px] ${className}`}>
       <div className="flex items-center justify-between">
         <p className="text-[0.7rem] font-bold tracking-[0.2em] text-[var(--gris-clair)]">DEVIS 2026-0042</p>
         <span className="rounded-full bg-[var(--turquoise)] px-2.5 py-1 text-[0.68rem] font-bold text-[var(--nuit)]">Envoyé</span>

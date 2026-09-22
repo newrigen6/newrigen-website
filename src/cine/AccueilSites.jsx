@@ -101,8 +101,13 @@ export default function AccueilSites() {
             )}
           </div>
 
-          <div className="relative hidden md:block">
-            <div className="cine-halo -top-24 -right-10" aria-hidden="true" />
+          {/* Le cadre de navigateur etait masque sous 768 px : la page ne
+              montrait alors plus rien du tout sur un telephone — que du texte,
+              alors qu'on vend justement l'apparence d'un site. */}
+          <div className="relative mt-4 md:mt-0">
+            {/* Le halo deborde volontairement du cadre : hors ecran sur un telephone
+                il n'ajoute rien et provoque un defilement lateral. */}
+            <div className="cine-halo -top-24 -right-10 hidden md:block" aria-hidden="true" />
             <CadreNavigateur className="relative lg:rotate-[1.5deg]" />
           </div>
         </div>
