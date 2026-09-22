@@ -12,12 +12,17 @@ import { numerosDeContact } from '../cine/telephones'
 
 const TEAL = '#4DD9D9'
 
+// Le pack mis en avant. C'est celui que l'accueil met deja en avant
+// (`offre.miseEnAvant` dans contenu.js) : les deux pages doivent designer le
+// meme, sinon elles se contredisent a deux clics d'ecart.
+const PACK_EN_AVANT = 'standard'
+
 // Libellés dans le dictionnaire (tarifs.<id>.*) ; ici seuls l'identifiant et
 // les prix de repli. La liste des fonctions vient de `fonctionsDuPack`.
 const plans = [
-  { id: 'solo',     priceMensuel: 17.90, priceAnnuel: 179, highlight: false },
-  { id: 'standard', priceMensuel: 49,   priceAnnuel: 539, highlight: false },
-  { id: 'premium',  priceMensuel: 89,   priceAnnuel: 979, highlight: true  },
+  { id: 'solo',     priceMensuel: 17.90, priceAnnuel: 179 },
+  { id: 'standard', priceMensuel: 49,   priceAnnuel: 539 },
+  { id: 'premium',  priceMensuel: 89,   priceAnnuel: 979 },
 ]
 
 function CheckoutModal({ plan, interval, onClose }) {
@@ -286,94 +291,108 @@ export default function Tarifs() {
             </button>
           </div>
 
-          {/* Cards */}
-          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-            {livePlans.map((plan) => (
-              <div
-                key={plan.id}
-                className="rounded-2xl p-8 border flex flex-col"
-                // Cadre et halo identiques pour les trois packs : seul le fond,
-                // à peine plus clair, distingue encore le Premium.
-                style={{
-                  background: plan.highlight ? `${TEAL}08` : `${TEAL}04`,
-                  borderColor: `${TEAL}20`,
-                }}
-              >
-                <h2 className="text-2xl font-black text-white mb-1">{t(`tarifs.${plan.id}.nom`)}</h2>
-                <p className="text-slate-400 text-sm mb-6">{t(`tarifs.${plan.id}.desc`)}</p>
-
-                <div className="mb-1">
-                  <span className="text-2xl font-bold line-through text-slate-600 mr-2">
-                    {montant(interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel)}
-                  </span>
-                  <span className="text-sm font-bold px-2 py-0.5 rounded-full text-[#0A0A0F]" style={{ background: TEAL }}>{t('accueil.packs.moisGratuit')}</span>
-                </div>
-                <div className="mb-2 mt-1">
-                  <span className="text-5xl font-black" style={{ color: TEAL }}>
-                    0.-
-                  </span>
-                  <span className="text-slate-400 text-sm ml-2">{t('accueil.packs.premierMois')}</span>
-                </div>
-                <p className="text-xs text-slate-500 mb-1">
-                  {t('tarifs.puis', {
-                    prix: montant(interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel),
-                    periode: interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois'),
-                    extra: t(`tarifs.${plan.id}.extra`),
-                  })}
-                </p>
-                <p className="text-xs text-slate-500 mb-4">{t('accueil.packs.empreinte')}</p>
-
-                <ul className="space-y-3 mb-8 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
-                      <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  onClick={() => {
-                    track('pack_choisi', { pack: plan.id, interval })
-                    pixel('ViewContent', { content_name: plan.id, content_category: interval })
-                    setSelected(plan)
+          {/* Les trois packs payants, en trois colonnes, celui du milieu mis en
+              avant par le poids — c'est ce que demande DESIGN.md, et c'est déjà
+              le pack que l'accueil met en avant. Le sur-mesure descend en
+              bandeau : il n'a pas de prix, et le loger dans une colonne de prix
+              obligeait à écrire « Sur devis » en turquoise, où il entrait en
+              concurrence avec les vrais montants. */}
+          <div className="grid md:grid-cols-3 gap-6 items-start">
+            {livePlans.map((plan) => {
+              const enAvant = plan.id === PACK_EN_AVANT
+              const prix = interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel
+              const periode = interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois')
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative rounded-2xl p-8 border flex flex-col ${enAvant ? 'md:-mt-5 md:pb-12' : ''}`}
+                  style={{
+                    background: enAvant ? `${TEAL}0E` : `${TEAL}04`,
+                    borderColor: enAvant ? `${TEAL}55` : `${TEAL}20`,
                   }}
-                  className="w-full py-4 rounded-xl font-bold text-sm transition-all"
-                  // Même bouton plein pour les trois packs : aucun n'est mis en avant
-                  style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F' }}
                 >
-                  {t('tarifs.commencerEssai')}
-                </button>
-              </div>
-            ))}
+                  {/* Pas d'étiquette « le plus populaire » : on ne peut pas le
+                      prouver. La mise en avant tient au relief, au cadre plus
+                      net et au seul bouton plein de la page. */}
+                  <h2 className="text-2xl font-black text-white mb-1">{t(`tarifs.${plan.id}.nom`)}</h2>
+                  <p className="text-slate-400 text-sm mb-7">{t(`tarifs.${plan.id}.desc`)}</p>
 
-            {/* Pack sur mesure — même carte que les deux autres, mais sans prix :
-                il se chiffre après discussion et passe par le contact, pas par
-                le tunnel de paiement. */}
-            <div className="rounded-2xl p-8 border flex flex-col" style={{ background: `${TEAL}04`, borderColor: `${TEAL}20` }}>
+                  {/* Le prix réel en grand. Avant, c'était « 0.– » qui occupait
+                      cette place : identique sur les trois cartes, donc le plus
+                      gros élément de la page n'y distinguait rien, pendant que
+                      le montant qui décide était barré en petit gris. Le mois
+                      offert redevient ce qu'il est — une promotion à côté. */}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-black text-white cine-chiffres">{montant(prix)}</span>
+                    <span className="text-slate-400 text-sm">/{periode}</span>
+                  </div>
+                  <p className="mt-3">
+                    <span
+                      className="text-xs font-bold px-2.5 py-1 rounded-full"
+                      style={{ background: `${TEAL}22`, color: TEAL }}
+                    >
+                      {t('accueil.packs.moisGratuit')}
+                    </span>
+                  </p>
+                  <p className="text-xs text-slate-500 mt-3 mb-7">{t(`tarifs.${plan.id}.extra`)}</p>
+
+                  <ul className="space-y-3 mb-8 flex-1">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-center gap-3 text-sm text-slate-300">
+                        <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Un seul bouton plein sur la page : celui du pack mis en
+                      avant. Trois boutons pleins côte à côte ne désignent rien. */}
+                  <button
+                    onClick={() => {
+                      track('pack_choisi', { pack: plan.id, interval })
+                      pixel('ViewContent', { content_name: plan.id, content_category: interval })
+                      setSelected(plan)
+                    }}
+                    className="w-full py-4 rounded-xl font-bold text-sm transition-all border"
+                    style={enAvant
+                      ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F', borderColor: 'transparent' }
+                      : { background: 'transparent', color: '#fff', borderColor: `${TEAL}55` }}
+                  >
+                    {t('tarifs.commencerEssai')}
+                  </button>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Le sur-mesure : un bandeau, pas une colonne. Il se chiffre après
+              discussion et passe par le contact, pas par le tunnel de paiement. */}
+          <div
+            className="mt-6 rounded-2xl border p-8 grid lg:grid-cols-[1fr_1.1fr] gap-8 items-center"
+            style={{ background: `${TEAL}04`, borderColor: `${TEAL}20` }}
+          >
+            <div>
               <h2 className="text-2xl font-black text-white mb-1">{t('tarifs.surmesure.nom')}</h2>
-              <p className="text-slate-400 text-sm mb-6">{t('tarifs.surmesure.desc')}</p>
-              <div className="mb-2 mt-1">
-                <span className="text-4xl font-black" style={{ color: TEAL }}>{t('tarifs.surmesure.prix')}</span>
-              </div>
-              <p className="text-xs text-slate-500 mb-4">{t('tarifs.surmesure.mention')}</p>
-              <ul className="space-y-3 mb-8 flex-1">
-                {[1, 2, 3, 4].map(n => (
-                  <li key={n} className="flex items-center gap-3 text-sm text-slate-300">
-                    <Check className="w-4 h-4 flex-shrink-0" style={{ color: TEAL }} />
-                    {t(`tarifs.surmesure.f${n}`)}
-                  </li>
-                ))}
-              </ul>
+              <p className="text-slate-400 text-sm">{t('tarifs.surmesure.desc')}</p>
+              <p className="text-2xl font-black mt-4" style={{ color: TEAL }}>{t('tarifs.surmesure.prix')}</p>
+              <p className="text-xs text-slate-500 mt-1">{t('tarifs.surmesure.mention')}</p>
               {/* « /#contact » ne menait nulle part : cette ancre n'existe que
                   sur l'ancienne page. La zone de contact s'appelle « devis ». */}
               <Link to="/#devis"
                 onClick={() => track('pack_choisi', { pack: 'surmesure', interval: 'sur-devis' })}
-                className="block text-center w-full py-4 rounded-xl font-bold text-sm transition-all"
-                style={{ background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)`, color: '#0A0A0F' }}>
+                className="inline-block mt-6 px-7 py-4 rounded-xl font-bold text-sm transition-all border"
+                style={{ background: 'transparent', color: '#fff', borderColor: `${TEAL}55` }}>
                 {t('tarifs.surmesure.cta')}
               </Link>
             </div>
+            <ul className="grid sm:grid-cols-2 gap-3">
+              {[1, 2, 3, 4].map(n => (
+                <li key={n} className="flex items-start gap-3 text-sm text-slate-300">
+                  <Check className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: TEAL }} />
+                  {t(`tarifs.surmesure.f${n}`)}
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Option add-on */}
