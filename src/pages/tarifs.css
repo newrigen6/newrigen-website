@@ -1,0 +1,105 @@
+/**
+ * Le mouvement de la page Tarifs.
+ *
+ * Rien ici n'est décoratif : l'entrée hiérarchise la lecture, le sélecteur
+ * montre où l'on est, et le prix s'anime parce qu'il vient de changer. Tout
+ * s'éteint sous `prefers-reduced-motion` — et la page reste lisible sans.
+ */
+
+/**
+ * La page dans la charte du site.
+ *
+ * `index.css` impose encore Inter et un fond `#0A0A0F` à tout le document,
+ * et il est chargé après les jetons : sans cette reprise à la racine de la
+ * page, les titres passaient en Bricolage Grotesque pendant que le corps du
+ * texte restait en Inter — deux polices pour une seule page.
+ */
+.tarifs-page {
+  font-family: var(--police-texte);
+  background: linear-gradient(180deg, var(--nuit) 0%, var(--nuit-bas) 100%);
+  background-attachment: fixed;
+}
+
+/* ── Entrée ──────────────────────────────────────────────────────────────
+   Le contenu monte de quelques pixels au chargement, décalé de haut en bas.
+   Court : au-delà de 500 ms on attend la page au lieu de la lire. */
+@keyframes tarifs-monte {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+.tarifs-entre {
+  animation: tarifs-monte 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.tarifs-entre[data-retard="1"] { animation-delay: 0.07s; }
+.tarifs-entre[data-retard="2"] { animation-delay: 0.14s; }
+.tarifs-entre[data-retard="3"] { animation-delay: 0.21s; }
+
+/* ── Le sélecteur mensuel / annuel ───────────────────────────────────────
+   Une pastille unique glisse sous l'option choisie, au lieu de deux boutons
+   qui s'allument tour à tour : on voit le choix se déplacer. */
+.tarifs-bascule {
+  position: relative;
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid var(--filet-fort);
+  background: rgb(255 255 255 / 0.03);
+}
+.tarifs-bascule__pastille {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 999px;
+  background: var(--turquoise);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+              width 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.tarifs-bascule button {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gris-clair);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.25s;
+}
+.tarifs-bascule button[aria-pressed="true"] { color: var(--nuit); }
+.tarifs-bascule button:hover:not([aria-pressed="true"]) { color: #fff; }
+
+/* ── Le prix ─────────────────────────────────────────────────────────────
+   Il change quand on bascule mensuel/annuel : un fondu montant le signale,
+   sinon le chiffre se substitue sans qu'on le remarque. */
+@keyframes tarifs-prix {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.tarifs-prix { animation: tarifs-prix 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+
+/* ── Les cartes ──────────────────────────────────────────────────────────
+   Le relief au survol dit « cliquable » sans rien écrire. */
+.tarifs-carte {
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+              border-color 0.35s, box-shadow 0.35s;
+}
+@media (hover: hover) {
+  .tarifs-carte:hover {
+    transform: translateY(-6px);
+    border-color: rgb(77 217 217 / 0.55);
+    box-shadow: 0 24px 50px -30px rgb(77 217 217 / 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarifs-entre,
+  .tarifs-prix { animation: none; }
+  .tarifs-bascule__pastille,
+  .tarifs-carte { transition: none; }
+  .tarifs-carte:hover { transform: none; }
+}

@@ -122,8 +122,8 @@ export const DICT = {
     'consent.refuser': 'Refuser',
 
     'tarifs.eyebrow': 'Tarifs',
-    'tarifs.titre': 'Simple et transparent',
-    'tarifs.soustitre': 'Choisissez le pack adapté à votre PME. Sans frais cachés.',
+    'tarifs.titre': 'Le prix est écrit.\nIl ne bougera pas.',
+    'tarifs.soustitre': 'Trois packs, un mois offert, résiliable quand vous voulez. Ce que vous lisez ici est ce que vous paierez.',
     'tarifs.essai': "1 mois d'essai gratuit — empreinte bancaire requise",
     'tarifs.deuxMoisOfferts': '2 mois offerts',
     'tarifs.unMoisOffert': "1 mois offert",

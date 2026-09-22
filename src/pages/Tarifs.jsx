@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Check, X, Loader2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { track } from '@vercel/analytics'
@@ -9,6 +9,11 @@ import SelecteurLangue from '../components/SelecteurLangue'
 import { useModuleTiers, fonctionsDuPack } from '../content/moduleTiers'
 import { montant } from '../lib/montant'
 import { numerosDeContact } from '../cine/telephones'
+// La page Tarifs vivait hors de la charte : ses propres couleurs, et Inter
+// comme police. Les jetons du site lui donnent ses vraies polices, son fond
+// et ses classes — c'est la meme marque des deux cotes du clic.
+import '../cine/tokens.css'
+import './tarifs.css'
 
 const TEAL = '#4DD9D9'
 
@@ -222,6 +227,26 @@ export default function Tarifs() {
   const { langue } = useLangue()
   const [interval, setInterval] = useState('mensuel')
   const [selected, setSelected] = useState(null)
+
+  // Le curseur du sélecteur se cale sur l'onglet actif. On le mesure plutôt
+  // que de le calculer : la largeur des libellés change d'une langue à
+  // l'autre, et « Annuel » porte en plus sa pastille « 1 mois offert ».
+  const ongletMensuel = useRef(null)
+  const ongletAnnuel = useRef(null)
+  const [curseur, setCurseur] = useState({ x: 0, l: 0 })
+
+  useEffect(() => {
+    const actif = interval === 'annuel' ? ongletAnnuel.current : ongletMensuel.current
+    if (!actif) return
+    const placer = () => setCurseur({ x: actif.offsetLeft - 4, l: actif.offsetWidth })
+    placer()
+    // Les polices arrivent après le premier rendu : sans ce second passage,
+    // le curseur garde la largeur mesurée dans la police de secours.
+    const surPolices = () => placer()
+    document.fonts?.ready.then(surPolices)
+    window.addEventListener('resize', placer)
+    return () => window.removeEventListener('resize', placer)
+  }, [interval])
   const { prix, contact } = useSiteContent()
   const liveModules = useModuleTiers()
 
@@ -237,7 +262,7 @@ export default function Tarifs() {
   }))
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] text-white">
+    <div className="tarifs-page min-h-screen text-white">
       {/* Nav simple */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0F]/90 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -257,38 +282,57 @@ export default function Tarifs() {
             n'auraient laissé que 280 px chacune. */}
         <div className="max-w-6xl mx-auto">
 
-          {/* Header */}
-          <div className="text-center mb-12">
-            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: TEAL }}>{t('tarifs.eyebrow')}</span>
-            <h1 className="text-4xl md:text-6xl font-black mt-3 mb-4">{t('tarifs.titre')}</h1>
-            <p className="text-slate-400 text-lg max-w-xl mx-auto">
-              {t('tarifs.soustitre')}
-            </p>
-            <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: `${TEAL}15`, color: TEAL, border: `1px solid ${TEAL}40` }}>
-              <span>🎁</span> {t('tarifs.essai')}
+          {/* L'en-tête : titre à gauche, sélecteur à droite, sur une ligne.
+              Il était centré en pile — la mise en page que prend n'importe
+              quelle page de tarifs. Aligné à gauche, il suit la lecture et
+              laisse le sélecteur à portée du pouce, contre les cartes. */}
+          <div className="grid lg:grid-cols-[1.25fr_auto] gap-10 lg:gap-16 items-end mb-14">
+            <div className="tarifs-entre">
+              <p className="cine-oeil">{t('tarifs.eyebrow')}</p>
+              <span className="cine-filet mt-3" aria-hidden="true" />
+              <h1 className="cine-h1 mt-6 whitespace-pre-line">{t('tarifs.titre')}</h1>
+              <p className="cine-intro mt-6">{t('tarifs.soustitre')}</p>
+              <p className="mt-6 inline-flex items-center gap-2.5 text-sm text-[var(--gris-clair)]">
+                <span aria-hidden="true" className="cine-pastille" />
+                {t('tarifs.essai')}
+              </p>
             </div>
-          </div>
 
-          {/* Toggle mensuel / annuel */}
-          <div className="flex items-center justify-center gap-3 mb-10">
-            <button
-              onClick={() => setInterval('mensuel')}
-              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${interval === 'mensuel' ? 'text-[#0A0A0F]' : 'text-slate-400 hover:text-white border border-white/10'}`}
-              style={interval === 'mensuel' ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` } : {}}
-            >
-              {t('tarifs.mensuel')}
-            </button>
-            <button
-              onClick={() => setInterval('annuel')}
-              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${interval === 'annuel' ? 'text-[#0A0A0F]' : 'text-slate-400 hover:text-white border border-white/10'}`}
-              style={interval === 'annuel' ? { background: `linear-gradient(135deg, ${TEAL}, #3BC8C8)` } : {}}
-            >
-              {t('tarifs.annuel')}
-              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${interval === 'annuel' ? 'bg-[#0A0A0F]/20 text-[#0A0A0F]' : 'text-[#4DD9D9]'}`}
-                style={interval !== 'annuel' ? { background: `${TEAL}20` } : {}}>
-                {t('tarifs.unMoisOffert')}
-              </span>
-            </button>
+            {/* Un seul curseur qui glisse, plutôt que deux boutons qui
+                s'allument : on voit le choix se déplacer. */}
+            <div className="tarifs-entre" data-retard="1">
+              <div className="tarifs-bascule" role="group" aria-label={t('tarifs.eyebrow')}>
+                <span
+                  className="tarifs-bascule__pastille"
+                  aria-hidden="true"
+                  style={{ transform: `translateX(${curseur.x}px)`, width: curseur.l }}
+                />
+                <button
+                  ref={ongletMensuel}
+                  type="button"
+                  onClick={() => setInterval('mensuel')}
+                  aria-pressed={interval === 'mensuel'}
+                >
+                  {t('tarifs.mensuel')}
+                </button>
+                <button
+                  ref={ongletAnnuel}
+                  type="button"
+                  onClick={() => setInterval('annuel')}
+                  aria-pressed={interval === 'annuel'}
+                >
+                  {t('tarifs.annuel')}
+                  <span
+                    className="text-xs px-2 py-0.5 rounded-full font-bold"
+                    style={interval === 'annuel'
+                      ? { background: 'rgb(5 7 10 / 0.18)', color: 'var(--nuit)' }
+                      : { background: `${TEAL}22`, color: TEAL }}
+                  >
+                    {t('tarifs.unMoisOffert')}
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Les trois packs payants, en trois colonnes, celui du milieu mis en
@@ -298,14 +342,15 @@ export default function Tarifs() {
               obligeait à écrire « Sur devis » en turquoise, où il entrait en
               concurrence avec les vrais montants. */}
           <div className="grid md:grid-cols-3 gap-6 items-start">
-            {livePlans.map((plan) => {
+            {livePlans.map((plan, i) => {
               const enAvant = plan.id === PACK_EN_AVANT
               const prix = interval === 'annuel' ? plan.priceAnnuel : plan.priceMensuel
               const periode = interval === 'annuel' ? t('tarifs.periode.an') : t('tarifs.periode.mois')
               return (
                 <div
                   key={plan.id}
-                  className={`relative rounded-2xl p-8 border flex flex-col ${enAvant ? 'md:-mt-5 md:pb-12' : ''}`}
+                  data-retard={i + 1}
+                  className={`tarifs-carte tarifs-entre relative rounded-2xl p-8 border flex flex-col ${enAvant ? 'md:-mt-5 md:pb-12' : ''}`}
                   style={{
                     background: enAvant ? `${TEAL}0E` : `${TEAL}04`,
                     borderColor: enAvant ? `${TEAL}55` : `${TEAL}20`,
@@ -322,8 +367,8 @@ export default function Tarifs() {
                       gros élément de la page n'y distinguait rien, pendant que
                       le montant qui décide était barré en petit gris. Le mois
                       offert redevient ce qu'il est — une promotion à côté. */}
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-black text-white cine-chiffres">{montant(prix)}</span>
+                  <div className="flex items-baseline gap-2 tarifs-prix" key={interval}>
+                    <span className="cine-titre text-5xl text-white cine-chiffres">{montant(prix)}</span>
                     <span className="text-slate-400 text-sm">/{periode}</span>
                   </div>
                   <p className="mt-3">
