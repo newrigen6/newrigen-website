@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Shield, X, ChevronDown } from 'lucide-react'
 import { useT } from '../i18n'
 import { demarrerPixel, arreterPixel } from '../lib/pixelMeta'
@@ -51,6 +52,7 @@ const politique = [
 
 export default function ConsentGate({ children }) {
   const t = useT()
+  const { pathname } = useLocation()
   const [accepted, setAccepted] = useState(null)
   const [scrolled, setScrolled] = useState(false)
   const [expanded, setExpanded] = useState(null)
@@ -82,6 +84,16 @@ export default function ConsentGate({ children }) {
     try { localStorage.removeItem(STORAGE_KEY) } catch {}
     setAccepted(false)
     arreterPixel()
+  }
+
+  // Les pages legales s'ouvrent sans passer par la fenetre d'accord : on doit
+  // pouvoir lire la politique avant de l'accepter, et Google, qui verifie la
+  // page de confidentialite avant d'ouvrir l'acces a Google Agenda, doit y
+  // trouver le texte complet et non ce resume. Le suivi publicitaire, lui,
+  // ne demarre toujours qu'apres acceptation.
+  const PAGES_LEGALES = ['/confidentialite', '/cgv', '/mentions-legales']
+  if (PAGES_LEGALES.includes(pathname.replace(/\/$/, ''))) {
+    return <>{children}</>
   }
 
   if (accepted === null) return null

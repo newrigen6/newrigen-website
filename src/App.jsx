@@ -621,8 +621,10 @@ function Home() {
 
 export default function App() {
   return (
-    <ConsentGate>
-      <BrowserRouter>
+    <BrowserRouter>
+      {/* Dans le routeur : la fenetre d'accord suit la page courante (les pages
+          legales s'ouvrent sans elle, voir ConsentGate). */}
+      <ConsentGate>
         <Routes>
           {/* Refonte cinematique. Le tunnel /tarifs et /merci reste intact :
               une animation ratee coute de l'effet, une regression sur le
@@ -648,7 +650,7 @@ export default function App() {
           <Route path="/confidentialite" element={<Confidentialite />} />
           <Route path="/cgv" element={<CGV />} />
         </Routes>
-      </BrowserRouter>
-    </ConsentGate>
+      </ConsentGate>
+    </BrowserRouter>
   )
 }
