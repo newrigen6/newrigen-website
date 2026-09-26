@@ -107,7 +107,7 @@ export function MentionsLegales() {
 
 export function Confidentialite() {
   return (
-    <LegalLayout title="Politique de confidentialité" updated="28 juillet 2026">
+    <LegalLayout title="Politique de confidentialité" updated="26 septembre 2026">
       <p>
         La présente politique décrit comment {ENTREPRISE.nom} traite vos données personnelles, conformément à la loi
         fédérale suisse sur la protection des données (nLPD).
@@ -144,7 +144,8 @@ export function Confidentialite() {
           <li>Supabase (base de données et authentification) ;</li>
           <li>Stripe (paiements et abonnements) ;</li>
           <li>Brevo (envoi d'emails transactionnels) ;</li>
-          <li>Anthropic (fonctions d'assistance par intelligence artificielle, p. ex. extraction de devis).</li>
+          <li>Anthropic (fonctions d'assistance par intelligence artificielle, p. ex. extraction de devis) ;</li>
+          <li>Google (connexion facultative à Google Agenda, voir ci-dessous).</li>
         </ul>
         <p className="mt-2">
           Certains prestataires sont situés hors de Suisse. Les transferts reposent sur des garanties appropriées
@@ -184,6 +185,38 @@ export function Confidentialite() {
           être analysé. Ces contenus ne sont pas utilisés pour entraîner des modèles. Ces fonctions ne prennent
           aucune décision produisant des effets juridiques : leur résultat est une proposition que vous relisez et
           validez avant tout envoi.
+        </p>
+      </section>
+      {/* Exige par Google pour autoriser l'acces a Google Agenda : la politique
+          doit dire quelles donnees Google l'application lit, pourquoi, et
+          qu'elle respecte la « Limited Use » de Google. */}
+      <section>
+        <H2>Connexion à Google Agenda</H2>
+        <p className="mt-2">
+          L'agenda de l'application peut, si vous le décidez, afficher les rendez-vous de votre Google Agenda. Cette
+          connexion est facultative et se fait uniquement à votre demande, via le bouton « Connecter Google Calendar ».
+        </p>
+        <ul className="mt-2 list-disc pl-5 space-y-1">
+          <li><strong className="text-white">Données consultées</strong> : les événements de votre agenda principal
+            (titre, date, heure, lieu, description), en <strong className="text-white">lecture seule</strong>
+            (autorisation <code>calendar.readonly</code>). L'application ne peut ni créer, ni modifier, ni supprimer
+            un événement.</li>
+          <li><strong className="text-white">Utilisation</strong> : uniquement pour afficher ces rendez-vous dans
+            votre agenda, à côté de ceux de vos chantiers.</li>
+          <li><strong className="text-white">Stockage</strong> : les événements sont lus directement depuis Google au
+            moment de l'affichage et ne sont pas enregistrés sur nos serveurs. Le jeton d'accès reste dans votre
+            navigateur, le temps de la session.</li>
+          <li><strong className="text-white">Partage</strong> : ces données ne sont transmises à aucun tiers, ni
+            utilisées à des fins publicitaires, ni pour entraîner des modèles d'intelligence artificielle.</li>
+          <li><strong className="text-white">Révocation</strong> : vous pouvez déconnecter Google Agenda depuis
+            l'application à tout moment, ou retirer l'accès depuis{' '}
+            <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">les paramètres de votre compte Google</a>.</li>
+        </ul>
+        <p className="mt-2">
+          L'utilisation et le transfert à toute autre application des informations reçues des API Google respectent
+          les{' '}
+          <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">règles relatives aux données utilisateur des services API Google</a>,
+          y compris les exigences d'utilisation limitée (« Limited Use »).
         </p>
       </section>
       <section>
